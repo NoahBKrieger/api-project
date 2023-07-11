@@ -1,4 +1,4 @@
-# AIR B&B
+# AIRBNB
 
 ## Database Schema Design
 
