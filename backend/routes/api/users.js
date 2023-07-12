@@ -31,8 +31,6 @@ const validateSignup = [
     handleValidationErrors
 ];
 
-
-
 // Sign up
 router.post(
     '/',
@@ -55,8 +53,5 @@ router.post(
         });
     }
 );
-
-
-
 
 module.exports = router;
