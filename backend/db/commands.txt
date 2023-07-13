@@ -1,0 +1,1 @@
+npx sequelize-cli model:generate --name Booking --attributes id:integer,spotId:integer,userId:integer,startDate:text,endDate:text
