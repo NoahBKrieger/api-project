@@ -1,8 +1,10 @@
 'use strict';
 
+let options = {}
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize) {
     /**
      * Add seed commands here.
      *
@@ -12,14 +14,28 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
+    options.tableName = 'Bookings'
+    await queryInterface.bulkInsert(options, [
+      {
+        startDate: '06-07-1996',
+        endDate: '06-08-1996',
+      },
+      {
+        startDate: '01-01-2000',
+        endDate: '01-02-3456',
+      }
+
+    ], {})
   },
 
-  async down (queryInterface, Sequelize) {
+  async down(queryInterface, Sequelize) {
     /**
      * Add commands to revert seed here.
      *
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
+    options.tableName = 'Bookings'
+    await queryInterface.bulkDelete(options, null, {});
   }
 };
