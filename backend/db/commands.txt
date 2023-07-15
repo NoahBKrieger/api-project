@@ -7,3 +7,11 @@ npx sequelize-cli model:generate --name Spot --attributes ownerId:integer,addres
 npx sequelize-cli model:generate --name SpotImage --attributes spotId:integer,url:text,preview:boolean
 
 npx sequelize-cli model:generate --name ReviewImage --attributes reviewId:integer,url:text
+
+
+
+npx sequelize-cli seed:generate --name demo-booking
+npx sequelize-cli seed:generate --name demo-review
+npx sequelize-cli seed:generate --name demo-reviewimage
+npx sequelize-cli seed:generate --name demo-spot
+npx sequelize-cli seed:generate --name demo-spotimage
