@@ -1,8 +1,10 @@
 'use strict';
 
+let options = {}
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize) {
     /**
      * Add seed commands here.
      *
@@ -12,14 +14,22 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-  },
+    options.tableName = 'ReviewImages'
+    await queryInterface.bulkInsert(options, [
 
-  async down (queryInterface, Sequelize) {
+      { url: 'any.com' },
+      { url: 'another.net' }
+
+    ], {})
+  },
+  async down(queryInterface, Sequelize) {
     /**
      * Add commands to revert seed here.
      *
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
+    options.tableName = 'ReviewImages'
+    await queryInterface.bulkDelete(options, null, {});
   }
 };
