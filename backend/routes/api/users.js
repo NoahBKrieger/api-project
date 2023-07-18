@@ -54,4 +54,16 @@ router.post(
     }
 );
 
+// router.get('/',
+//     validateSignup,
+//     async (req, res) => {
+
+//         const currUser = await User.findOne({
+// where:
+
+//         })
+
+//     }
+// )
+
 module.exports = router;
