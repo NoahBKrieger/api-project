@@ -39,6 +39,7 @@ router.post('/', async (req, res) => {
 
     const newSpot = await Spot.create({ address, city, state, country, lat, lng, name, description, price })
 
+    res.statusCode(201)
     return res.json(newSpot)
 })
 
