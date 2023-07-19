@@ -11,6 +11,7 @@ const router = express.Router();
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
+
 const validateSignup = [
     check('email')
         .exists({ checkFalsy: true })
@@ -54,16 +55,16 @@ router.post(
     }
 );
 
-// router.get('/',
-//     validateSignup,
-//     async (req, res) => {
+router.get('/', requireAuth, async (req, res) => {
 
-//         const currUser = await User.findOne({
-// where:
+    const currUser = await User.findOne({
 
-//         })
+        where: { id: jwtConfig.id }
+    })
 
-//     }
-// )
+    return res.json(currUser)
+
+}
+)
 
 module.exports = router;

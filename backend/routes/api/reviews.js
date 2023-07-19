@@ -3,11 +3,12 @@ const express = require('express');
 const router = express.Router();
 
 const { Review } = require('../../db/models');
-
 const { ReviewImage } = require('../../db/models');
 
+const { setTokenCookie, requireAuth } = require('../../utils/auth');
 
-router.get('/current', async (req, res) => {
+
+router.get('/current', requireAuth, async (req, res) => {
 
     const userReviews = await Review.findAll({
         where: {
