@@ -1,5 +1,4 @@
 // backend/routes/api/users.js
-
 const express = require('express');
 const bcrypt = require('bcryptjs');
 
@@ -58,12 +57,10 @@ router.post(
 router.get('/', requireAuth, async (req, res) => {
 
     const currUser = await User.findOne({
-
-        where: { id: jwtConfig.id }
+        where: { id: req.user.id }
     })
 
     return res.json(currUser)
-
 }
 )
 
