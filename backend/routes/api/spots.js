@@ -43,11 +43,13 @@ router.post('/', async (req, res) => {
     return res.json(newSpot)
 })
 
+
 router.post('/:spotId/images', async (req, res) => {
 
     const { url, preview } = req.body
+    const { id } = req.params.spotId
 
-    const newImg = await SpotImage.create({ url, preview })
+    const newImg = await SpotImage.create({ spotId: id, url, preview })
 
     return res.json(newImg)
 
