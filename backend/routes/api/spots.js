@@ -8,7 +8,21 @@ const { requireAuth } = require('../../utils/auth');
 
 router.get('/', async (req, res) => {
 
-    const allSpots = await Spot.findAll()
+    const { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query
+
+    page = parseInt(page)
+    size = parseInt(size)
+
+    if (Number.isNaN(page) || page < 1) page = 1;
+    if (page > 10) size = 10;
+
+    if (Number.isNaN(size) || size > 20) size = 20;
+    if (size < 1) size = 1;
+
+    const allSpots = await Spot.findAll({
+        limit: size,
+        offset: size * (page - 1)
+    })
 
     return res.json(allSpots)
 })
@@ -34,7 +48,7 @@ router.post('/', requireAuth, async (req, res) => {
 
     const newSpot = await Spot.create({ address, city, state, country, lat, lng, name, description, price })
 
-    res.statusCode(201)
+    res.statusCode = 201;
     return res.json(newSpot)
 })
 
@@ -47,7 +61,6 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
     const newImg = await SpotImage.create({ spotId: id, url, preview })
 
     return res.json(newImg)
-
 })
 
 router.put('/:spotId', requireAuth, async (req, res) => {
@@ -60,7 +73,6 @@ router.put('/:spotId', requireAuth, async (req, res) => {
         { where: { id } });
 
     return res.json(updated);
-
 });
 
 router.delete('/:spotId', requireAuth, async (req, res) => {

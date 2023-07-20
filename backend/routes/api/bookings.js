@@ -17,7 +17,7 @@ router.get('/current', requireAuth, async (req, res) => {
     return res.json(userBookings)
 })
 
-router.get('/:spotId/bookings', async (req, res) => {
+router.get('/:spotId/bookings', requireAuth, async (req, res) => {
 
     const { id } = req.params.spotId
     const spotBookings = await Booking.findAll({
@@ -28,7 +28,7 @@ router.get('/:spotId/bookings', async (req, res) => {
     return res.json(spotBookings)
 })
 
-router.post('./:spotId/bookings', async (req, res) => {
+router.post('./:spotId/bookings', requireAuth, async (req, res) => {
 
     const { id } = req.params.spotId
     const { startDate, endDate } = req.body
@@ -38,7 +38,7 @@ router.post('./:spotId/bookings', async (req, res) => {
     return res.json(newBooking)
 })
 
-router.put('/:bookingId', async (req, res) => {
+router.put('/:bookingId', requireAuth, async (req, res) => {
 
     const { id } = req.params.bookingId;
     const { startDate, endDate } = req.body;
@@ -49,7 +49,7 @@ router.put('/:bookingId', async (req, res) => {
     return res.json(updated);
 });
 
-router.delete('/:bookingid', async (req, res) => {
+router.delete('/:bookingid', requireAuth, async (req, res) => {
     const { id } = req.params;
     const deleted = await Booking.destroy({ where: { id } });
     res.json(deleted);

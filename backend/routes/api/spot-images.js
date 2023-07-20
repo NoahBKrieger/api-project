@@ -17,8 +17,4 @@ router.delete('/:imageId', requireAuth, (req, res) => {
 
 
 
-
-
-
-
 module.exports = router;
