@@ -1,18 +1,17 @@
 const express = require('express');
-
 const router = express.Router();
 
 const { Review } = require('../../db/models');
 const { ReviewImage } = require('../../db/models');
 
-const { setTokenCookie, requireAuth } = require('../../utils/auth');
+const { requireAuth } = require('../../utils/auth');
 
 
 router.get('/current', requireAuth, async (req, res) => {
 
     const userReviews = await Review.findAll({
         where: {
-            userId: currentUser // ??
+            userId: req.user.id
         }
     })
     return res.json(userReviews)
@@ -26,19 +25,20 @@ router.get('/:spotId/reviews', async (req, res) => {
         }
     })
     return res.json(spotReviews)
-})
+});
 
-router.post('./:spotId/reviews', async (req, res) => {
+router.post('./:spotId/reviews', requireAuth, async (req, res) => {
 
-    const { id } = req.params.spotId
-    const { review, stars } = req.body
+    const { id } = req.params.spotId;
+    const { review, stars } = req.body;
+    const { userId } = req.user.id;
 
-    const newReview = Review.create({ spotId: id, review: review, stars: stars })
+    const newReview = Review.create({ spotId: id, userId: userId, review, stars })
 
     return res.json(newReview)
-})
+});
 
-router.post('/:reviewId/images', async (req, res) => {
+router.post('/:reviewId/images', requireAuth, async (req, res) => {
 
     const { id } = req.params.reviewId
     const { url } = req.body
@@ -48,21 +48,36 @@ router.post('/:reviewId/images', async (req, res) => {
     return res.json(newImg);
 });
 
-router.put('/:reviewId', async (req, res) => {
+router.put('/:reviewId', requireAuth, async (req, res) => {
 
+    const { currentUserId } = req.user.id;
     const { id } = req.params.reviewId;
     const { review, stars } = req.body;
 
+    const reviewToCheck = await Review.findByPk({ id })
+
+    if (currentUserId !== reviewToCheck.userId) {
+        throw new Error('Review must belong to the current user')
+    }
+
     const updated = await Review.update({ review, stars },
         { where: { id } });
-
     return res.json(updated);
 });
 
-router.delete('/:reviewid', async (req, res) => {
-    const { id } = req.params;
+router.delete('/:reviewId', requireAuth, async (req, res) => {
+
+    const { currentUserId } = req.user.id;
+    const { id } = req.params.reviewId;
+
+    const reviewToCheck = await Review.findByPk({ id })
+
+    if (currentUserId !== reviewToCheck.userId) {
+        throw new Error('Review must belong to the current user')
+    }
+
     const deleted = await Review.destroy({ where: { id } });
-    res.json(deleted);
+    return res.json(deleted);
 });
 
 

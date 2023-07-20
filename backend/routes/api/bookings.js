@@ -3,12 +3,15 @@ const router = express.Router();
 
 const { Booking } = require('../../db/models');
 
+const { requireAuth } = require('../../utils/auth');
 
-router.get('/current', async (req, res) => {
+router.get('/current', requireAuth, async (req, res) => {
+
+    const { currentUserId } = req.user.id;
 
     const userBookings = await Booking.findAll({
         where: {
-            userId: currentUser// ??!!
+            userId: currentUserId
         }
     })
     return res.json(userBookings)

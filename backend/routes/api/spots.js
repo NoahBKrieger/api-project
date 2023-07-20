@@ -1,28 +1,23 @@
 const express = require('express');
-
 const router = express.Router();
 
 const { Spot } = require('../../db/models');
-
 const { SpotImage } = require('../../db/models');
 
+const { requireAuth } = require('../../utils/auth');
 
-router.get('/',
+router.get('/', async (req, res) => {
 
-    async (req, res) => {
+    const allSpots = await Spot.findAll()
 
-        const allSpots = await Spot.findAll()
+    return res.json(allSpots)
+})
 
-        return res.json(allSpots)
+router.get('/current', requireAuth, async (req, res) => {
+
+    const currSpot = await Spot.findAll({
+        where: { ownerId: req.user.id }
     })
-
-router.get('/current', async (req, res) => {
-
-    const currSpot = await Spot.findOne({
-
-        // where: {ownerId = // ???}
-    })
-
     return res.json(currSpot)
 })
 
@@ -33,7 +28,7 @@ router.get('/:spotId', async (req, res) => {
     return res.json(spot)
 })
 
-router.post('/', async (req, res) => {
+router.post('/', requireAuth, async (req, res) => {
 
     const { address, city, state, country, lat, lng, name, description, price } = req.body
 
@@ -44,7 +39,7 @@ router.post('/', async (req, res) => {
 })
 
 
-router.post('/:spotId/images', async (req, res) => {
+router.post('/:spotId/images', requireAuth, async (req, res) => {
 
     const { url, preview } = req.body
     const { id } = req.params.spotId
@@ -55,7 +50,7 @@ router.post('/:spotId/images', async (req, res) => {
 
 })
 
-router.put('/:spotId', async (req, res) => {
+router.put('/:spotId', requireAuth, async (req, res) => {
 
     const { id } = req.params.spotId;
 
@@ -68,7 +63,7 @@ router.put('/:spotId', async (req, res) => {
 
 });
 
-router.delete('/:spotId', async (req, res) => {
+router.delete('/:spotId', requireAuth, async (req, res) => {
 
     const { id } = req.params.spotId;
 
