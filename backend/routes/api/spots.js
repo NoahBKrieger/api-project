@@ -8,7 +8,7 @@ const { requireAuth } = require('../../utils/auth');
 
 router.get('/', async (req, res) => {
 
-    const { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query
+    let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query
 
     page = parseInt(page)
     size = parseInt(size)
