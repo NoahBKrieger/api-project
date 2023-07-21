@@ -17,8 +17,8 @@ module.exports = {
     options.tableName = 'ReviewImages'
     await queryInterface.bulkInsert(options, [
 
-      { url: 'any.com' },
-      { url: 'another.net' }
+      { reviewId: 1, url: 'any.com' },
+      { reviewId: 1, url: 'another.net' }
 
     ], {})
   },

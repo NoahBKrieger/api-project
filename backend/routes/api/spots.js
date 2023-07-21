@@ -3,6 +3,7 @@ const router = express.Router();
 
 const { Spot } = require('../../db/models');
 const { SpotImage } = require('../../db/models');
+const { User } = require('../../db/models');
 
 const { requireAuth } = require('../../utils/auth');
 
@@ -37,16 +38,35 @@ router.get('/current', requireAuth, async (req, res) => {
 
 router.get('/:spotId', async (req, res) => {
 
-    const spot = await Spot.findByPk(req.params.spotId)
+    const spot = await Spot.findByPk(req.params.spotId, {
+
+        attributes: { exclude: 'createdAt updatedAt' },
+
+        include: [{
+            model: SpotImage,
+            as: 'SpotImages',
+            attributes: { exclude: 'spotId createdAt updatedAt' }
+
+
+        }, {
+            model: User,
+            as: 'User',
+            attributes: { exclude: 'username email createdAt updatedAt hashedPassword' }
+        }
+
+        ]
+    })
 
     return res.json(spot)
 })
 
 router.post('/', requireAuth, async (req, res) => {
 
+    const ownerId = req.user.id;
+
     const { address, city, state, country, lat, lng, name, description, price } = req.body
 
-    const newSpot = await Spot.create({ address, city, state, country, lat, lng, name, description, price })
+    const newSpot = await Spot.create({ ownerId: ownerId, address, city, state, country, lat, lng, name, description, price })
 
     res.statusCode = 201;
     return res.json(newSpot)
@@ -56,7 +76,7 @@ router.post('/', requireAuth, async (req, res) => {
 router.post('/:spotId/images', requireAuth, async (req, res) => {
 
     const { url, preview } = req.body
-    const { id } = req.params.spotId
+    const id = req.params.spotId
 
     const newImg = await SpotImage.create({ spotId: id, url, preview })
 
@@ -65,7 +85,7 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
 
 router.put('/:spotId', requireAuth, async (req, res) => {
 
-    const { id } = req.params.spotId;
+    const id = req.params.spotId;
 
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
 
@@ -77,7 +97,7 @@ router.put('/:spotId', requireAuth, async (req, res) => {
 
 router.delete('/:spotId', requireAuth, async (req, res) => {
 
-    const { id } = req.params.spotId;
+    const id = req.params.spotId;
 
     const deleted = await Spot.destroy({ where: { id } });
 
