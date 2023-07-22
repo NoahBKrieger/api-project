@@ -4,6 +4,9 @@ const router = express.Router();
 const { Spot } = require('../../db/models');
 const { SpotImage } = require('../../db/models');
 const { User } = require('../../db/models');
+const { Review } = require('../../db/models');
+const { ReviewImage } = require('../../db/models');
+const { Booking } = require('../../db/models');
 
 const { requireAuth } = require('../../utils/auth');
 
@@ -85,25 +88,168 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
 
 router.put('/:spotId', requireAuth, async (req, res) => {
 
-    const id = req.params.spotId;
+    const spotId = req.params.spotId;
+    const userId = req.user.id;
+
+    let newOne = await Spot.findByPk(spotId);
+
+    if (!newOne) throw new Error("Spot couldn't be found");
+    if (newOne.ownerId !== userId) throw new Error('Spot must belong to the current user')
 
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
 
-    const updated = await Spot.update({ address, city, state, country, lat, lng, name, description, price },
-        { where: { id } });
+    await Spot.update({ address, city, state, country, lat, lng, name, description, price },
+        { where: { id: spotId } });
 
-    return res.json(updated);
+    newOne = await Spot.findByPk(spotId);
+
+    return res.json(newOne);
 });
 
 router.delete('/:spotId', requireAuth, async (req, res) => {
 
-    const id = req.params.spotId;
+    const spotId = req.params.spotId;
+    const userId = req.user.id;
 
-    const deleted = await Spot.destroy({ where: { id } });
+    let validCheck = await Spot.findByPk(spotId);
 
-    return res.json(deleted);
+    if (!validCheck) {
+
+        res.statusCode = 404;
+        return res.json({ message: "Spot couldn't be found" })
+
+    }
+    if (validCheck.ownerId !== userId) throw new Error('Spot must belong to the current user')
+
+    await Spot.destroy({ where: { id: spotId } });
+
+    return res.json({ message: 'Succesfully deleted' })
 });
 
+//get reviews by spot
+router.get('/:spotId/reviews', async (req, res) => {
+
+    const spotId = req.params.spotId
+
+    const checkSpot = await Spot.findByPk(spotId)
+
+    if (!checkSpot) {
+        res.statusCode = 404
+        return res.json({ message: "Spot couldn't be found" })
+    }
+
+    const spotReviews = await Review.findAll({
+        where: {
+            spotId: spotId
+        },
+        include: [
+            {
+                model: User,
+                as: 'User',
+                attributes: { exclude: 'username email createdAt updatedAt hashedPassword' }
+            },
+            {
+                model: ReviewImage,
+                as: 'ReviewImages',
+                attributes: { exclude: 'reviewId createdAt updatedAt' }
+            }
+        ]
+    })
+
+    return res.json(spotReviews)
+});
+
+router.post('/:spotId/reviews', requireAuth, async (req, res) => {
+
+    const id = req.params.spotId;
+    const { review, stars } = req.body;
+    const userId = req.user.id;
+
+    const checkSpot = await Spot.findByPk(id)
+
+    if (!checkSpot) {
+        res.statusCode = 404
+        return res.json({ message: "Spot couldn't be found" })
+    }
+
+    const checkReviewsOfSpot = await Review.findOne({
+        where: {
+            userId: userId,
+            spotId: id
+        }
+    })
+
+    if (checkReviewsOfSpot) {
+        res.statusCode = 403;
+        return res.json({ message: 'User already has a review for this spot' })
+    }
+
+    const newReview = await Review.create({ spotId: Number.parseInt(id), userId: userId, review, stars })
+
+    res.statusCode = 201
+    return res.json(newReview)
+});
+
+router.get('/:spotId/bookings', requireAuth, async (req, res) => {
+
+    const id = req.params.spotId;
+    const userId = req.user.id;
+
+    const checkSpot = await Spot.findByPk(id)
+
+    if (!checkSpot) {
+        res.statusCode = 404
+        return res.json({ message: "Spot couldn't be found" })
+    }
+
+    if (userId === checkSpot.ownerId) {
+
+        const spotBookings = await Booking.findAll({
+            where: {
+                spotId: id
+            },
+            attributes: ['spotId', 'startDate', 'endDate']
+        })
+        return res.json({ Bookings: [spotBookings] })
+    } else {
+        const spotBookings = await Booking.findAll({
+            where: {
+                spotId: id
+            },
+            include: {
+                model: User,
+                as: 'User',
+                attributes: ['id', 'firstName', 'lastName']
+            }
+        })
+        return res.json({ Bookings: [spotBookings] })
+    }
+})
+
+router.post('/:spotId/bookings', requireAuth, async (req, res) => {
+
+    const id = req.params.spotId
+    const { startDate, endDate } = req.body
+    const userId = req.user.id;
+
+    const checkSpot = await Spot.findByPk(id)
+
+    if (!checkSpot) {
+        res.statusCode = 404
+        return res.json({ message: "Spot couldn't be found" })
+    }
+
+    if (userId === checkSpot.ownerId) {
+        res.statusCode = 400
+        return res.json({ message: 'Spot must NOT belong to the current user' })
+    }
+
+    await Booking.create({ spotId: id, userId, startDate, endDate })
+
+    const newBooking = await Booking.findOne({ where: { spotId: id, startDate } })
+
+    return res.json(newBooking)
+})
 
 
 module.exports = router;
