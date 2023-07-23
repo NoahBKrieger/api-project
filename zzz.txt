@@ -667,3 +667,18 @@ module.exports = (sequelize, DataTypes) => {
 
 
 npx sequelize-cli model:generate --name User --attributes firstName:string
+
+
+npx sequelize-cli model:generate --name Spot --attributes firstName:string
+
+
+npx sequelize-cli model:generate --name Review --attributes firstName:string
+
+
+npx sequelize-cli model:generate --name Booking --attributes firstName:string
+
+
+npx sequelize-cli model:generate --name SpotImage --attributes firstName:string
+
+
+npx sequelize-cli model:generate --name ReviewImage --attributes firstName:string
