@@ -666,7 +666,7 @@ module.exports = (sequelize, DataTypes) => {
 };
 
 
-npx sequelize-cli model:generate --name User --attributes firstName:string
+npx dotenv sequelize model:generate --name User --attributes firstName:string
 
 
 npx sequelize-cli model:generate --name Spot --attributes firstName:string
@@ -682,3 +682,16 @@ npx sequelize-cli model:generate --name SpotImage --attributes firstName:string
 
 
 npx sequelize-cli model:generate --name ReviewImage --attributes firstName:string
+
+
+npx sequelize-cli seed:generate --name demo-spot
+
+npx sequelize-cli seed:generate --name demo-review
+
+npx sequelize-cli seed:generate --name demo-booking
+
+npx sequelize-cli seed:generate --name demo-spot-review-image
+
+npx sequelize-cli seed:generate --name demo-spot-image
+
+npx sequelize-cli seed:generate --name demo-spot
