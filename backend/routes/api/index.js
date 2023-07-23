@@ -16,7 +16,7 @@ router.post('/test', function (req, res) {
     res.json({ requestBody: req.body });
 });
 
-GET / api / set - token - cookie
+//GET / api / set - token - cookie
 const { setTokenCookie } = require('../../utils/auth.js');
 const { User } = require('../../db/models');
 router.get('/set-token-cookie', async (_req, res) => {
