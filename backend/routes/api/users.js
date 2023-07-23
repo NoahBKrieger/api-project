@@ -56,6 +56,8 @@ router.get('/', requireAuth, async (req, res) => {
         where: { id: req.user.id }
     })
 
+
+
     return res.json(currUser)
 }
 )

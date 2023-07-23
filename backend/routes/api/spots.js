@@ -25,10 +25,17 @@ router.get('/', async (req, res) => {
 
     const allSpots = await Spot.findAll({
         limit: size,
-        offset: size * (page - 1)
+        offset: size * (page - 1),
+        include: {
+            model: SpotImage,
+            where: { preview: true },
+            attributes: { exclude: 'id spotId createdAt updatedAt' }
+
+
+        }
     })
 
-    return res.json(allSpots)
+    return res.json({ Spots: allSpots })
 })
 
 router.get('/current', requireAuth, async (req, res) => {
