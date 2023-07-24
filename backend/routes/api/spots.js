@@ -236,6 +236,38 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
     const { startDate, endDate } = req.body
     const userId = req.user.id;
 
+    let startNum = startDate.split('-').join();
+    let endNum = endDate.split('-').join();
+
+    if ((endNum) <= (startNum)) {
+        res.statusCode = 400
+        return res.json({ message: 'Enddate must be later than startdate' })
+    }
+
+    const checkBooking = await Booking.findAll({
+        where: {
+            spotId: id
+        }
+    })
+
+    for (let i = 0; i < checkBooking.length; i++) {
+
+        if (checkBooking[i].startDate.split('-').join() <= startNum && startNum <= checkBooking[i].endDate.split('-').join()) {
+
+            res.statusCode = 400
+            return res.json({ message: 'Startdate you selected is booked' })
+        }
+
+        if (checkBooking[i].startDate.split('-').join() <= endNum && endNum <= checkBooking[i].endDate.split('-').join()) {
+
+            res.statusCode = 400
+            return res.json({ message: 'EndDate you selected is booked' })
+        }
+
+
+
+    };
+
     const checkSpot = await Spot.findByPk(id)
 
     if (!checkSpot) {
@@ -250,7 +282,7 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
 
     await Booking.create({ spotId: id, userId, startDate, endDate })
 
-    const newBooking = await Booking.findOne({ where: { spotId: id, startDate } })
+    const newBooking = await Booking.findAll({ where: { spotId: id, startDate } })
 
     return res.json(newBooking)
 })

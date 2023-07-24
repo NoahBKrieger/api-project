@@ -33,14 +33,25 @@ module.exports = (sequelize, DataTypes) => {
     userId: DataTypes.INTEGER,
     startDate: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        isDate: { msg: 'must be a date' }
+      }
     },
     endDate: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        isDate: { msg: 'must be a date' },
+        // isAfter: {
+        //   args: this.startDate,
+        //   msg: 'Enddate must be after startdate'
+        // }
+      }
     },
   }, {
     sequelize,
+    validate: {},
     modelName: 'Booking',
   });
   return Booking;
