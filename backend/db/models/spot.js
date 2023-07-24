@@ -63,16 +63,16 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.FLOAT,
       validate: {
 
-        max: { args: 300, msg: "Latitude is not valid" },
-        min: { args: 0, msg: "Latitude is not valid" }
+        max: { args: 90, msg: "Latitude is not valid" },
+        min: { args: -90, msg: "Latitude is not valid" }
 
       }
     },
     lng: {
       type: DataTypes.FLOAT,
       validate: {
-        max: { args: 200, msg: "Longitude is not valid" },
-        min: { args: 0, msg: "Longitude is not valid" }
+        max: { args: 180, msg: "Longitude is not valid" },
+        min: { args: -180, msg: "Longitude is not valid" }
       }
     },
     name: {
