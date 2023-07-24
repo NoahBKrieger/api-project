@@ -24,26 +24,6 @@ router.get('/current', requireAuth, async (req, res) => {
     return res.json({ Bookings: [userBookings] })
 })
 
-// router.get('/:spotId/bookings', requireAuth, async (req, res) => {
-
-//     const id = req.params.spotId
-//     const spotBookings = await Booking.findAll({
-//         where: {
-//             spotId: id
-//         }
-//     })
-//     return res.json(spotBookings)
-// })
-
-// router.post('./:spotId/bookings', requireAuth, async (req, res) => {
-
-//     const { id } = req.params.spotId
-//     const { startDate, endDate } = req.body
-
-//     const newBooking = Booking.create({ spotId: id, startDate, endDate })
-
-//     return res.json(newBooking)
-// })
 
 router.put('/:bookingId', requireAuth, async (req, res) => {
 
@@ -60,7 +40,7 @@ router.put('/:bookingId', requireAuth, async (req, res) => {
 
     if (currUserId !== checkBooking.userId) {
         res.statusCode = 400
-        return res.json({ message: 'Booking must belong to the current user' })
+        return res.json({ message: 'Forbidden' })
     }
 
     await Booking.update({ startDate, endDate }, { where: { id } });
@@ -85,7 +65,7 @@ router.delete('/:bookingId', requireAuth, async (req, res) => {
 
     if (currUserId !== checkBooking.userId) {
         res.statusCode = 400
-        return res.json({ message: 'Booking must belong to the current user' })
+        return res.json({ message: 'Forbidden' })
     }
     await Booking.destroy({ where: { id } });
 

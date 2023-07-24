@@ -35,15 +35,72 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true
     },
     ownerId: DataTypes.INTEGER,
-    address: DataTypes.TEXT,
-    city: DataTypes.TEXT,
-    state: DataTypes.TEXT,
-    country: DataTypes.TEXT,
-    lat: DataTypes.FLOAT,
-    lng: DataTypes.FLOAT,
-    name: DataTypes.TEXT,
-    description: DataTypes.TEXT,
-    price: DataTypes.FLOAT
+    address: {
+      type: DataTypes.TEXT,
+      validate: {
+        notEmpty: { msg: "Street address is required" }
+      }
+    },
+    city: {
+      type: DataTypes.TEXT,
+      validate: {
+        notEmpty: { msg: "City is required" }
+      }
+    },
+    state: {
+      type: DataTypes.TEXT,
+      validate: {
+        notEmpty: { msg: "State is required" }
+      }
+    },
+    country: {
+      type: DataTypes.TEXT,
+      validate: {
+        notEmpty: { msg: "Country is required" }
+      }
+    },
+    lat: {
+      type: DataTypes.FLOAT,
+      validate: {
+
+        max: { args: 300, msg: "Latitude is not valid" },
+        min: { args: 0, msg: "Latitude is not valid" }
+
+      }
+    },
+    lng: {
+      type: DataTypes.FLOAT,
+      validate: {
+        max: { args: 200, msg: "Longitude is not valid" },
+        min: { args: 0, msg: "Longitude is not valid" }
+      }
+    },
+    name: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      validate: {
+        notEmpty: { msg: "Name is required" },
+        len: {
+          args: [1, 50],
+          msg: "Name must be less than 50 characters"
+        }
+      }
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      validate: {
+        notEmpty: { msg: "Description is required" }
+      }
+    },
+    price: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+      validate: {
+        notNull: { msg: "Price per day is required" }
+
+      }
+    }
   }, {
     sequelize,
     modelName: 'Spot',

@@ -26,8 +26,17 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true
     },
     spotId: { type: DataTypes.INTEGER },
-    url: DataTypes.TEXT,
-    preview: DataTypes.BOOLEAN
+    url: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      validate: {
+        isUrl: { msg: 'must be a url' }
+      }
+    },
+    preview: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false
+    }
   }, {
     sequelize,
     modelName: 'SpotImage',

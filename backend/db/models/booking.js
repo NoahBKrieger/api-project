@@ -42,11 +42,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        isDate: { msg: 'must be a date' },
-        // isAfter: {
-        //   args: this.startDate,
-        //   msg: 'Enddate must be after startdate'
-        // }
+        isDate: { msg: 'must be a date' }
+
       }
     },
   }, {

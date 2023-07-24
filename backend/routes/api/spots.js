@@ -84,8 +84,22 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
 
     const { url, preview } = req.body
     const id = req.params.spotId
+    const userId = req.user.id;
+
+    const newOne = await Spot.findByPk(id)
+
+    if (!newOne) {
+        res.statusCode = 404
+        return res.json({ message: "Spot couldn't be found" })
+    }
+
+    if (newOne.ownerId !== userId) {
+        res.statusCode = 403
+        return res.json({ message: 'Forbidden' })
+    }
 
     const newImg = await SpotImage.create({ spotId: id, url, preview })
+
 
     return res.json(newImg)
 });
@@ -97,8 +111,14 @@ router.put('/:spotId', requireAuth, async (req, res) => {
 
     let newOne = await Spot.findByPk(spotId);
 
-    if (!newOne) throw new Error("Spot couldn't be found");
-    if (newOne.ownerId !== userId) throw new Error('Spot must belong to the current user')
+    if (!newOne) {
+        res.statusCode = 404
+        return res.json({ message: "Spot couldn't be found" })
+    };
+    if (newOne.ownerId !== userId) {
+        res.statusCode = 403
+        return res.json({ message: 'Forbidden' })
+    }
 
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
 
@@ -123,7 +143,10 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
         return res.json({ message: "Spot couldn't be found" })
 
     }
-    if (validCheck.ownerId !== userId) throw new Error('Spot must belong to the current user')
+    if (validCheck.ownerId !== userId) {
+        res.statusCode = 403
+        return res.json({ message: 'Forbidden' })
+    }
 
     await Spot.destroy({ where: { id: spotId } });
 
@@ -255,17 +278,14 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
         if (checkBooking[i].startDate.split('-').join() <= startNum && startNum <= checkBooking[i].endDate.split('-').join()) {
 
             res.statusCode = 400
-            return res.json({ message: 'Startdate you selected is booked' })
+            return res.json({ message: "Start date conflicts with an existing booking" })
         }
 
         if (checkBooking[i].startDate.split('-').join() <= endNum && endNum <= checkBooking[i].endDate.split('-').join()) {
 
             res.statusCode = 400
-            return res.json({ message: 'EndDate you selected is booked' })
+            return res.json({ message: "End date conflicts with an existing booking" })
         }
-
-
-
     };
 
     const checkSpot = await Spot.findByPk(id)

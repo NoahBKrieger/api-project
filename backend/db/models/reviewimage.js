@@ -27,7 +27,13 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true
     },
     reviewId: DataTypes.INTEGER,
-    url: DataTypes.TEXT
+    url: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      validate: {
+        isUrl: { msg: 'must be a url' }
+      }
+    },
   }, {
     sequelize,
     modelName: 'ReviewImage',
