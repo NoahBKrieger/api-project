@@ -14,8 +14,8 @@ router.get('/', async (req, res) => {
 
     let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query
 
-    page = parseInt(page)
-    size = parseInt(size)
+    page = parseInt(page);
+    size = parseInt(size);
 
     if (Number.isNaN(page) || page < 1) page = 1;
     if (page > 10) size = 10;
@@ -26,16 +26,15 @@ router.get('/', async (req, res) => {
     const allSpots = await Spot.findAll({
         limit: size,
         offset: size * (page - 1),
+        // where: {},
         include: {
             model: SpotImage,
-            where: { preview: true },
+            // where: { preview: true },
             attributes: { exclude: 'id spotId createdAt updatedAt' }
-
-
         }
     })
 
-    return res.json({ Spots: allSpots })
+    return res.json({ Spots: allSpots, "page": page, "size": size })
 })
 
 router.get('/current', requireAuth, async (req, res) => {
@@ -56,8 +55,6 @@ router.get('/:spotId', async (req, res) => {
             model: SpotImage,
             as: 'SpotImages',
             attributes: { exclude: 'spotId createdAt updatedAt' }
-
-
         }, {
             model: User,
             as: 'User',
@@ -91,7 +88,7 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
     const newImg = await SpotImage.create({ spotId: id, url, preview })
 
     return res.json(newImg)
-})
+});
 
 router.put('/:spotId', requireAuth, async (req, res) => {
 

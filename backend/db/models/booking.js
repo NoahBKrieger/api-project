@@ -31,8 +31,14 @@ module.exports = (sequelize, DataTypes) => {
     },
     spotId: DataTypes.INTEGER,
     userId: DataTypes.INTEGER,
-    startDate: DataTypes.TEXT,
-    endDate: DataTypes.TEXT
+    startDate: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    endDate: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
   }, {
     sequelize,
     modelName: 'Booking',

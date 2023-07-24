@@ -38,7 +38,19 @@ module.exports = (sequelize, DataTypes) => {
     spotId: DataTypes.INTEGER,
     userId: DataTypes.INTEGER,
     review: DataTypes.TEXT,
-    stars: DataTypes.INTEGER
+    stars: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        isInt: true,
+        customValidator(value) {
+          if (value < 1 || value > 5) {
+            throw new Error('Rating must be between 1 and 5');
+
+          }
+        }
+      }
+    },
   }, {
     sequelize,
     modelName: 'Review',
