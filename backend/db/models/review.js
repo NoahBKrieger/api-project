@@ -41,7 +41,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       allowNull: false,
       validate: {
-        notEmpty: { msg: 'must be a url' }
+        notEmpty: { msg: 'Review is required' },
+        isAlpha: true
       }
     },
     stars: {

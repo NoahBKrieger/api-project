@@ -37,26 +37,31 @@ module.exports = (sequelize, DataTypes) => {
     ownerId: DataTypes.INTEGER,
     address: {
       type: DataTypes.TEXT,
+
       validate: {
-        notEmpty: { msg: "Street address is required" }
+        notEmpty: { msg: "Street address is required" },
+        isAlphanumeric: true
       }
     },
     city: {
       type: DataTypes.TEXT,
       validate: {
-        notEmpty: { msg: "City is required" }
+        notEmpty: { msg: "City is required" },
+        isAlpha: true
       }
     },
     state: {
       type: DataTypes.TEXT,
       validate: {
-        notEmpty: { msg: "State is required" }
+        notEmpty: { msg: "State is required" },
+        isAlpha: true
       }
     },
     country: {
       type: DataTypes.TEXT,
       validate: {
-        notEmpty: { msg: "Country is required" }
+        notEmpty: { msg: "Country is required" },
+        isAlpha: true
       }
     },
     lat: {
@@ -83,14 +88,16 @@ module.exports = (sequelize, DataTypes) => {
         len: {
           args: [1, 50],
           msg: "Name must be less than 50 characters"
-        }
+        },
+        isAlphanumeric: true
       }
     },
     description: {
       type: DataTypes.TEXT,
       allowNull: false,
       validate: {
-        notEmpty: { msg: "Description is required" }
+        notEmpty: { msg: "Description is required" },
+
       }
     },
     price: {

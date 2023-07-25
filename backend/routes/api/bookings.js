@@ -31,6 +31,16 @@ router.put('/:bookingId', requireAuth, async (req, res) => {
     const { startDate, endDate } = req.body
     const currUserId = req.user.id;
 
+    const date = new Date();
+
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+
+    // This arrangement can be altered based on how we want the date's format to appear.
+    let currentDate = `${year}${month}${day}`;
+
+
     const checkBooking = await Booking.findByPk(id)
 
     if (!checkBooking) {
@@ -39,8 +49,15 @@ router.put('/:bookingId', requireAuth, async (req, res) => {
     }
 
     if (currUserId !== checkBooking.userId) {
-        res.statusCode = 400
+        res.statusCode = 403
         return res.json({ message: 'Forbidden' })
+    }
+
+    if (checkBooking.endDate.split('-').join() < currentDate) {
+        res.statusCode = 403
+        return res.json({ message: "past bookings cannot be modified" })
+
+
     }
 
     await Booking.update({ startDate, endDate }, { where: { id } });
@@ -51,6 +68,15 @@ router.put('/:bookingId', requireAuth, async (req, res) => {
 });
 
 router.delete('/:bookingId', requireAuth, async (req, res) => {
+
+    const date = new Date();
+
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+
+    // This arrangement can be altered based on how we want the date's format to appear.
+    let currentDate = `${year}${month}${day}`;
 
 
     const id = req.params.bookingId
@@ -66,6 +92,11 @@ router.delete('/:bookingId', requireAuth, async (req, res) => {
     if (currUserId !== checkBooking.userId) {
         res.statusCode = 400
         return res.json({ message: 'Forbidden' })
+    }
+
+    if (checkBooking.endDate.split('-').join() < currentDate) {
+        res.statusCode = 403
+        return res.json({ message: "past bookings cannot be modified" })
     }
     await Booking.destroy({ where: { id } });
 

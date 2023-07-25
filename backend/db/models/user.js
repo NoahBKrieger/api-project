@@ -37,7 +37,8 @@ module.exports = (sequelize, DataTypes) => {
           len: [1, 20],
           notNull: {
             msg: 'First Name is required'
-          }
+          },
+          isAlpha: true,
         }
       },
       lastName: {
@@ -47,7 +48,8 @@ module.exports = (sequelize, DataTypes) => {
           len: [1, 20],
           notNull: {
             msg: 'Last Name is required'
-          }
+          },
+          isAlpha: true
         }
       },
       username: {
@@ -61,6 +63,7 @@ module.exports = (sequelize, DataTypes) => {
           notNull: {
             msg: 'Username is required'
           },
+          isAlphanumeric: true,
           isNotEmail(value) {
             if (Validator.isEmail(value)) {
               throw new Error("Cannot be an email.");

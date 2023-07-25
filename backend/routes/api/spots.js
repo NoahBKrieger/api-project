@@ -47,8 +47,11 @@ router.get('/current', requireAuth, async (req, res) => {
 
 router.get('/:spotId', async (req, res) => {
 
-    const spot = await Spot.findByPk(req.params.spotId, {
+    const spotId = req.params.spotId
 
+    const spot = await Spot.findOne({
+
+        where: { id: spotId },
         attributes: { exclude: 'createdAt updatedAt' },
 
         include: [{

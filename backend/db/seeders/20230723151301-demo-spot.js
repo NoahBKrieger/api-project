@@ -25,8 +25,8 @@ module.exports = {
         city: 'portland',
         state: 'oregon',
         country: 'USA',
-        lat: 123.123,
-        lng: 456.456,
+        lat: 69.123,
+        lng: 100.456,
         name: 'super house',
         description: ' 5 bed studio with 1 bath',
         price: 12345678.99
