@@ -1,0 +1,10 @@
+validate so it doesnt allow numbers
+
+average Rating
+
+cant edit bookings in the past "past bookings cannot be modified"
+cannot delete bookings in the past
+
+review images userId null
+
+spot image cascade delete userId null
