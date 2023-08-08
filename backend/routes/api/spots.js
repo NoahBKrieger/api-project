@@ -10,9 +10,13 @@ const { Booking } = require('../../db/models');
 
 const { requireAuth } = require('../../utils/auth');
 
+const { Op } = require("sequelize")
+
 router.get('/', async (req, res) => {
 
     let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query
+
+    let options = {}
 
     page = parseInt(page);
     size = parseInt(size);
@@ -23,16 +27,63 @@ router.get('/', async (req, res) => {
     if (Number.isNaN(size) || size > 20) size = 20;
     if (size < 1) size = 1;
 
-    const allSpots = await Spot.findAll({
-        limit: size,
-        offset: size * (page - 1),
-        // where: {},
-        include: {
-            model: SpotImage,
-            // where: { preview: true },
-            attributes: { exclude: 'id spotId createdAt updatedAt' }
-        }
-    })
+    options.limit = size;
+    options.offset = size * (page - 1)
+
+
+
+    options.where = {}
+
+    let minLatObj;
+    minLat = parseFloat(minLat)
+    if (typeof minLat === 'number') {
+        minLatObj = { [Op.gte]: minLat }
+    }
+    let maxLatObj;
+    maxLat = parseFloat(maxLat)
+    if (typeof maxLat === 'number') {
+        maxLatObj = { [Op.lte]: maxLat }
+    }
+    options.where.lat = { ...minLatObj, ...maxLatObj }
+
+
+    let minLngObj;
+    minLng = parseFloat(minLng)
+    if (typeof minLng === 'number') {
+        minLngObj = { [Op.gte]: minLng }
+    }
+    let maxLngObj;
+    maxLng = parseFloat(maxLng)
+    if (typeof maxLng === 'number') {
+        maxLngObj = { [Op.lte]: maxLng }
+    }
+    options.where.lng = { ...minLngObj, ...maxLngObj }
+
+
+
+    let minPriceObj;
+    minPrice = parseFloat(minPrice)
+    if (typeof minPrice === 'number') {
+        minPriceObj = { [Op.gte]: minPrice }
+    }
+    let maxPriceObj
+    maxPrice = parseFloat(maxPrice)
+    if (typeof maxPrice === 'number') {
+        maxPriceObj = { [Op.lte]: maxPrice }
+    }
+    options.where.price = { ...maxPriceObj, ...minPriceObj }
+
+
+
+
+    options.include = {
+        model: SpotImage,
+        where: { preview: true },
+        attributes: { exclude: 'id spotId createdAt updatedAt' }
+    }
+
+
+    const allSpots = await Spot.findAll(options)
 
     return res.json({ Spots: allSpots, "page": page, "size": size })
 })
