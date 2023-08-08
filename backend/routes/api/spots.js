@@ -34,12 +34,17 @@ router.get('/', async (req, res) => {
 
     options.where = {}
 
-    let minLatObj = { [Op.gte]: -9999999 }
+
+    if (!minLat) minLat = -999999
+    let minLatObj;
+
     minLat = parseFloat(minLat)
     if (typeof minLat === 'number') {
         minLatObj = { [Op.gte]: minLat }
     }
-    let maxLatObj = { [Op.lte]: 9999999 }
+
+    if (!maxLat) maxLat = 9999999
+    let maxLatObj;
     maxLat = parseFloat(maxLat)
     if (typeof maxLat === 'number') {
         maxLatObj = { [Op.lte]: maxLat }
@@ -47,12 +52,15 @@ router.get('/', async (req, res) => {
     options.where.lat = { ...minLatObj, ...maxLatObj }
 
 
-    let minLngObj = { [Op.gte]: -9999999 }
+    if (!minLng) minLng = -9999999
+    let minLngObj;
     minLng = parseFloat(minLng)
     if (typeof minLng === 'number') {
         minLngObj = { [Op.gte]: minLng }
     }
-    let maxLngObj = { [Op.lte]: 9999999 }
+
+    if (!maxLng) maxLng = 9999999
+    let maxLngObj;
     maxLng = parseFloat(maxLng)
     if (typeof maxLng === 'number') {
         maxLngObj = { [Op.lte]: maxLng }
@@ -60,25 +68,27 @@ router.get('/', async (req, res) => {
     options.where.lng = { ...minLngObj, ...maxLngObj }
 
 
-
-    let minPriceObj = { [Op.gte]: -9999999 }
+    if (!minPrice) minPrice = -9999999
+    let minPriceObj;
     minPrice = parseFloat(minPrice)
     if (typeof minPrice === 'number') {
         minPriceObj = { [Op.gte]: minPrice }
     }
-    let maxPriceObj = { [Op.lte]: 9999999 }
+
+    if (!maxPrice) maxPrice = 9999999
+    let maxPriceObj;
     maxPrice = parseFloat(maxPrice)
     if (typeof maxPrice === 'number') {
         maxPriceObj = { [Op.lte]: maxPrice }
     }
-    options.where.price = { ...maxPriceObj, ...minPriceObj }
+    options.where.price = { ...minPriceObj, ...maxPriceObj }
 
 
 
 
     options.include = {
         model: SpotImage,
-        where: { preview: true },
+        // where: { preview: true },
         attributes: { exclude: 'id spotId createdAt updatedAt' }
     }
 
