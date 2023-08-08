@@ -34,12 +34,12 @@ router.get('/', async (req, res) => {
 
     options.where = {}
 
-    let minLatObj;
+    let minLatObj = { [Op.gte]: -9999999 }
     minLat = parseFloat(minLat)
     if (typeof minLat === 'number') {
         minLatObj = { [Op.gte]: minLat }
     }
-    let maxLatObj;
+    let maxLatObj = { [Op.lte]: 9999999 }
     maxLat = parseFloat(maxLat)
     if (typeof maxLat === 'number') {
         maxLatObj = { [Op.lte]: maxLat }
@@ -47,12 +47,12 @@ router.get('/', async (req, res) => {
     options.where.lat = { ...minLatObj, ...maxLatObj }
 
 
-    let minLngObj;
+    let minLngObj = { [Op.gte]: -9999999 }
     minLng = parseFloat(minLng)
     if (typeof minLng === 'number') {
         minLngObj = { [Op.gte]: minLng }
     }
-    let maxLngObj;
+    let maxLngObj = { [Op.lte]: 9999999 }
     maxLng = parseFloat(maxLng)
     if (typeof maxLng === 'number') {
         maxLngObj = { [Op.lte]: maxLng }
@@ -61,12 +61,12 @@ router.get('/', async (req, res) => {
 
 
 
-    let minPriceObj;
+    let minPriceObj = { [Op.gte]: -9999999 }
     minPrice = parseFloat(minPrice)
     if (typeof minPrice === 'number') {
         minPriceObj = { [Op.gte]: minPrice }
     }
-    let maxPriceObj
+    let maxPriceObj = { [Op.lte]: 9999999 }
     maxPrice = parseFloat(maxPrice)
     if (typeof maxPrice === 'number') {
         maxPriceObj = { [Op.lte]: maxPrice }
