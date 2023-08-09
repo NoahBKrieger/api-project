@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       allowNull: false,
       validate: {
-        isUrl: { msg: 'must be a url' }
+        isUrl: { msg: 'Must be a url' }
       }
     },
   }, {

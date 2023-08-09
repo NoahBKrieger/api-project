@@ -35,14 +35,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        isDate: { msg: 'must be a date' }
+        isDate: { msg: 'Must be a date' }
       }
     },
     endDate: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        isDate: { msg: 'must be a date' }
+        isDate: { msg: 'Must be a date' }
 
       }
     },

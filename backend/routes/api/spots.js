@@ -91,7 +91,7 @@ router.get('/', async (req, res) => {
 
     options.include = [{
         model: SpotImage,
-        where: { preview: true },
+        // where: { preview: true },
         attributes: { exclude: 'id spotId createdAt updatedAt' }
     }]
 
@@ -163,6 +163,17 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
     if (newOne.ownerId !== userId) {
         res.statusCode = 403
         return res.json({ message: 'Forbidden' })
+    }
+
+    if (preview === true) {
+        const checkPreviewImg = await SpotImage.findAll({ where: { spotId: id, preview: true } })
+
+        if (checkPreviewImg.length > 0) {
+            res.statusCode = 404
+            return res.json({ message: 'Spot already has preview image' })
+        }
+
+
     }
 
     const newImg = await SpotImage.create({ spotId: id, url, preview })

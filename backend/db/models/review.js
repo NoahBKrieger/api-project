@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         notEmpty: { msg: 'Review is required' },
-        isAlpha: true
+        notContains: '  ',
       }
     },
     stars: {
