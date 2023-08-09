@@ -37,7 +37,6 @@ router.get('/', async (req, res) => {
 
     if (!minLat) minLat = -999999
     let minLatObj;
-
     minLat = parseFloat(minLat)
     if (typeof minLat === 'number') {
         minLatObj = { [Op.gte]: minLat }
@@ -50,6 +49,8 @@ router.get('/', async (req, res) => {
         maxLatObj = { [Op.lte]: maxLat }
     }
     options.where.lat = { ...minLatObj, ...maxLatObj }
+
+
 
 
     if (!minLng) minLng = -9999999
@@ -66,6 +67,8 @@ router.get('/', async (req, res) => {
         maxLngObj = { [Op.lte]: maxLng }
     }
     options.where.lng = { ...minLngObj, ...maxLngObj }
+
+
 
 
     if (!minPrice) minPrice = -9999999
@@ -86,11 +89,11 @@ router.get('/', async (req, res) => {
 
 
 
-    options.include = {
+    options.include = [{
         model: SpotImage,
-        // where: { preview: true },
+        where: { preview: true },
         attributes: { exclude: 'id spotId createdAt updatedAt' }
-    }
+    }]
 
 
     const allSpots = await Spot.findAll(options)
