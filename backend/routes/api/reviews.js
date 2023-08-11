@@ -31,11 +31,11 @@ router.get('/current', requireAuth, async (req, res) => {
             {
                 model: ReviewImage,
                 as: 'ReviewImages',
-                attributes: { exclude: 'reviewId createdAt updatedAt' }
+                attributes: { exclude: 'reviewId ReviewId createdAt updatedAt' }
             }
         ]
     })
-    return res.json(userReviews)
+    return res.json({ Reviews: userReviews })
 })
 
 // router.get('/:spotId/reviews', async (req, res) => {
