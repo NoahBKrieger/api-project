@@ -37,47 +37,54 @@ module.exports = (sequelize, DataTypes) => {
     ownerId: DataTypes.INTEGER,
     address: {
       type: DataTypes.TEXT,
-
+      allowNull: false,
       validate: {
         notEmpty: { msg: "Street address is required" },
-        isAlphanumeric: true
+        notContains: '  ',
+        len: [2, 50]
       }
     },
     city: {
       type: DataTypes.TEXT,
+      allowNull: false,
       validate: {
         notEmpty: { msg: "City is required" },
-        isAlpha: true
+        notContains: '  ',
+        len: [2, 50]
       }
     },
     state: {
       type: DataTypes.TEXT,
+      allowNull: false,
       validate: {
         notEmpty: { msg: "State is required" },
-        isAlpha: true
+        notContains: '  ',
+        len: [2, 50]
       }
     },
     country: {
       type: DataTypes.TEXT,
+      allowNull: false,
       validate: {
         notEmpty: { msg: "Country is required" },
-        isAlpha: true
+        notContains: '  ',
+        len: [2, 50]
       }
     },
     lat: {
       type: DataTypes.FLOAT,
       validate: {
-
         max: { args: 90, msg: "Latitude is not valid" },
-        min: { args: -90, msg: "Latitude is not valid" }
-
+        min: { args: -90, msg: "Latitude is not valid" },
+        notEmpty: true
       }
     },
     lng: {
       type: DataTypes.FLOAT,
       validate: {
         max: { args: 180, msg: "Longitude is not valid" },
-        min: { args: -180, msg: "Longitude is not valid" }
+        min: { args: -180, msg: "Longitude is not valid" },
+        notEmpty: true
       }
     },
     name: {
@@ -89,7 +96,7 @@ module.exports = (sequelize, DataTypes) => {
           args: [1, 50],
           msg: "Name must be less than 50 characters"
         },
-        isAlphanumeric: true
+        notContains: '  ',
       }
     },
     description: {
@@ -97,6 +104,8 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         notEmpty: { msg: "Description is required" },
+        notContains: '  ',
+        len: [2, 50]
 
       }
     },
@@ -104,8 +113,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.FLOAT,
       allowNull: false,
       validate: {
-        notNull: { msg: "Price per day is required" }
-
+        notNull: { msg: "Price per day is required" },
+        notEmpty: { msg: "Price per day is required" }
       }
     }
   }, {

@@ -37,7 +37,6 @@ router.get('/', async (req, res) => {
 
     if (!minLat) minLat = -999999
     let minLatObj;
-
     minLat = parseFloat(minLat)
     if (typeof minLat === 'number') {
         minLatObj = { [Op.gte]: minLat }
@@ -50,6 +49,8 @@ router.get('/', async (req, res) => {
         maxLatObj = { [Op.lte]: maxLat }
     }
     options.where.lat = { ...minLatObj, ...maxLatObj }
+
+
 
 
     if (!minLng) minLng = -9999999
@@ -68,6 +69,8 @@ router.get('/', async (req, res) => {
     options.where.lng = { ...minLngObj, ...maxLngObj }
 
 
+
+
     if (!minPrice) minPrice = -9999999
     let minPriceObj;
     minPrice = parseFloat(minPrice)
@@ -84,18 +87,64 @@ router.get('/', async (req, res) => {
     options.where.price = { ...minPriceObj, ...maxPriceObj }
 
 
+    let resObj = []
 
-
-    options.include = {
-        model: SpotImage,
-        // where: { preview: true },
-        attributes: { exclude: 'id spotId createdAt updatedAt' }
-    }
+    // options.include = [{
+    //     model: SpotImage,
+    //     // where: { preview: true },
+    //     attributes: { exclude: 'id spotId createdAt updatedAt' }
+    // }]
 
 
     const allSpots = await Spot.findAll(options)
 
-    return res.json({ Spots: allSpots, "page": page, "size": size })
+    for (let i = 0; i < allSpots.length; i++) {
+
+        let oneSpot = {}
+
+
+
+        oneSpot.id = allSpots[i].id
+        oneSpot.ownerId = allSpots[i].ownerId
+        oneSpot.address = allSpots[i].address
+        oneSpot.city = allSpots[i].city
+        oneSpot.state = allSpots[i].state
+        oneSpot.country = allSpots[i].country
+        oneSpot.lat = allSpots[i].lat
+        oneSpot.lng = allSpots[i].lng
+        oneSpot.name = allSpots[i].name
+        oneSpot.description = allSpots[i].description
+        oneSpot.price = allSpots[i].price
+        oneSpot.createdAt = allSpots[i].createdAt
+        oneSpot.updatedAt = allSpots[i].updatedAt
+
+
+        const spotsReviews = await Review.findAll({
+            where: { spotId: allSpots[i].id }
+        })
+
+
+        if (spotsReviews.length) {
+
+            let sum = 0;
+            for (j = 0; j < spotsReviews.length; j++) {
+                sum += spotsReviews[j].stars
+            }
+            let avgStar = sum / spotsReviews.length
+
+            oneSpot.avgReview = avgStar
+        } else { oneSpot.avgReview = 'no reviews' }
+
+        let spot = oneSpot
+        resObj.push({ spot })
+    }
+
+    //review rating average
+
+
+
+
+    return res.json({ Spots: resObj, "page": page, "size": size })
 })
 
 router.get('/current', requireAuth, async (req, res) => {
@@ -160,6 +209,15 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
     if (newOne.ownerId !== userId) {
         res.statusCode = 403
         return res.json({ message: 'Forbidden' })
+    }
+
+    if (preview === true) {
+        const checkPreviewImg = await SpotImage.findAll({ where: { spotId: id, preview: true } })
+
+        if (checkPreviewImg.length > 0) {
+            res.statusCode = 404
+            return res.json({ message: 'Spot already has preview image' })
+        }
     }
 
     const newImg = await SpotImage.create({ spotId: id, url, preview })

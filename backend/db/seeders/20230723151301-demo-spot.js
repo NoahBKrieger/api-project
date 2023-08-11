@@ -21,15 +21,15 @@ module.exports = {
     await queryInterface.bulkInsert(options, [
       {
         ownerId: 1,
-        address: '123 IDK st',
+        address: '123 Idk st',
         city: 'portland',
         state: 'oregon',
         country: 'USA',
         lat: 69.123,
         lng: 100.456,
         name: 'super house',
-        description: ' 5 bed studio with 1 bath',
-        price: 12345678.99
+        description: '5 bed studio with 1 bath',
+        price: 123478.99
       }
 
     ], {})
