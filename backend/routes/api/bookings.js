@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const { Booking } = require('../../db/models');
-const { Spot } = require('../../db/models');
+const { Spot, SpotImage } = require('../../db/models');
 
 
 const { requireAuth } = require('../../utils/auth');
@@ -18,7 +18,12 @@ router.get('/current', requireAuth, async (req, res) => {
         include: {
             model: Spot,
             as: 'Spot',
-            attributes: { exclude: 'createdAt updatedAt' }
+            attributes: { exclude: 'createdAt updatedAt' },
+            include: {
+                model: SpotImage,
+                attributes: ['url', 'preview'],
+                // where: { preview: true }
+            }
         }
     })
     return res.json({ Bookings: [userBookings] })
@@ -54,6 +59,7 @@ router.put('/:bookingId', requireAuth, async (req, res) => {
     }
 
     if (checkBooking.endDate.split('-').join() < currentDate) {
+        console.log(currentDate)
         res.statusCode = 403
         return res.json({ message: "past bookings cannot be modified" })
 

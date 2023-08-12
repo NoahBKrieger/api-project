@@ -87,7 +87,7 @@ router.get('/', async (req, res) => {
     options.where.price = { ...minPriceObj, ...maxPriceObj }
 
 
-    let resObj = []
+    let resArr = []
 
     // options.include = [{
     //     model: SpotImage,
@@ -101,8 +101,6 @@ router.get('/', async (req, res) => {
     for (let i = 0; i < allSpots.length; i++) {
 
         let oneSpot = {}
-
-
 
         oneSpot.id = allSpots[i].id
         oneSpot.ownerId = allSpots[i].ownerId
@@ -119,42 +117,116 @@ router.get('/', async (req, res) => {
         oneSpot.updatedAt = allSpots[i].updatedAt
 
 
+
+        //review rating average
+
         const spotsReviews = await Review.findAll({
             where: { spotId: allSpots[i].id }
         })
 
+        if (spotsReviews.length) {
+
+            let sum = 0;
+
+            for (j = 0; j < spotsReviews.length; j++) {
+                sum += spotsReviews[j].stars
+            }
+
+            let avgStar = sum / spotsReviews.length
+
+            oneSpot.avgRating = avgStar
+        } else { oneSpot.avgRating = 'no reviews' }
+
+
+
+        // preview image url
+
+        const prevImg = await SpotImage.findOne({ where: { spotId: allSpots[i].id, preview: true } })
+
+        if (prevImg) {
+            oneSpot.previewImage = prevImg.url
+        } else { oneSpot.previewImage = 'no preview image' }
+
+
+        resArr.push({ ...oneSpot })
+    }
+
+
+
+
+
+
+    return res.json({ Spots: resArr, "page": page, "size": size })
+})
+
+
+// find all current users spots
+
+router.get('/current', requireAuth, async (req, res) => {
+
+    const allSpots = await Spot.findAll({
+        where: { ownerId: req.user.id }
+    })
+
+    let resArr = []
+
+    for (let i = 0; i < allSpots.length; i++) {
+
+        let oneSpot = {}
+
+        oneSpot.id = allSpots[i].id
+        oneSpot.ownerId = allSpots[i].ownerId
+        oneSpot.address = allSpots[i].address
+        oneSpot.city = allSpots[i].city
+        oneSpot.state = allSpots[i].state
+        oneSpot.country = allSpots[i].country
+        oneSpot.lat = allSpots[i].lat
+        oneSpot.lng = allSpots[i].lng
+        oneSpot.name = allSpots[i].name
+        oneSpot.description = allSpots[i].description
+        oneSpot.price = allSpots[i].price
+        oneSpot.createdAt = allSpots[i].createdAt
+        oneSpot.updatedAt = allSpots[i].updatedAt
+
+
+        //review rating average
+
+        const spotsReviews = await Review.findAll({
+            where: { spotId: allSpots[i].id }
+        })
 
         if (spotsReviews.length) {
 
             let sum = 0;
+
             for (j = 0; j < spotsReviews.length; j++) {
                 sum += spotsReviews[j].stars
             }
+
             let avgStar = sum / spotsReviews.length
 
-            oneSpot.avgReview = avgStar
-        } else { oneSpot.avgReview = 'no reviews' }
+            oneSpot.avgRating = avgStar
+        } else { oneSpot.avgRating = 'no reviews' }
 
-        let spot = oneSpot
-        resObj.push({ spot })
+
+
+        // preview image url
+
+        const prevImg = await SpotImage.findOne({ where: { spotId: allSpots[i].id, preview: true } })
+
+        if (prevImg) {
+            oneSpot.previewImage = prevImg.url
+        } else { oneSpot.previewImage = 'no preview image' }
+
+
+        resArr.push({ ...oneSpot })
     }
 
-    //review rating average
-
-
-
-
-    return res.json({ Spots: resObj, "page": page, "size": size })
+    return res.json({ Spots: resArr })
 })
 
-router.get('/current', requireAuth, async (req, res) => {
 
-    const currSpot = await Spot.findAll({
-        where: { ownerId: req.user.id }
-    })
-    return res.json(currSpot)
-})
-
+// get details of a spot by id
 router.get('/:spotId', async (req, res) => {
 
     const spotId = req.params.spotId
@@ -177,7 +249,55 @@ router.get('/:spotId', async (req, res) => {
         ]
     })
 
-    return res.json(spot)
+
+
+
+
+    let resSpot = {}
+
+    resSpot.id = spot.id
+    resSpot.ownerId = spot.ownerId
+    resSpot.address = spot.address
+    resSpot.city = spot.city
+    resSpot.state = spot.state
+    resSpot.country = spot.country
+    resSpot.lat = spot.lat
+    resSpot.lng = spot.lng
+    resSpot.name = spot.name
+    resSpot.description = spot.description
+    resSpot.price = spot.price
+    resSpot.createdAt = spot.createdAt
+    resSpot.updatedAt = spot.updatedAt
+
+
+    //review rating average
+
+    const spotsReviews = await Review.findAll({
+        where: { spotId: spot.id }
+    })
+
+    if (spotsReviews.length) {
+
+        let sum = 0;
+
+        for (j = 0; j < spotsReviews.length; j++) {
+            sum += spotsReviews[j].stars
+        }
+
+        let avgStar = sum / spotsReviews.length
+
+        resSpot.numReviews = spotsReviews.length
+        resSpot.avgStarRating = avgStar
+    } else { resSpot.avgRating = 'no reviews' }
+
+
+
+    resSpot.SpotImages = spot.SpotImages
+    resSpot.Owner = spot.User
+
+
+
+    return res.json({ ...resSpot })
 })
 
 router.post('/', requireAuth, async (req, res) => {
@@ -359,7 +479,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
             },
             attributes: ['spotId', 'startDate', 'endDate']
         })
-        return res.json({ Bookings: [spotBookings] })
+        return res.json({ Bookings: spotBookings })
     } else {
         const spotBookings = await Booking.findAll({
             where: {
@@ -371,7 +491,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
                 attributes: ['id', 'firstName', 'lastName']
             }
         })
-        return res.json({ Bookings: [spotBookings] })
+        return res.json({ Bookings: spotBookings })
     }
 })
 

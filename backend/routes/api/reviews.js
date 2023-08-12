@@ -31,47 +31,14 @@ router.get('/current', requireAuth, async (req, res) => {
             {
                 model: ReviewImage,
                 as: 'ReviewImages',
-                attributes: { exclude: 'reviewId createdAt updatedAt' }
+                attributes: { exclude: 'reviewId ReviewId createdAt updatedAt' }
             }
         ]
     })
-    return res.json(userReviews)
+    return res.json({ Reviews: userReviews })
 })
 
-// router.get('/:spotId/reviews', async (req, res) => {
 
-//     const spotId = req.params.spotId
-
-//     const spotReviews = await Review.findAll({
-//         where: {
-//             spotId: spotId
-//         },
-//         include: [
-//             {
-//                 model: User,
-//                 as: 'User',
-//                 attributes: { exclude: 'username email createdAt updatedAt hashedPassword' }
-//             },
-//             {
-//                 model: ReviewImage,
-//                 as: 'ReviewImages',
-//                 attributes: { exclude: 'reviewId createdAt updatedAt' }
-//             }
-//         ]
-//     })
-//     return res.json(spotReviews)
-// });
-
-// router.post('./:spotId/reviews', requireAuth, async (req, res) => {
-
-//     const id = req.params.spotId;
-//     const { review, stars } = req.body;
-//     const userId = req.user.id;
-
-//     const newReview = Review.create({ spotId: id, userId: userId, review, stars })
-
-//     return res.json(newReview)
-// });
 
 router.post('/:reviewId/images', requireAuth, async (req, res) => {
 
