@@ -12,6 +12,8 @@ const { requireAuth } = require('../../utils/auth');
 
 const { Op } = require("sequelize")
 
+
+
 router.get('/', async (req, res) => {
 
     let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query
@@ -272,7 +274,7 @@ router.get('/:spotId', async (req, res) => {
 
         resSpot.numReviews = spotsReviews.length
         resSpot.avgStarRating = avgStar
-    } else { resSpot.avgRating = 'no reviews' }
+    } else { resSpot.numReviews = 'no reviews', resSpot.avgRating = 'no reviews' }
 
 
 
@@ -337,7 +339,7 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
 
     const newImg = await SpotImage.create({ spotId: id, url, preview })
 
-
+    res.statusCode = 200;
     return res.json({ id: newImg.id, url: newImg.url, preview: newImg.preview })
 });
 
@@ -359,10 +361,14 @@ router.put('/:spotId', requireAuth, async (req, res) => {
 
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
 
-    await Spot.update({ address, city, state, country, lat, lng, name, description, price },
-        { where: { id: spotId } });
+    await Spot.update(
+        { address, city, state, country, lat, lng, name, description, price },
+        {
+            where: { id: spotId },
 
-    newOne = await Spot.findByPk(spotId);
+        });
+
+    newOne = await Spot.findByPk(spotId, { attributes: { exclude: 'createdAt updatedAt' } });
 
     return res.json(newOne);
 });
@@ -495,6 +501,15 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
     const id = req.params.spotId
     const { startDate, endDate } = req.body
     const userId = req.user.id;
+
+    if (!startDate || !endDate) {
+
+        let error = new Error
+        error.statusCode = 400
+        error.message = 'missing startDate or endDate'
+
+        throw error;
+    }
 
     let startNum = startDate.split('-').join();
     let endNum = endDate.split('-').join();

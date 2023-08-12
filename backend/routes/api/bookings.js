@@ -4,6 +4,7 @@ const router = express.Router();
 const { Booking, Spot, SpotImage } = require('../../db/models');
 
 const { requireAuth } = require('../../utils/auth');
+const { handleValidationErrors } = require('../../utils/validation');
 
 router.get('/current', requireAuth, async (req, res) => {
 
