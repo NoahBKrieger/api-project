@@ -479,7 +479,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
             },
             attributes: ['spotId', 'startDate', 'endDate']
         })
-        return res.json({ Bookings: [spotBookings] })
+        return res.json({ Bookings: spotBookings })
     } else {
         const spotBookings = await Booking.findAll({
             where: {
@@ -491,7 +491,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
                 attributes: ['id', 'firstName', 'lastName']
             }
         })
-        return res.json({ Bookings: [spotBookings] })
+        return res.json({ Bookings: spotBookings })
     }
 })
 
