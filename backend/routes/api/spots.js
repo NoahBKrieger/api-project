@@ -31,7 +31,6 @@ router.get('/', async (req, res) => {
     options.offset = size * (page - 1)
 
 
-
     options.where = {}
 
 
@@ -51,8 +50,6 @@ router.get('/', async (req, res) => {
     options.where.lat = { ...minLatObj, ...maxLatObj }
 
 
-
-
     if (!minLng) minLng = -9999999
     let minLngObj;
     minLng = parseFloat(minLng)
@@ -67,8 +64,6 @@ router.get('/', async (req, res) => {
         maxLngObj = { [Op.lte]: maxLng }
     }
     options.where.lng = { ...minLngObj, ...maxLngObj }
-
-
 
 
     if (!minPrice) minPrice = -9999999
@@ -151,11 +146,6 @@ router.get('/', async (req, res) => {
         resArr.push({ ...oneSpot })
     }
 
-
-
-
-
-
     return res.json({ Spots: resArr, "page": page, "size": size })
 })
 
@@ -209,7 +199,6 @@ router.get('/current', requireAuth, async (req, res) => {
         } else { oneSpot.avgRating = 'no reviews' }
 
 
-
         // preview image url
 
         const prevImg = await SpotImage.findOne({ where: { spotId: allSpots[i].id, preview: true } })
@@ -244,13 +233,8 @@ router.get('/:spotId', async (req, res) => {
             model: User,
             as: 'User',
             attributes: { exclude: 'username email createdAt updatedAt hashedPassword' }
-        }
-
-        ]
+        }]
     })
-
-
-
 
 
     let resSpot = {}
@@ -306,7 +290,18 @@ router.post('/', requireAuth, async (req, res) => {
 
     const { address, city, state, country, lat, lng, name, description, price } = req.body
 
-    const newSpot = await Spot.create({ ownerId: ownerId, address, city, state, country, lat, lng, name, description, price })
+    const newSpot = await Spot.create({
+        ownerId: ownerId,
+        address,
+        city,
+        state,
+        country,
+        lat,
+        lng,
+        name,
+        description,
+        price
+    })
 
     res.statusCode = 201;
     return res.json(newSpot)
@@ -343,7 +338,7 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
     const newImg = await SpotImage.create({ spotId: id, url, preview })
 
 
-    return res.json(newImg)
+    return res.json({ id: newImg.id, url: newImg.url, preview: newImg.preview })
 });
 
 router.put('/:spotId', requireAuth, async (req, res) => {

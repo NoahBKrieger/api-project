@@ -34,17 +34,17 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          len: [1, 20],
+          len: { args: [1, 20], msg: "Length must be between 1 and 20 characters" },
           notNull: { msg: 'First Name is required' },
           notEmpty: { msg: 'First Name is required' },
-          isAlpha: { msg: 'can only contain letters' },
+          isAlpha: { msg: 'Can only contain letters' },
         }
       },
       lastName: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          len: [1, 20],
+          len: { args: [1, 20], msg: "Length must be between 1 and 20 characters" },
           notNull: { msg: 'Last Name is required' },
           notEmpty: { msg: 'Last Name is required' },
           isAlpha: { msg: 'Can only contain letters' },
@@ -55,7 +55,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         unique: { msg: 'User already exists with the specified username' },
         validate: {
-          len: [4, 30],
+          len: { args: [4, 30], msg: "Length must be between 4 and 30 characters" },
           notNull: { msg: 'Username is required' },
           isAlphanumeric: true,
           isNotEmail(value) {
@@ -68,11 +68,9 @@ module.exports = (sequelize, DataTypes) => {
       email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: {
-          msg: 'User already exists with the specified email'
-        },
+        unique: { msg: 'User already exists with the specified email' },
         validate: {
-          len: [3, 256],
+          len: { args: [3, 256], msg: 'Invalid email' },
           isEmail: { msg: 'Invalid email' },
           notNull: { msg: 'Invalid email' }
         }
