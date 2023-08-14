@@ -51,10 +51,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         isInt: true,
         customValidator(value) {
-          if (value < 1 || value > 5) {
-            throw new Error('Rating must be between 1 and 5');
-
-          }
+          if (value < 1 || value > 5) throw new Error('Rating must be between 1 and 5');
         }
       }
     },

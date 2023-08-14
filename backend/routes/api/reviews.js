@@ -16,7 +16,6 @@ router.get('/current', requireAuth, async (req, res) => {
         where: {
             userId: req.user.id
         },
-
         include: [
             {
                 model: User,

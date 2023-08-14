@@ -12,6 +12,49 @@ const { requireAuth } = require('../../utils/auth');
 
 const { Op } = require("sequelize")
 
+// const { check } = require('express-validator');
+// const { handleValidationErrors } = require('../../utils/validation');
+
+
+// const validateSpot = [
+//     check('address')
+//         .exists({ checkFalsy: true })
+//         .isLength({ min: 2 })
+//         .withMessage("Street address is required"),
+//     check('city')
+//         .exists({ checkFalsy: true })
+//         .isLength({ min: 2 })
+//         .withMessage("City is required"),
+//     check('state')
+//         .exists({ checkFalsy: true })
+//         .isLength({ min: 2 })
+//         .withMessage("State is required"),
+//     check('country')
+//         .exists({ checkFalsy: true })
+//         .isLength({ min: 2 })
+//         .withMessage("Country is required"),
+//     check('lat')
+//         .exists({ checkFalsy: true })
+//         .withMessage("Latitude is not valid"),
+//     check('lng')
+//         .exists({ checkFalsy: true })
+//         .withMessage("Longitude is not valid"),
+//     check('name')
+//         .exists({ checkFalsy: true })
+//         .isLength({ min: 1, max: 50 })
+//         .withMessage("Name must be less than 50 characters"),
+//     check('description')
+//         .exists({ checkFalsy: true })
+//         .isLength({ min: 6 })
+//         .withMessage("Description is required"),
+//     check('price')
+//         .exists({ checkFalsy: true })
+//         .withMessage('Price per day is required'),
+//     handleValidationErrors
+// ];
+
+
+
 router.get('/', async (req, res) => {
 
     let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query
@@ -29,7 +72,6 @@ router.get('/', async (req, res) => {
 
     options.limit = size;
     options.offset = size * (page - 1)
-
 
 
     options.where = {}
@@ -51,8 +93,6 @@ router.get('/', async (req, res) => {
     options.where.lat = { ...minLatObj, ...maxLatObj }
 
 
-
-
     if (!minLng) minLng = -9999999
     let minLngObj;
     minLng = parseFloat(minLng)
@@ -67,8 +107,6 @@ router.get('/', async (req, res) => {
         maxLngObj = { [Op.lte]: maxLng }
     }
     options.where.lng = { ...minLngObj, ...maxLngObj }
-
-
 
 
     if (!minPrice) minPrice = -9999999
@@ -151,11 +189,6 @@ router.get('/', async (req, res) => {
         resArr.push({ ...oneSpot })
     }
 
-
-
-
-
-
     return res.json({ Spots: resArr, "page": page, "size": size })
 })
 
@@ -209,7 +242,6 @@ router.get('/current', requireAuth, async (req, res) => {
         } else { oneSpot.avgRating = 'no reviews' }
 
 
-
         // preview image url
 
         const prevImg = await SpotImage.findOne({ where: { spotId: allSpots[i].id, preview: true } })
@@ -244,13 +276,8 @@ router.get('/:spotId', async (req, res) => {
             model: User,
             as: 'User',
             attributes: { exclude: 'username email createdAt updatedAt hashedPassword' }
-        }
-
-        ]
+        }]
     })
-
-
-
 
 
     let resSpot = {}
@@ -288,7 +315,7 @@ router.get('/:spotId', async (req, res) => {
 
         resSpot.numReviews = spotsReviews.length
         resSpot.avgStarRating = avgStar
-    } else { resSpot.avgRating = 'no reviews' }
+    } else { resSpot.numReviews = 'no reviews', resSpot.avgRating = 'no reviews' }
 
 
 
@@ -306,7 +333,18 @@ router.post('/', requireAuth, async (req, res) => {
 
     const { address, city, state, country, lat, lng, name, description, price } = req.body
 
-    const newSpot = await Spot.create({ ownerId: ownerId, address, city, state, country, lat, lng, name, description, price })
+    const newSpot = await Spot.create({
+        ownerId: ownerId,
+        address,
+        city,
+        state,
+        country,
+        lat,
+        lng,
+        name,
+        description,
+        price
+    })
 
     res.statusCode = 201;
     return res.json(newSpot)
@@ -342,8 +380,8 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
 
     const newImg = await SpotImage.create({ spotId: id, url, preview })
 
-
-    return res.json(newImg)
+    res.statusCode = 200;
+    return res.json({ id: newImg.id, url: newImg.url, preview: newImg.preview })
 });
 
 router.put('/:spotId', requireAuth, async (req, res) => {
@@ -364,10 +402,28 @@ router.put('/:spotId', requireAuth, async (req, res) => {
 
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
 
-    await Spot.update({ address, city, state, country, lat, lng, name, description, price },
-        { where: { id: spotId } });
+    // const checkNew = new Spot(
+    //     req.body.address,
+    //     req.body.city,
+    //     req.body.state,
+    //     req.body.country,
+    //     req.body.lat,
+    //     req.body.lng,
+    //     req.body.name,
+    //     req.body.description,
+    //     req.body.price
+    // )
+    // checkNew.validate()
 
-    newOne = await Spot.findByPk(spotId);
+
+    await Spot.update(
+        { address, city, state, country, lat, lng, name, description, price },
+        {
+            where: { id: spotId },
+
+        });
+
+    newOne = await Spot.findByPk(spotId, { attributes: { exclude: 'createdAt updatedAt' } });
 
     return res.json(newOne);
 });
@@ -500,6 +556,15 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
     const id = req.params.spotId
     const { startDate, endDate } = req.body
     const userId = req.user.id;
+
+    if (!startDate || !endDate) {
+
+        let error = new Error
+        error.statusCode = 400
+        error.message = 'missing startDate or endDate'
+
+        throw error;
+    }
 
     let startNum = startDate.split('-').join();
     let endNum = endDate.split('-').join();
