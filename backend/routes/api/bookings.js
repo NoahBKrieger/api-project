@@ -21,7 +21,8 @@ router.get('/current', requireAuth, async (req, res) => {
             include: {
                 model: SpotImage,
                 attributes: 'url',
-                // where: { preview: true }
+                where: { preview: true },
+                required: false
             }
         }
     })
