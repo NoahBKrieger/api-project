@@ -1,7 +1,12 @@
 
 
 'use strict';
-const { Model, Validator } = require('sequelize');
+const { Model } = require('sequelize');
+
+const validator = require('validator')
+
+
+const errors = []
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
@@ -38,7 +43,16 @@ module.exports = (sequelize, DataTypes) => {
           notNull: { msg: 'First Name is required' },
           notEmpty: { msg: 'First Name is required' },
           isAlpha: { msg: 'Can only contain letters' },
-        }
+          // customValidate(value) {
+          //   if (20 <= value.length <= 4) {
+
+          //     let error = new Error('bad request')
+          //     error.message = 'wrong length'
+          //     throw error
+          // }
+
+          // }
+        },
       },
       lastName: {
         type: DataTypes.STRING,
@@ -55,12 +69,20 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         unique: { msg: 'User already exists with the specified username' },
         validate: {
-          len: { args: [4, 30], msg: "Length must be between 4 and 30 characters" },
+          len: { args: [4, 30], msg: 'bad length' },
           notNull: { msg: 'Username is required' },
-          isAlphanumeric: true,
-          isNotEmail(value) {
-            if (Validator.isEmail(value)) {
-              throw new Error("Cannot be an email.");
+          // isAlphanumeric: true,
+          usernameValidate(value) {
+            if (validator.isEmail(value)) {
+              let error = new Error('bad request')
+              error.message = 'username must not be an email'
+              throw error
+            }
+
+            if (!value) {
+              let error = new Error('bad request')
+              error.message = 'username must not be null'
+              throw error
             }
           }
         }

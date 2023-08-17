@@ -57,6 +57,10 @@ const { Op } = require("sequelize")
 
 router.get('/', async (req, res) => {
 
+    let err = new Error
+    err.errors = {}
+    err.statusCode = 400
+
     let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query
 
     let options = {}
@@ -64,14 +68,19 @@ router.get('/', async (req, res) => {
     page = parseInt(page);
     size = parseInt(size);
 
-    if (Number.isNaN(page) || page < 1) page = 1;
-    if (page > 10) size = 10;
+    if (Number.isNaN(page)) page = 1;
+    if (page < 1) err.errors.page = "Page must be greater than or equal to 1"
+    if (page > 10) err.errors.page = 'Page must be less than or equal to 10'
 
-    if (Number.isNaN(size) || size > 20) size = 20;
-    if (size < 1) size = 1;
+    if (Number.isNaN(size)) size = 20;
+    if (size < 1) err.errors.size = "Size must be greater than or equal to 1"
+    if (size > 20) err.errors.size = 'Size must be less than or equal to 20'
+
 
     options.limit = size;
     options.offset = size * (page - 1)
+
+
 
 
     options.where = {}
@@ -109,30 +118,33 @@ router.get('/', async (req, res) => {
     options.where.lng = { ...minLngObj, ...maxLngObj }
 
 
-    if (!minPrice) minPrice = -9999999
+    if (!minPrice) minPrice = 0
     let minPriceObj;
     minPrice = parseFloat(minPrice)
     if (typeof minPrice === 'number') {
         minPriceObj = { [Op.gte]: minPrice }
     }
+    if (minPrice < 0) err.errors.minPrice = "Minimum price must be greater than or equal to 0"
 
-    if (!maxPrice) maxPrice = 9999999
+
+
+    if (!maxPrice) maxPrice = 9999999999
     let maxPriceObj;
     maxPrice = parseFloat(maxPrice)
     if (typeof maxPrice === 'number') {
         maxPriceObj = { [Op.lte]: maxPrice }
     }
+    if (maxPrice < 0) err.errors.maxPrice = "Maximum price must be greater than or equal to 0"
+
+
     options.where.price = { ...minPriceObj, ...maxPriceObj }
 
 
+    //throw errors
+    if (err.errors.page || err.errors.size || err.errors.minPrice || err.errors.maxPrice) throw err
+
+
     let resArr = []
-
-    // options.include = [{
-    //     model: SpotImage,
-    //     // where: { preview: true },
-    //     attributes: { exclude: 'id spotId createdAt updatedAt' }
-    // }]
-
 
     const allSpots = await Spot.findAll(options)
 
