@@ -1,7 +1,12 @@
 
 
 'use strict';
-const { Model, Validator } = require('sequelize');
+const { Model } = require('sequelize');
+
+const validator = require('validator')
+
+
+const err = new Error
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
@@ -34,11 +39,20 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          len: { args: [1, 20], msg: "Length must be between 1 and 20 characters" },
+          len: { args: [1, 20], msg: "First Name is required" },
           notNull: { msg: 'First Name is required' },
           notEmpty: { msg: 'First Name is required' },
-          isAlpha: { msg: 'Can only contain letters' },
-        }
+          // isAlpha: { msg: 'First Name is required' },
+          // customValidate(value) {
+          //   if (20 <= value.length <= 4) {
+
+          //     let error = new Error('bad request')
+          //     error.message = 'wrong length'
+          //     throw error
+          // }
+
+          // }
+        },
       },
       lastName: {
         type: DataTypes.STRING,
@@ -47,28 +61,39 @@ module.exports = (sequelize, DataTypes) => {
           len: { args: [1, 20], msg: "Length must be between 1 and 20 characters" },
           notNull: { msg: 'Last Name is required' },
           notEmpty: { msg: 'Last Name is required' },
-          isAlpha: { msg: 'Can only contain letters' },
+          // isAlpha: { msg: 'Can only contain letters' },
         }
       },
       username: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: { msg: 'User already exists with the specified username' },
+        unique: { msg: 'User with that username already exists' },
         validate: {
-          len: { args: [4, 30], msg: "Length must be between 4 and 30 characters" },
+          len: { args: [1, 30], msg: 'bad length' },
           notNull: { msg: 'Username is required' },
-          isAlphanumeric: true,
-          isNotEmail(value) {
-            if (Validator.isEmail(value)) {
-              throw new Error("Cannot be an email.");
-            }
-          }
+          notEmpty: { msg: 'Username is required' },
+          isEmail: { args: [false], msg: 'username must not be an email' }
+
+          // isAlphanumeric: true,
+          // usernameValidate(value) {
+          //   if (validator.isEmail(value)) {
+          //     let error = new Error('bad request')
+          //     error.message = 'username must not be an email'
+          //     throw error
+          //   }
+
+          //   if (!value) {
+          //     let error = new Error('bad request')
+          //     error.message = 'username must not be null'
+          //     throw error
+          //   }
+
         }
       },
       email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: { msg: 'User already exists with the specified email' },
+        unique: { msg: 'User with that email already exists' },
         validate: {
           len: { args: [3, 256], msg: 'Invalid email' },
           isEmail: { msg: 'Invalid email' },
