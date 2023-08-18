@@ -81,10 +81,7 @@ router.get('/', async (req, res) => {
     options.offset = size * (page - 1)
 
 
-
-
     options.where = {}
-
 
     if (!minLat) minLat = -999999
     let minLatObj;
@@ -188,7 +185,6 @@ router.get('/', async (req, res) => {
         } else { oneSpot.avgRating = 'no reviews' }
 
 
-
         // preview image url
 
         const prevImg = await SpotImage.findOne({ where: { spotId: allSpots[i].id, preview: true } })
@@ -196,7 +192,6 @@ router.get('/', async (req, res) => {
         if (prevImg) {
             oneSpot.previewImage = prevImg.url
         } else { oneSpot.previewImage = 'no preview image' }
-
 
         resArr.push({ ...oneSpot })
     }

@@ -98,9 +98,9 @@ router.delete('/:bookingId', requireAuth, async (req, res) => {
         return res.json({ message: 'Forbidden' })
     }
 
-    if (checkBooking.endDate.split('-').join() < currentDate) {
+    if (checkBooking.startDate.split('-').join() < currentDate) {
         res.statusCode = 403
-        return res.json({ message: "past bookings cannot be modified" })
+        return res.json({ message: "Bookings that have been started can't be deleted" })
     }
     await Booking.destroy({ where: { id } });
 
