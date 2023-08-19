@@ -41,8 +41,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       allowNull: false,
       validate: {
-        notEmpty: { msg: 'Review is required' },
-        notContains: { args: '  ', msg: 'Review is required' },
+        notEmpty: { msg: 'Review text is required' },
+        notContains: { args: '  ', msg: 'Review text is required' },
         validString(value) { if (typeof value != 'string') throw new Error('Invalid type') }
 
       }
@@ -51,8 +51,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
-        isInt: true,
-        validNum(value) { if (value < 1 || value > 5) throw new Error('Rating must be between 1 and 5') },
+        isInt: { args: true, msg: "Stars must be an integer from 1 to 5" },
+        validNum(value) { if (value < 1 || value > 5) throw new Error("Stars must be an integer from 1 to 5") },
         validString(value) { if (typeof value != 'number') throw new Error('Invalid type') }
       }
     },
