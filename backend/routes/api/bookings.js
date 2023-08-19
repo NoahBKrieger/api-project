@@ -36,16 +36,6 @@ router.put('/:bookingId', requireAuth, async (req, res) => {
     const { startDate, endDate } = req.body
     const currUserId = req.user.id;
 
-    const date = new Date();
-
-    let day = date.getDate();
-    let month = date.getMonth() + 1;
-    let year = date.getFullYear();
-
-    // This arrangement can be altered based on how we want the date's format to appear.
-    let currentDate = `${year}${month}${day}`;
-
-
     const checkBooking = await Booking.findByPk(id)
 
     if (!checkBooking) {
@@ -58,10 +48,47 @@ router.put('/:bookingId', requireAuth, async (req, res) => {
         return res.json({ message: 'Forbidden' })
     }
 
-    if (checkBooking.endDate.split('-').join() < currentDate) {
-        console.log(currentDate)
+
+    // NEEDS BETTER ERROR HANDLING VVV
+
+    const checkBookings = await Booking.findAll({
+        where: {
+            spotId: checkBooking.spotId
+        }
+    })
+
+    let startNum = startDate.split('-').join();
+    let endNum = endDate.split('-').join();
+
+    for (let i = 0; i < checkBookings.length; i++) {
+        if (checkBookings[i].startDate.split('-').join() <= startNum && startNum <= checkBookings[i].endDate.split('-').join()) {
+            res.statusCode = 400
+            return res.json({ message: "Start date conflicts with an existing booking" })
+        }
+        if (checkBookings[i].startDate.split('-').join() <= endNum && endNum <= checkBookings[i].endDate.split('-').join()) {
+            res.statusCode = 400
+            return res.json({ message: "End date conflicts with an existing booking" })
+        }
+    };
+
+
+    var q = new Date();
+    var m = q.getMonth();
+    var d = q.getDay();
+    var y = q.getFullYear();
+
+    var today = new Date(y, m, d);
+    let checkEnd = new Date(`${checkBooking.endDate}`);
+
+    if (checkEnd < today) {
         res.statusCode = 403
         return res.json({ message: "past bookings cannot be modified" })
+    }
+
+
+    if (endNum <= startNum) {
+        res.statusCode = 400
+        return res.json({ message: "endDate cannot be on or before startDate" })
     }
 
     await Booking.update({ startDate, endDate }, { where: { id } });
@@ -72,16 +99,6 @@ router.put('/:bookingId', requireAuth, async (req, res) => {
 });
 
 router.delete('/:bookingId', requireAuth, async (req, res) => {
-
-    const date = new Date();
-
-    let day = date.getDate();
-    let month = date.getMonth() + 1;
-    let year = date.getFullYear();
-
-    // This arrangement can be altered based on how we want the date's format to appear.
-    let currentDate = `${year}${month}${day}`;
-
 
     const id = req.params.bookingId
     const currUserId = req.user.id;
@@ -98,10 +115,19 @@ router.delete('/:bookingId', requireAuth, async (req, res) => {
         return res.json({ message: 'Forbidden' })
     }
 
-    if (checkBooking.startDate.split('-').join() < currentDate) {
+    var q = new Date();
+    var m = q.getMonth();
+    var d = q.getDay();
+    var y = q.getFullYear();
+
+    var today = new Date(y, m, d);
+    let checkStart = new Date(`${checkBooking.startDate}`);
+
+    if (checkStart <= today) {
         res.statusCode = 403
         return res.json({ message: "Bookings that have been started can't be deleted" })
     }
+
     await Booking.destroy({ where: { id } });
 
     res.json({ message: "Succesfully deleted" });

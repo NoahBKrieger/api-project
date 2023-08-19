@@ -558,27 +558,21 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
     }
 })
 
+// create a booking
 router.post('/:spotId/bookings', requireAuth, async (req, res) => {
 
     const id = req.params.spotId
     const { startDate, endDate } = req.body
     const userId = req.user.id;
 
-    if (!startDate || !endDate) {
 
-        let error = new Error
-        error.statusCode = 400
-        error.message = 'missing startDate or endDate'
-
-        throw error;
-    }
 
     let startNum = startDate.split('-').join();
     let endNum = endDate.split('-').join();
 
     if ((endNum) <= (startNum)) {
         res.statusCode = 400
-        return res.json({ message: 'Enddate must be later than startdate' })
+        return res.json({ message: "endDate cannot be on or before startDate" })
     }
 
     const checkBooking = await Booking.findAll({
@@ -587,8 +581,10 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
         }
     })
 
-    for (let i = 0; i < checkBooking.length; i++) {
 
+    // NEEDS BETTER ERROR HANDLING VVV
+
+    for (let i = 0; i < checkBooking.length; i++) {
         if (checkBooking[i].startDate.split('-').join() <= startNum && startNum <= checkBooking[i].endDate.split('-').join()) {
 
             res.statusCode = 400

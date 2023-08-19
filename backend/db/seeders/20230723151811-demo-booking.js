@@ -22,14 +22,14 @@ module.exports = {
       {
         spotId: 1,
         userId: 1,
-        startDate: '06-07-1996',
-        endDate: '06-08-1996',
+        startDate: '1996-06-07',
+        endDate: '1996-06-08',
       },
       {
         spotId: 1,
         userId: 1,
-        startDate: '01-01-2000',
-        endDate: '01-02-3456',
+        startDate: '2000-01-01',
+        endDate: '2001-01-02',
       }
 
     ], {})
