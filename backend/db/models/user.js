@@ -42,16 +42,7 @@ module.exports = (sequelize, DataTypes) => {
           len: { args: [1, 20], msg: "First Name is required" },
           notNull: { msg: 'First Name is required' },
           notEmpty: { msg: 'First Name is required' },
-          // isAlpha: { msg: 'First Name is required' },
-          // customValidate(value) {
-          //   if (20 <= value.length <= 4) {
 
-          //     let error = new Error('bad request')
-          //     error.message = 'wrong length'
-          //     throw error
-          // }
-
-          // }
         },
       },
       lastName: {
@@ -61,7 +52,6 @@ module.exports = (sequelize, DataTypes) => {
           len: { args: [1, 20], msg: "Length must be between 1 and 20 characters" },
           notNull: { msg: 'Last Name is required' },
           notEmpty: { msg: 'Last Name is required' },
-          // isAlpha: { msg: 'Can only contain letters' },
         }
       },
       username: {
@@ -72,22 +62,7 @@ module.exports = (sequelize, DataTypes) => {
           len: { args: [1, 30], msg: 'bad length' },
           notNull: { msg: 'Username is required' },
           notEmpty: { msg: 'Username is required' },
-          isEmail: { args: [false], msg: 'username must not be an email' }
-
-          // isAlphanumeric: true,
-          // usernameValidate(value) {
-          //   if (validator.isEmail(value)) {
-          //     let error = new Error('bad request')
-          //     error.message = 'username must not be an email'
-          //     throw error
-          //   }
-
-          //   if (!value) {
-          //     let error = new Error('bad request')
-          //     error.message = 'username must not be null'
-          //     throw error
-          //   }
-
+          notContains: { args: ['@', '.'], msg: 'username must not be an email' },
         }
       },
       email: {

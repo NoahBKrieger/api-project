@@ -31,7 +31,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       allowNull: false,
       validate: {
-        isUrl: { msg: 'Must be a url' }
+        isUrl: { msg: 'Must be a url' },
+        validString(value) { if (typeof value != 'string') throw new Error('Invalid type') }
+
       }
     },
   }, {
