@@ -4,7 +4,7 @@ const router = express.Router();
 const { Review } = require('../../db/models');
 const { ReviewImage } = require('../../db/models');
 const { User } = require('../../db/models');
-const { Spot } = require('../../db/models');
+const { Spot, SpotImage } = require('../../db/models');
 
 
 const { requireAuth } = require('../../utils/auth');
@@ -25,7 +25,13 @@ router.get('/current', requireAuth, async (req, res) => {
             {
                 model: Spot,
                 as: 'Spot',
-                attributes: { exclude: 'createdAt updatedAt' }
+                attributes: { exclude: 'createdAt updatedAt' },
+                include: [{
+                    model: SpotImage,
+                    attributes: ["url"],
+                    where: { preview: true },
+                    required: false
+                }]
             },
             {
                 model: ReviewImage,

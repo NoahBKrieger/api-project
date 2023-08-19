@@ -83,35 +83,35 @@ router.get('/', async (req, res) => {
 
     options.where = {}
 
-    if (!minLat) minLat = -999999
+    if (!minLat) minLat = -90
     let minLatObj;
     minLat = parseFloat(minLat)
-    if (typeof minLat === 'number') {
+    if (typeof minLat == 'number' && minLat >= -90 && minLat <= 90) {
         minLatObj = { [Op.gte]: minLat }
-    }
+    } else err.errors.minLat = "Minimum latitude is invalid"
 
-    if (!maxLat) maxLat = 9999999
+    if (!maxLat) maxLat = 90
     let maxLatObj;
     maxLat = parseFloat(maxLat)
-    if (typeof maxLat === 'number') {
+    if (typeof maxLat === 'number' && maxLat >= -90 && maxLat <= 90) {
         maxLatObj = { [Op.lte]: maxLat }
-    }
+    } else err.errors.maxLat = "Maximum latitude is invalid"
     options.where.lat = { ...minLatObj, ...maxLatObj }
 
 
-    if (!minLng) minLng = -9999999
+    if (!minLng) minLng = -180
     let minLngObj;
     minLng = parseFloat(minLng)
-    if (typeof minLng === 'number') {
+    if (typeof minLng === 'number' && minLng >= -180 && minLng <= 180) {
         minLngObj = { [Op.gte]: minLng }
-    }
+    } else err.errors.minLng = "Minimum longitude is invalid"
 
-    if (!maxLng) maxLng = 9999999
+    if (!maxLng) maxLng = 180
     let maxLngObj;
     maxLng = parseFloat(maxLng)
-    if (typeof maxLng === 'number') {
+    if (typeof maxLng === 'number' && maxLng >= -180 && maxLng <= 180) {
         maxLngObj = { [Op.lte]: maxLng }
-    }
+    } else err.errors.maxLng = "Maximum longitude is invalid"
     options.where.lng = { ...minLngObj, ...maxLngObj }
 
 
@@ -138,7 +138,7 @@ router.get('/', async (req, res) => {
 
 
     //throw errors
-    if (err.errors.page || err.errors.size || err.errors.minPrice || err.errors.maxPrice) throw err
+    if (err.errors.page || err.errors.size || err.errors.minPrice || err.errors.maxPrice || err.errors.minLat || err.errors.maxLat || err.errors.minLng || err.errors.maxLng) throw err
 
 
     let resArr = []
