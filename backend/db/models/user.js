@@ -42,16 +42,7 @@ module.exports = (sequelize, DataTypes) => {
           len: { args: [1, 20], msg: "First Name is required" },
           notNull: { msg: 'First Name is required' },
           notEmpty: { msg: 'First Name is required' },
-          // isAlpha: { msg: 'First Name is required' },
-          // customValidate(value) {
-          //   if (20 <= value.length <= 4) {
 
-          //     let error = new Error('bad request')
-          //     error.message = 'wrong length'
-          //     throw error
-          // }
-
-          // }
         },
       },
       lastName: {

@@ -30,12 +30,18 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       allowNull: false,
       validate: {
-        isUrl: { msg: 'Invalid URL' }
+        isUrl: { msg: 'Invalid URL' },
+        validString(value) { if (typeof value != 'string') throw new Error('Invalid type') }
+
       }
     },
     preview: {
       type: DataTypes.BOOLEAN,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        validString(value) { if (typeof value != 'boolean') throw new Error('Invalid type') }
+
+      }
     }
   }, {
     sequelize,

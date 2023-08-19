@@ -115,7 +115,6 @@ module.exports = (sequelize, DataTypes) => {
         len: { args: [2, 50], msg: "Length must be between 2 and 50 characters" },
         validString(value) { if (typeof value != 'string') throw new Error('Invalid type') }
 
-
       }
     },
     price: {
