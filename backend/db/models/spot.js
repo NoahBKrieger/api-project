@@ -36,39 +36,46 @@ module.exports = (sequelize, DataTypes) => {
     },
     ownerId: DataTypes.INTEGER,
     address: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: { msg: "Street address is required" },
         notContains: { args: '  ', msg: "Street address is required" },
-        len: { args: [2, 50], msg: "Length must be between 2 and 50 characters" }
+        len: { args: [2, 50], msg: "Length must be between 2 and 50 characters" },
+        validString(value) { if (typeof value != 'string') throw new Error('Invalid type') }
       }
     },
     city: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: { msg: "City is required" },
         notContains: { args: '  ', msg: "City is required" },
-        len: { args: [2, 50], msg: "Length must be between 2 and 50 characters" }
+        len: { args: [2, 50], msg: "Length must be between 2 and 50 characters" },
+        validString(value) { if (typeof value != 'string') throw new Error('Invalid type') }
+
       }
     },
     state: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: { msg: "State is required" },
         notContains: { args: '  ', msg: "State is required" },
-        len: { args: [2, 50], msg: "Length must be between 2 and 50 characters" }
+        len: { args: [2, 50], msg: "Length must be between 2 and 50 characters" },
+        validString(value) { if (typeof value != 'string') throw new Error('Invalid type') }
+
       }
     },
     country: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: { msg: "Country is required" },
         notContains: { args: '  ', msg: "Country is required" },
-        len: { args: [2, 50], msg: "Length must be between 2 and 50 characters" }
+        len: { args: [2, 50], msg: "Length must be between 2 and 50 characters" },
+        validString(value) { if (typeof value != 'string') throw new Error('Invalid type') }
+
       }
     },
     lat: {
@@ -76,7 +83,8 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         max: { args: 90, msg: "Latitude is not valid" },
         min: { args: -90, msg: "Latitude is not valid" },
-        notEmpty: true
+        validString(value) { if (typeof value != 'number') throw new Error('Invalid type') }
+
       }
     },
     lng: {
@@ -84,27 +92,29 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         max: { args: 180, msg: "Longitude is not valid" },
         min: { args: -180, msg: "Longitude is not valid" },
-        notEmpty: true
+        validString(value) { if (typeof value != 'number') throw new Error('Invalid type') }
+
       }
     },
     name: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: { msg: "Name is required" },
-        len: {
-          args: [1, 50], msg: "Name must be less than 50 characters"
-        },
+        len: { args: [1, 50], msg: "Name must be less than 50 characters" },
         notContains: { args: '  ', msg: "Name is required" },
+        validString(value) { if (typeof value != 'string') throw new Error('Invalid type') }
       }
     },
     description: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: { msg: "Description is required" },
         notContains: { args: '  ', msg: "Description is required" },
-        len: { args: [2, 50], msg: "Length must be between 2 and 50 characters" }
+        len: { args: [2, 50], msg: "Length must be between 2 and 50 characters" },
+        validString(value) { if (typeof value != 'string') throw new Error('Invalid type') }
+
 
       }
     },
@@ -115,6 +125,8 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: { msg: "Price per day is required" },
         notNull: { msg: "Price per day is required" },
         isFloat: { msg: "Price is type float" },
+        validString(value) { if (typeof value != 'number') throw new Error('Invalid type') }
+
       }
     }
   }, {
