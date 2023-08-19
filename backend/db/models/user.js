@@ -3,10 +3,10 @@
 'use strict';
 const { Model } = require('sequelize');
 
-const validator = require('validator')
+// const validator = require('validator')
 
 
-const err = new Error
+// const err = new Error
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
