@@ -49,8 +49,6 @@ router.put('/:bookingId', requireAuth, async (req, res) => {
     }
 
 
-    // NEEDS BETTER ERROR HANDLING VVV
-
     let badDatesErr = new Error('Bad request')
 
     badDatesErr.errors = {}
@@ -65,13 +63,9 @@ router.put('/:bookingId', requireAuth, async (req, res) => {
 
     for (let i = 0; i < checkBookings.length; i++) {
         if (checkBookings[i].startDate.split('-').join() <= startNum && startNum <= checkBookings[i].endDate.split('-').join()) {
-            // res.statusCode = 400
-            // return res.json({ message: "Start date conflicts with an existing booking" })
             badDatesErr.errors.startDate = "Start date conflicts with an existing booking"
         }
         if (checkBookings[i].startDate.split('-').join() <= endNum && endNum <= checkBookings[i].endDate.split('-').join()) {
-            // res.statusCode = 400
-            // return res.json({ message: "End date conflicts with an existing booking" })
             badDatesErr.errors.endDate = "End date conflicts with an existing booking"
         }
     };
@@ -79,7 +73,7 @@ router.put('/:bookingId', requireAuth, async (req, res) => {
     if (badDatesErr.errors.startDate || badDatesErr.errors.endDate) throw badDatesErr
 
     let q = new Date();
-    let m = q.getMonth() + 1;
+    let m = q.getMonth();
     let d = q.getDate();
     let y = q.getFullYear();
 
@@ -122,7 +116,7 @@ router.delete('/:bookingId', requireAuth, async (req, res) => {
     }
 
     let q = new Date();
-    let m = q.getMonth() + 1;
+    let m = q.getMonth();
     let d = q.getDate();
     let y = q.getFullYear();
 
