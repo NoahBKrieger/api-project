@@ -78,12 +78,12 @@ router.put('/:bookingId', requireAuth, async (req, res) => {
 
     if (badDatesErr.errors.startDate || badDatesErr.errors.endDate) throw badDatesErr
 
-    var q = new Date();
-    var m = q.getMonth() + 1;
-    var d = q.getDay();
-    var y = q.getFullYear();
+    let q = new Date();
+    let m = q.getMonth() + 1;
+    let d = q.getDate();
+    let y = q.getFullYear();
 
-    var today = new Date(y, m, d);
+    let today = new Date(y, m, d);
     let checkEnd = new Date(checkBooking.endDate);
 
     if (checkEnd < today) {
@@ -123,7 +123,7 @@ router.delete('/:bookingId', requireAuth, async (req, res) => {
 
     let q = new Date();
     let m = q.getMonth() + 1;
-    let d = q.getDay();
+    let d = q.getDate();
     let y = q.getFullYear();
 
     let today = new Date(y, m, d);
