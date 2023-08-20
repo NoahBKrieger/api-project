@@ -409,26 +409,11 @@ router.put('/:spotId', requireAuth, async (req, res) => {
 
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
 
-    // const checkNew = new Spot(
-    //     req.body.address,
-    //     req.body.city,
-    //     req.body.state,
-    //     req.body.country,
-    //     req.body.lat,
-    //     req.body.lng,
-    //     req.body.name,
-    //     req.body.description,
-    //     req.body.price
-    // )
-    // checkNew.validate()
-
 
     await Spot.update(
         { address, city, state, country, lat, lng, name, description, price },
-        {
-            where: { id: spotId },
-
-        });
+        { where: { id: spotId }, }
+    );
 
     newOne = await Spot.findByPk(spotId, { attributes: { exclude: 'createdAt updatedAt' } });
 
@@ -558,27 +543,21 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
     }
 })
 
+// create a booking
 router.post('/:spotId/bookings', requireAuth, async (req, res) => {
 
     const id = req.params.spotId
     const { startDate, endDate } = req.body
     const userId = req.user.id;
 
-    if (!startDate || !endDate) {
 
-        let error = new Error
-        error.statusCode = 400
-        error.message = 'missing startDate or endDate'
-
-        throw error;
-    }
 
     let startNum = startDate.split('-').join();
     let endNum = endDate.split('-').join();
 
-    if ((endNum) <= (startNum)) {
+    if (endNum <= startNum) {
         res.statusCode = 400
-        return res.json({ message: 'Enddate must be later than startdate' })
+        return res.json({ message: "endDate cannot be on or before startDate" })
     }
 
     const checkBooking = await Booking.findAll({
@@ -587,20 +566,28 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
         }
     })
 
+
+    // NEEDS BETTER ERROR HANDLING VVV
+
+    let badDatesErr = new Error
+
+    badDatesErr.errors = {}
+    badDatesErr.statusCode = 400
+
     for (let i = 0; i < checkBooking.length; i++) {
-
         if (checkBooking[i].startDate.split('-').join() <= startNum && startNum <= checkBooking[i].endDate.split('-').join()) {
-
-            res.statusCode = 400
-            return res.json({ message: "Start date conflicts with an existing booking" })
+            // res.statusCode = 400
+            // return res.json({ message: "Start date conflicts with an existing booking" })
+            badDatesErr.errors.startDate = "Start date conflicts with an existing booking"
         }
-
         if (checkBooking[i].startDate.split('-').join() <= endNum && endNum <= checkBooking[i].endDate.split('-').join()) {
-
-            res.statusCode = 400
-            return res.json({ message: "End date conflicts with an existing booking" })
+            // res.statusCode = 400
+            // return res.json({ message: "End date conflicts with an existing booking" })
+            badDatesErr.errors.endDate = "End date conflicts with an existing booking"
         }
     };
+
+    if (badDatesErr.errors.startDate || badDatesErr.errors.endDate) throw badDatesErr
 
     const checkSpot = await Spot.findByPk(id)
 
