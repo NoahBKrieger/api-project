@@ -51,10 +51,13 @@ router.put('/:bookingId', requireAuth, async (req, res) => {
 
     // NEEDS BETTER ERROR HANDLING VVV
 
+    let badDatesErr = new Error('Bad request')
+
+    badDatesErr.errors = {}
+    badDatesErr.statusCode = 400
+
     const checkBookings = await Booking.findAll({
-        where: {
-            spotId: checkBooking.spotId
-        }
+        where: { spotId: checkBooking.spotId }
     })
 
     let startNum = startDate.split('-').join();
@@ -62,15 +65,18 @@ router.put('/:bookingId', requireAuth, async (req, res) => {
 
     for (let i = 0; i < checkBookings.length; i++) {
         if (checkBookings[i].startDate.split('-').join() <= startNum && startNum <= checkBookings[i].endDate.split('-').join()) {
-            res.statusCode = 400
-            return res.json({ message: "Start date conflicts with an existing booking" })
+            // res.statusCode = 400
+            // return res.json({ message: "Start date conflicts with an existing booking" })
+            badDatesErr.errors.startDate = "Start date conflicts with an existing booking"
         }
         if (checkBookings[i].startDate.split('-').join() <= endNum && endNum <= checkBookings[i].endDate.split('-').join()) {
-            res.statusCode = 400
-            return res.json({ message: "End date conflicts with an existing booking" })
+            // res.statusCode = 400
+            // return res.json({ message: "End date conflicts with an existing booking" })
+            badDatesErr.errors.endDate = "End date conflicts with an existing booking"
         }
     };
 
+    if (badDatesErr.errors.startDate || badDatesErr.errors.endDate) throw badDatesErr
 
     var q = new Date();
     var m = q.getMonth();

@@ -570,7 +570,7 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
     let startNum = startDate.split('-').join();
     let endNum = endDate.split('-').join();
 
-    if ((endNum) <= (startNum)) {
+    if (endNum <= startNum) {
         res.statusCode = 400
         return res.json({ message: "endDate cannot be on or before startDate" })
     }
@@ -584,19 +584,25 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
 
     // NEEDS BETTER ERROR HANDLING VVV
 
+    let badDatesErr = new Error
+
+    badDatesErr.errors = {}
+    badDatesErr.statusCode = 400
+
     for (let i = 0; i < checkBooking.length; i++) {
         if (checkBooking[i].startDate.split('-').join() <= startNum && startNum <= checkBooking[i].endDate.split('-').join()) {
-
-            res.statusCode = 400
-            return res.json({ message: "Start date conflicts with an existing booking" })
+            // res.statusCode = 400
+            // return res.json({ message: "Start date conflicts with an existing booking" })
+            badDatesErr.errors.startDate = "Start date conflicts with an existing booking"
         }
-
         if (checkBooking[i].startDate.split('-').join() <= endNum && endNum <= checkBooking[i].endDate.split('-').join()) {
-
-            res.statusCode = 400
-            return res.json({ message: "End date conflicts with an existing booking" })
+            // res.statusCode = 400
+            // return res.json({ message: "End date conflicts with an existing booking" })
+            badDatesErr.errors.endDate = "End date conflicts with an existing booking"
         }
     };
+
+    if (badDatesErr.errors.startDate || badDatesErr.errors.endDate) throw badDatesErr
 
     const checkSpot = await Spot.findByPk(id)
 

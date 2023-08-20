@@ -1,10 +1,70 @@
-validate so it doesnt allow numbers
+General Issues
+Errors
+Should not include title or stack keys
 
-average Rating
+Sign In User
+Successful response is missing fields for firstName and lastName **fixed
+Validation Errors
+Formatted incorrectly
+Only listing one validation error at a time
+Keys are undefined, do not have column name
 
-cant edit bookings in the past "past bookings cannot be modified"
-cannot delete bookings in the past
+Login User
+Validation Errors
+Formatted incorrectly
+Only listing one validation error at a time
+Keys are undefined, do not have column name
 
-review images userId null
+Create a Spot
+Validation Errors
+Only listing one validation error at a time
+Should add validation errors to errors object, not overwrite “Bad Request” message
 
-spot image cascade delete userId null
+Create an Image for a Spot
+Successful Response
+Shouldnt contain spotId, createdAt, or updatedAt attributes **done
+
+Get details of a spot by id
+Successful Response
+Missing createdAt and updatedAt fields
+Does not show a numReviews attribute for spot with no reviews, should either say 0 or no reviews **done
+Errors
+Message shouldn’t be the default, give it a custom spot not found error
+Status code should not be the default 500, set it to 404
+
+Edit a Spot
+Validation Errors
+Should not be using model validations, route validations should catch the errors prior to hitting those. Should be using custom validation error messages.
+Successful Response
+Should not contain createdAt and updated attributes **done
+
+Create a Revew for a Spot
+Validation Errors
+Should not be using default validation messages
+
+Create an Image for a review
+Route does not work, fails with error: `"column \"ReviewId\" does not exist",`
+
+Get reviews by spot id
+Route does not work, fails with error: `"column ReviewImages.ReviewId does not exist",`
+
+Edit a Review
+Does not validate request body checking for review or stars value
+
+Create a booking based on spot id
+Fails when route is called without passing in body values with error: `"Cannot read property 'split' of undefined"` ** done
+
+Get all current users bookings
+Successful Response
+Bookings are double nested, should only be inside one array, not two **done**
+Should include only the preview image url, not the array of all images **done**
+
+Get all booking for a spot by Id
+Successful Response
+When not an owner
+Ownership not validated, Contains too much info, reference api docs
+Validation Errors
+Does not validate than any request body exists, succeeds on edit with empty body
+
+Delete a review image
+Did not test, due to create route not working
