@@ -79,12 +79,12 @@ router.put('/:bookingId', requireAuth, async (req, res) => {
     if (badDatesErr.errors.startDate || badDatesErr.errors.endDate) throw badDatesErr
 
     var q = new Date();
-    var m = q.getMonth();
+    var m = q.getMonth() + 1;
     var d = q.getDay();
     var y = q.getFullYear();
 
     var today = new Date(y, m, d);
-    let checkEnd = new Date(`${checkBooking.endDate}`);
+    let checkEnd = new Date(checkBooking.endDate);
 
     if (checkEnd < today) {
         res.statusCode = 403
@@ -121,13 +121,13 @@ router.delete('/:bookingId', requireAuth, async (req, res) => {
         return res.json({ message: 'Forbidden' })
     }
 
-    var q = new Date();
-    var m = q.getMonth();
-    var d = q.getDay();
-    var y = q.getFullYear();
+    let q = new Date();
+    let m = q.getMonth() + 1;
+    let d = q.getDay();
+    let y = q.getFullYear();
 
-    var today = new Date(y, m, d);
-    let checkStart = new Date(`${checkBooking.startDate}`);
+    let today = new Date(y, m, d);
+    let checkStart = new Date(checkBooking.startDate);
 
     if (checkStart <= today) {
         res.statusCode = 403

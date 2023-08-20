@@ -409,26 +409,11 @@ router.put('/:spotId', requireAuth, async (req, res) => {
 
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
 
-    // const checkNew = new Spot(
-    //     req.body.address,
-    //     req.body.city,
-    //     req.body.state,
-    //     req.body.country,
-    //     req.body.lat,
-    //     req.body.lng,
-    //     req.body.name,
-    //     req.body.description,
-    //     req.body.price
-    // )
-    // checkNew.validate()
-
 
     await Spot.update(
         { address, city, state, country, lat, lng, name, description, price },
-        {
-            where: { id: spotId },
-
-        });
+        { where: { id: spotId }, }
+    );
 
     newOne = await Spot.findByPk(spotId, { attributes: { exclude: 'createdAt updatedAt' } });
 
