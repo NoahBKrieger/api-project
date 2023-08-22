@@ -36,11 +36,11 @@ router.post(
         let err = new Error;
         err.statuscode = 400
         err.errors = {}
-        if (!credential || !(credential.notEmpty())) {
+        if (!credential) {
             err.errors.credential = "Email or username is required"
         }
 
-        if (!(password)) {
+        if (!password) {
             err.errors.passwords = "Password is required"
         }
 
@@ -67,7 +67,6 @@ router.post(
         }
 
         const safeUser = {
-
             id: user.id,
             firstName: user.firstName,
             lastName: user.lastName,
