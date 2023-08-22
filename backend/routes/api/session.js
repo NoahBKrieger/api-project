@@ -11,16 +11,16 @@ const router = express.Router();
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
-const validateLogin = [
-    check('credential')
-        .exists({ checkFalsy: true })
-        .notEmpty()
-        .withMessage({ credential: 'Please provide a valid email or username.' }),
-    check('password')
-        .exists({ checkFalsy: true })
-        .withMessage({ password: 'Please provide a password.' }),
-    handleValidationErrors
-];
+// const validateLogin = [
+//     check('credential')
+//         .exists({ checkFalsy: true })
+//         .notEmpty()
+//         .withMessage({ credential: 'Please provide a valid email or username.' }),
+//     check('password')
+//         .exists({ checkFalsy: true })
+//         .withMessage({ password: 'Please provide a password.' }),
+//     handleValidationErrors
+// ];
 
 
 // backend/routes/api/session.js
@@ -29,9 +29,22 @@ const validateLogin = [
 // Log in
 router.post(
     '/',
-    validateLogin,
+
     async (req, res, next) => {
         const { credential, password } = req.body;
+
+        let err = new Error;
+        err.statuscode = 400
+        err.errors = {}
+        if (!credential || !(credential.notEmpty())) {
+            err.errors.credential = "Email or username is required"
+        }
+
+        if (!(password)) {
+            err.errors.passwords = "Password is required"
+        }
+
+        if (err.errors.credential || err.errors.password) throw err
 
         const user = await User.unscoped().findOne({
             where: {

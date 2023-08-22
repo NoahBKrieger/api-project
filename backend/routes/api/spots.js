@@ -273,7 +273,7 @@ router.get('/:spotId', async (req, res) => {
     const spot = await Spot.findOne({
 
         where: { id: spotId },
-        attributes: { exclude: 'createdAt updatedAt' },
+        // attributes: { exclude: 'createdAt updatedAt' },
 
         include: [{
             model: SpotImage,
@@ -322,7 +322,7 @@ router.get('/:spotId', async (req, res) => {
 
         resSpot.numReviews = spotsReviews.length
         resSpot.avgStarRating = avgStar
-    } else { resSpot.numReviews = 'no reviews', resSpot.avgRating = 'no reviews' }
+    } else { resSpot.numReviews = 'no reviews', resSpot.avgStarRating = 'no reviews' }
 
 
 
@@ -473,7 +473,7 @@ router.get('/:spotId/reviews', async (req, res) => {
         ]
     })
 
-    return res.json(spotReviews)
+    return res.json({ Reviews: spotReviews })
 });
 
 router.post('/:spotId/reviews', requireAuth, async (req, res) => {
@@ -519,7 +519,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
         return res.json({ message: "Spot couldn't be found" })
     }
 
-    if (userId === checkSpot.ownerId) {
+    if (userId !== checkSpot.ownerId) {
 
         const spotBookings = await Booking.findAll({
             where: {
