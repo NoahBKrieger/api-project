@@ -61,7 +61,8 @@ router.get('/', requireAuth, async (req, res) => {
 
     const currUser = await User.findOne({
         scope: defaultScope,
-        where: { id: req.user.id }
+        where: { id: req.user.id },
+
     })
 
 
