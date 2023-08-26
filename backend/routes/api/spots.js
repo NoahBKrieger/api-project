@@ -19,7 +19,7 @@ const { Op } = require("sequelize")
 // const validateSpot = [
 //     check('address')
 //         .exists({ checkFalsy: true })
-//         .isLength({ min: 2 })
+//         .isLength({ min: 2, max: 30 })
 //         .withMessage("Street address is required"),
 //     check('city')
 //         .exists({ checkFalsy: true })
