@@ -8,6 +8,7 @@ const { User } = require('../../db/models');
 const router = express.Router();
 
 // const { check } = require('express-validator');
+
 // const { handleValidationErrors } = require('../../utils/validation');
 
 
@@ -32,6 +33,8 @@ const router = express.Router();
 // ];
 
 // Sign up
+
+
 router.post('/', async (req, res) => {
     const { firstName, lastName, email, password, username } = req.body;
     const hashedPassword = bcrypt.hashSync(password);
