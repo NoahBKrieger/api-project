@@ -19,7 +19,7 @@ const { Op } = require("sequelize")
 // const validateSpot = [
 //     check('address')
 //         .exists({ checkFalsy: true })
-//         .isLength({ min: 2 })
+//         .isLength({ min: 2, max: 30 })
 //         .withMessage("Street address is required"),
 //     check('city')
 //         .exists({ checkFalsy: true })
@@ -199,9 +199,7 @@ router.get('/', async (req, res) => {
     return res.json({ Spots: resArr, "page": page, "size": size })
 })
 
-
 // find all current users spots
-
 router.get('/current', requireAuth, async (req, res) => {
 
     const allSpots = await Spot.findAll({
@@ -263,7 +261,6 @@ router.get('/current', requireAuth, async (req, res) => {
 
     return res.json({ Spots: resArr })
 })
-
 
 // get details of a spot by id
 router.get('/:spotId', async (req, res) => {
@@ -356,7 +353,6 @@ router.post('/', requireAuth, async (req, res) => {
     res.statusCode = 201;
     return res.json(newSpot)
 })
-
 
 router.post('/:spotId/images', requireAuth, async (req, res) => {
 
