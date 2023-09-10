@@ -42,6 +42,7 @@ module.exports = (sequelize, DataTypes) => {
           len: { args: [1, 20], msg: "First Name is required" },
           notNull: { msg: 'First Name is required' },
           notEmpty: { msg: 'First Name is required' },
+          validString(value) { if (typeof value != 'string') throw new Error('Invalid type') }
 
         },
       },
@@ -52,6 +53,7 @@ module.exports = (sequelize, DataTypes) => {
           len: { args: [1, 20], msg: "Length must be between 1 and 20 characters" },
           notNull: { msg: 'Last Name is required' },
           notEmpty: { msg: 'Last Name is required' },
+          validString(value) { if (typeof value != 'string') throw new Error('Invalid type') }
         }
       },
       username: {
@@ -63,6 +65,7 @@ module.exports = (sequelize, DataTypes) => {
           notNull: { msg: 'Username is required' },
           notEmpty: { msg: 'Username is required' },
           notContains: { args: ['@', '.'], msg: 'username must not be an email' },
+          validString(value) { if (typeof value != 'string') throw new Error('Invalid type') }
         }
       },
       email: {
