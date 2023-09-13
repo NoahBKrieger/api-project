@@ -408,7 +408,18 @@ router.put('/:spotId', requireAuth, async (req, res) => {
         return res.json({ message: 'Forbidden' })
     }
 
-    const { address, city, state, country, lat, lng, name, description, price } = req.body;
+    let { address, city, state, country, lat, lng, name, description, price } = req.body;
+
+    // reassigns null keys so an error is thrown on update
+    if (!address) address = ''
+    if (!city) city = ''
+    if (!state) state = ''
+    if (!country) country = ''
+    if (!lat) lat = ''
+    if (!lng) lng = ''
+    if (!name) name = ''
+    if (!description) description = ''
+    if (!price) price = ''
 
 
     await Spot.update(

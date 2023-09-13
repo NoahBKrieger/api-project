@@ -83,7 +83,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         max: { args: 90, msg: "Latitude is not valid" },
         min: { args: -90, msg: "Latitude is not valid" },
-        validString(value) { if (typeof value != 'number') throw new Error('Invalid type') }
+        validString(value) { if (typeof value != 'number') throw new Error("Latitude is not valid") }
 
       }
     },
@@ -92,7 +92,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         max: { args: 180, msg: "Longitude is not valid" },
         min: { args: -180, msg: "Longitude is not valid" },
-        validString(value) { if (typeof value != 'number') throw new Error('Invalid type') }
+        validString(value) { if (typeof value != 'number') throw new Error("Longitude is not valid") }
 
       }
     },
