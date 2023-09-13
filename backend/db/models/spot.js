@@ -123,7 +123,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notEmpty: { msg: "Price per day is required" },
         notNull: { msg: "Price per day is required" },
-        isFloat: { msg: "Price is type float" },
+        isFloat: { msg: "Price per day is required" },
         validString(value) { if (typeof value != 'number') throw new Error('Invalid type') }
 
       }

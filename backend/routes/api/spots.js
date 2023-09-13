@@ -9,7 +9,6 @@ const { ReviewImage } = require('../../db/models');
 const { Booking } = require('../../db/models');
 
 const { requireAuth } = require('../../utils/auth');
-
 const { Op } = require("sequelize")
 
 // const { check } = require('express-validator');
@@ -282,6 +281,12 @@ router.get('/:spotId', async (req, res) => {
             attributes: { exclude: 'username email createdAt updatedAt hashedPassword' }
         }]
     })
+
+    // spot not found error
+    if (!spot) {
+        res.statusCode = 404
+        return res.json({ message: "Spot couldn't be found" })
+    }
 
 
     let resSpot = {}
