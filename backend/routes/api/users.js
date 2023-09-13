@@ -6,11 +6,9 @@ const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const { User } = require('../../db/models');
 
 const router = express.Router();
-
-// const { check } = require('express-validator');
-
 const { Op } = require("sequelize")
 
+// const { check } = require('express-validator');
 // const { handleValidationErrors } = require('../../utils/validation');
 
 
@@ -48,6 +46,7 @@ router.post('/', async (req, res) => {
 
     })
 
+    // check if user exists in db
     if (checkUniqueUser) {
         let val
         // let err = new Error()
@@ -108,8 +107,13 @@ router.post('/', async (req, res) => {
 }
 );
 
-router.get('/', requireAuth, async (req, res) => {
+router.get('/', async (req, res) => {
 
+    if (!req.user) {
+
+        res.statusCode = 200
+        return res.json({ User: null })
+    }
     const currUser = await User.findOne({
         scope: defaultScope,
         where: { id: req.user.id },
