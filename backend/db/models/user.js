@@ -3,10 +3,6 @@
 'use strict';
 const { Model } = require('sequelize');
 
-// const validator = require('validator')
-
-
-// const err = new Error
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
@@ -59,19 +55,19 @@ module.exports = (sequelize, DataTypes) => {
       username: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: { msg: 'User with that username already exists' },
+        // unique: { msg: 'User with that username already exists' },
         validate: {
-          len: { args: [1, 30], msg: 'bad length' },
+          len: { args: [4, 30], msg: 'Please provide a username with at least 4 characters' },
           notNull: { msg: 'Username is required' },
           notEmpty: { msg: 'Username is required' },
-          notContains: { args: ['@', '.'], msg: 'username must not be an email' },
+          notContains: { args: ['@', '.'], msg: 'Username must not be an email' },
           validString(value) { if (typeof value != 'string') throw new Error('Invalid type') }
         }
       },
       email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: { msg: 'User with that email already exists' },
+        // unique: { msg: 'User with that email already exists' },
         validate: {
           len: { args: [3, 256], msg: 'Invalid email' },
           isEmail: { msg: 'Invalid email' },
