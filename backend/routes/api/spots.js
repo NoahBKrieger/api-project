@@ -53,6 +53,8 @@ const { Op } = require("sequelize")
 // ];
 
 
+// get all spots
+
 
 router.get('/', async (req, res) => {
 
@@ -381,7 +383,7 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
         const checkPreviewImg = await SpotImage.findAll({ where: { spotId: id, preview: true } })
 
         if (checkPreviewImg.length > 0) {
-            res.statusCode = 404
+            res.statusCode = 403
             return res.json({ message: 'Spot already has preview image' })
         }
     }
@@ -392,6 +394,7 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
     return res.json({ id: newImg.id, url: newImg.url, preview: newImg.preview })
 });
 
+// edit a spot
 router.put('/:spotId', requireAuth, async (req, res) => {
 
     const spotId = req.params.spotId;

@@ -10,6 +10,7 @@ const { Spot, SpotImage } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
 
 
+// get reviews of current user
 router.get('/current', requireAuth, async (req, res) => {
 
     const userReviews = await Review.findAll({
@@ -40,7 +41,63 @@ router.get('/current', requireAuth, async (req, res) => {
             }
         ]
     })
-    return res.json({ Reviews: userReviews })
+
+
+
+    let resArr = []
+
+    for (let i = 0; i < userReviews.length; i++) {
+
+        let oneReview = {}
+
+        let oneSpot = {}
+
+        oneSpot.id = userReviews[i].Spot.id
+        oneSpot.ownerId = userReviews[i].Spot.ownerId
+        oneSpot.address = userReviews[i].Spot.address
+        oneSpot.city = userReviews[i].Spot.city
+        oneSpot.state = userReviews[i].Spot.state
+        oneSpot.country = userReviews[i].Spot.country
+        oneSpot.lat = userReviews[i].Spot.lat
+        oneSpot.lng = userReviews[i].Spot.lng
+        oneSpot.name = userReviews[i].Spot.name
+        oneSpot.description = userReviews[i].Spot.description
+        oneSpot.price = userReviews[i].Spot.price
+
+
+        // // preview image url
+
+        const prevImg = await SpotImage.findOne({ where: { spotId: oneSpot.id, preview: true } })
+
+        if (prevImg) {
+            oneSpot.previewImage = prevImg.url
+        } else { oneSpot.previewImage = 'no preview image' }
+
+        oneReview.id = userReviews[i].id
+        oneReview.userId = userReviews[i].userId
+        oneReview.spotId = userReviews[i].spotId
+        oneReview.review = userReviews[i].review
+        oneReview.stars = userReviews[i].stars
+        oneReview.createdAt = userReviews[i].createdAt
+        oneReview.updatedAt = userReviews[i].updatedAt
+        oneReview.User = userReviews[i].User
+        oneReview.Spot = oneSpot
+
+        oneReview.ReviewImages = userReviews[i].ReviewImages
+
+
+
+
+
+
+
+
+
+
+        resArr.push({ ...oneReview })
+    }
+
+    return res.json({ Reviews: resArr })
 })
 
 

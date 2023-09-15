@@ -33,9 +33,9 @@ const { Op } = require("sequelize")
 //     handleValidationErrors
 // ];
 
+
+
 // Sign up
-
-
 router.post('/', async (req, res) => {
     const { firstName, lastName, email, password, username } = req.body;
 
@@ -107,6 +107,7 @@ router.post('/', async (req, res) => {
 }
 );
 
+
 router.get('/', async (req, res) => {
 
     if (!req.user) {
@@ -119,8 +120,6 @@ router.get('/', async (req, res) => {
         where: { id: req.user.id },
 
     })
-
-
 
     return res.json(currUser)
 }
