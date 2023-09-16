@@ -418,8 +418,8 @@ router.put('/:spotId', requireAuth, async (req, res) => {
     if (!city) city = ''
     if (!state) state = ''
     if (!country) country = ''
-    if (!lat) lat = ''
-    if (!lng) lng = ''
+    if (!lat && lat !== 0) lat = ''
+    if (!lng && lng !== 0) lng = ''
     if (!name) name = ''
     if (!description) description = ''
     if (!price) price = ''
@@ -430,7 +430,7 @@ router.put('/:spotId', requireAuth, async (req, res) => {
         { where: { id: spotId }, }
     );
 
-    newOne = await Spot.findByPk(spotId, { attributes: { exclude: 'createdAt updatedAt' } });
+    newOne = await Spot.findByPk(spotId);
 
     return res.json(newOne);
 });

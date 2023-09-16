@@ -27,12 +27,6 @@ router.get('/current', requireAuth, async (req, res) => {
                 model: Spot,
                 as: 'Spot',
                 attributes: { exclude: 'createdAt updatedAt' },
-                include: [{
-                    model: SpotImage,
-                    attributes: ["url"],
-                    where: { preview: true },
-                    required: false
-                }]
             },
             {
                 model: ReviewImage,
@@ -42,8 +36,6 @@ router.get('/current', requireAuth, async (req, res) => {
         ]
     })
 
-
-
     let resArr = []
 
     for (let i = 0; i < userReviews.length; i++) {
@@ -52,6 +44,7 @@ router.get('/current', requireAuth, async (req, res) => {
 
         let oneSpot = {}
 
+        //spot object
         oneSpot.id = userReviews[i].Spot.id
         oneSpot.ownerId = userReviews[i].Spot.ownerId
         oneSpot.address = userReviews[i].Spot.address
@@ -61,9 +54,7 @@ router.get('/current', requireAuth, async (req, res) => {
         oneSpot.lat = userReviews[i].Spot.lat
         oneSpot.lng = userReviews[i].Spot.lng
         oneSpot.name = userReviews[i].Spot.name
-        oneSpot.description = userReviews[i].Spot.description
         oneSpot.price = userReviews[i].Spot.price
-
 
         // // preview image url
 
@@ -72,6 +63,8 @@ router.get('/current', requireAuth, async (req, res) => {
         if (prevImg) {
             oneSpot.previewImage = prevImg.url
         } else { oneSpot.previewImage = 'no preview image' }
+
+        //review object
 
         oneReview.id = userReviews[i].id
         oneReview.userId = userReviews[i].userId
@@ -82,17 +75,7 @@ router.get('/current', requireAuth, async (req, res) => {
         oneReview.updatedAt = userReviews[i].updatedAt
         oneReview.User = userReviews[i].User
         oneReview.Spot = oneSpot
-
         oneReview.ReviewImages = userReviews[i].ReviewImages
-
-
-
-
-
-
-
-
-
 
         resArr.push({ ...oneReview })
     }
