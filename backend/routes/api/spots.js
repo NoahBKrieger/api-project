@@ -523,6 +523,7 @@ router.post('/:spotId/reviews', requireAuth, async (req, res) => {
     return res.json(newReview)
 });
 
+// get bookings of a spot
 router.get('/:spotId/bookings', requireAuth, async (req, res) => {
 
     const id = req.params.spotId;
@@ -567,13 +568,24 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
     const userId = req.user.id;
 
 
+    const checkSpot = await Spot.findByPk(id)
+
+    if (!checkSpot) {
+        res.statusCode = 404
+        return res.json({ message: "Spot couldn't be found" })
+    }
+    if (userId === checkSpot.ownerId) {
+        res.statusCode = 400
+        return res.json({ message: 'Spot must NOT belong to the current user' })
+    }
+
 
     let startNum = startDate.split('-').join();
     let endNum = endDate.split('-').join();
 
     if (endNum <= startNum) {
         res.statusCode = 400
-        return res.json({ message: "endDate cannot be on or before startDate" })
+        return res.json({ message: "Bad Request", errors: { endDate: "endDate cannot be on or before startDate" } })
     }
 
     const checkBooking = await Booking.findAll({
@@ -582,46 +594,32 @@ router.post('/:spotId/bookings', requireAuth, async (req, res) => {
         }
     })
 
-
-    // NEEDS BETTER ERROR HANDLING VVV
-
     let badDatesErr = new Error
 
     badDatesErr.errors = {}
-    badDatesErr.statusCode = 400
+    badDatesErr.status = 403
+    badDatesErr.title = 'Sorry, this spot is already booked for the specified dates'
 
     for (let i = 0; i < checkBooking.length; i++) {
         if (checkBooking[i].startDate.split('-').join() <= startNum && startNum <= checkBooking[i].endDate.split('-').join()) {
-            // res.statusCode = 400
-            // return res.json({ message: "Start date conflicts with an existing booking" })
             badDatesErr.errors.startDate = "Start date conflicts with an existing booking"
         }
         if (checkBooking[i].startDate.split('-').join() <= endNum && endNum <= checkBooking[i].endDate.split('-').join()) {
-            // res.statusCode = 400
-            // return res.json({ message: "End date conflicts with an existing booking" })
+            badDatesErr.errors.endDate = "End date conflicts with an existing booking"
+        }
+        if (checkBooking[i].startDate.split('-').join() >= startNum && endNum >= checkBooking[i].endDate.split('-').join()) {
+            badDatesErr.errors.startDate = "Start date conflicts with an existing booking"
             badDatesErr.errors.endDate = "End date conflicts with an existing booking"
         }
     };
 
     if (badDatesErr.errors.startDate || badDatesErr.errors.endDate) throw badDatesErr
 
-    const checkSpot = await Spot.findByPk(id)
 
-    if (!checkSpot) {
-        res.statusCode = 404
-        return res.json({ message: "Spot couldn't be found" })
-    }
-
-    if (userId === checkSpot.ownerId) {
-        res.statusCode = 400
-        return res.json({ message: 'Spot must NOT belong to the current user' })
-    }
-
+    //if no errors
     await Booking.create({ spotId: id, userId, startDate, endDate })
-
     const newBooking = await Booking.findAll({ where: { spotId: id, startDate } })
-
-    return res.json(newBooking)
+    return res.json(...newBooking)
 })
 
 

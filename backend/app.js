@@ -91,7 +91,7 @@ app.use((err, _req, res, _next) => {
     console.log(err);
     res.json({
         // title: err.title || 'Server Error',
-        message: err.title || "Bad Request",
+        message: err.title || "invalid csrf token",
         errors: err.errors,
         // stack: isProduction ? null : err.stack
     });

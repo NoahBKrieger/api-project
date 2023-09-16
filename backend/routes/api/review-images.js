@@ -25,7 +25,7 @@ router.delete('/:imageId', requireAuth, async (req, res) => {
     })
 
     if (currUserId !== checkReviewOwner.userId) {
-        res.statusCode = 400
+        res.statusCode = 403
         return res.json({ message: 'Forbidden' })
     }
 
@@ -33,8 +33,6 @@ router.delete('/:imageId', requireAuth, async (req, res) => {
 
     return res.json({ message: "Successfully deleted" });
 })
-
-
 
 
 
