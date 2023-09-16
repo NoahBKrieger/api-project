@@ -41,7 +41,6 @@ router.get('/current', requireAuth, async (req, res) => {
     for (let i = 0; i < userReviews.length; i++) {
 
         let oneReview = {}
-
         let oneSpot = {}
 
         //spot object
@@ -57,7 +56,6 @@ router.get('/current', requireAuth, async (req, res) => {
         oneSpot.price = userReviews[i].Spot.price
 
         // // preview image url
-
         const prevImg = await SpotImage.findOne({ where: { spotId: oneSpot.id, preview: true } })
 
         if (prevImg) {
@@ -65,7 +63,6 @@ router.get('/current', requireAuth, async (req, res) => {
         } else { oneSpot.previewImage = 'no preview image' }
 
         //review object
-
         oneReview.id = userReviews[i].id
         oneReview.userId = userReviews[i].userId
         oneReview.spotId = userReviews[i].spotId
@@ -84,7 +81,7 @@ router.get('/current', requireAuth, async (req, res) => {
 })
 
 
-
+// create image for review
 router.post('/:reviewId/images', requireAuth, async (req, res) => {
 
     const currentUserId = req.user.id;
@@ -121,11 +118,15 @@ router.post('/:reviewId/images', requireAuth, async (req, res) => {
     return res.json(result);
 });
 
+// edit a review
 router.put('/:reviewId', requireAuth, async (req, res) => {
 
     const currentUserId = req.user.id;
     const id = req.params.reviewId;
-    const { review, stars } = req.body;
+    let { review, stars } = req.body;
+
+    if (!review) review = ''
+    if (!stars) stars = ''
 
     const reviewToCheck = await Review.findOne({ where: { id } })
 

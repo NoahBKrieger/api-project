@@ -4,7 +4,6 @@ const router = express.Router();
 const { Booking, Spot, SpotImage } = require('../../db/models');
 
 const { requireAuth } = require('../../utils/auth');
-// const { handleValidationErrors } = require('../../utils/validation');
 
 router.get('/current', requireAuth, async (req, res) => {
 
@@ -17,24 +16,61 @@ router.get('/current', requireAuth, async (req, res) => {
         include: {
             model: Spot,
             as: 'Spot',
-            attributes: { exclude: 'createdAt updatedAt description' },
-            include: {
-                model: SpotImage,
-                attributes: ['url'],
-                where: { preview: true },
-                required: false
-            }
+            attributes: { exclude: 'createdAt updatedAt description' }
         }
     })
-    return res.json({ Bookings: userBookings })
+
+    let resArr = []
+
+    for (let i = 0; i < userBookings.length; i++) {
+
+        let oneBooking = {}
+        let oneSpot = {}
+
+        //spot object
+        oneSpot.id = userBookings[i].Spot.id
+        oneSpot.ownerId = userBookings[i].Spot.ownerId
+        oneSpot.address = userBookings[i].Spot.address
+        oneSpot.city = userBookings[i].Spot.city
+        oneSpot.state = userBookings[i].Spot.state
+        oneSpot.country = userBookings[i].Spot.country
+        oneSpot.lat = userBookings[i].Spot.lat
+        oneSpot.lng = userBookings[i].Spot.lng
+        oneSpot.name = userBookings[i].Spot.name
+        oneSpot.price = userBookings[i].Spot.price
+
+        // // preview image url
+        const prevImg = await SpotImage.findOne({ where: { spotId: oneSpot.id, preview: true } })
+
+        if (prevImg) {
+            oneSpot.previewImage = prevImg.url
+        } else { oneSpot.previewImage = 'no preview image' }
+
+        //booking object
+        oneBooking.id = userBookings[i].id
+        oneBooking.spotId = userBookings[i].spotId
+        oneBooking.Spot = oneSpot
+        oneBooking.userId = userBookings[i].userId
+        oneBooking.startDate = userBookings[i].startDate
+        oneBooking.endDate = userBookings[i].endDate
+        oneBooking.createdAt = userBookings[i].createdAt
+        oneBooking.updatedAt = userBookings[i].updatedAt
+
+
+        resArr.push({ ...oneBooking })
+    }
+    return res.json({ Bookings: resArr })
 })
 
 
 router.put('/:bookingId', requireAuth, async (req, res) => {
 
     const id = req.params.bookingId
-    const { startDate, endDate } = req.body
+    let { startDate, endDate } = req.body
     const currUserId = req.user.id;
+
+    if (!startDate) startDate = ''
+    if (!endDate) endDate = ''
 
     const checkBooking = await Booking.findByPk(id)
 
@@ -49,10 +85,11 @@ router.put('/:bookingId', requireAuth, async (req, res) => {
     }
 
 
-    let badDatesErr = new Error('Bad request')
+    let badDatesErr = new Error
 
     badDatesErr.errors = {}
-    badDatesErr.statusCode = 400
+    badDatesErr.status = 403
+    badDatesErr.title = "Sorry, this spot is already booked for the specified dates"
 
     const checkBookings = await Booking.findAll({
         where: { spotId: checkBooking.spotId }
@@ -66,6 +103,10 @@ router.put('/:bookingId', requireAuth, async (req, res) => {
             badDatesErr.errors.startDate = "Start date conflicts with an existing booking"
         }
         if (checkBookings[i].startDate.split('-').join() <= endNum && endNum <= checkBookings[i].endDate.split('-').join()) {
+            badDatesErr.errors.endDate = "End date conflicts with an existing booking"
+        }
+        if (checkBookings[i].startDate.split('-').join() >= startNum && endNum >= checkBookings[i].endDate.split('-').join()) {
+            badDatesErr.errors.startDate = "Start date conflicts with an existing booking"
             badDatesErr.errors.endDate = "End date conflicts with an existing booking"
         }
     };
@@ -82,19 +123,23 @@ router.put('/:bookingId', requireAuth, async (req, res) => {
 
     if (checkEnd < today) {
         res.statusCode = 403
-        return res.json({ message: "past bookings cannot be modified" })
+        return res.json({ message: "Past bookings cannot be modified" })
     }
 
 
-    if (endNum <= startNum) {
+    if (startDate !== '' && endDate !== '' && endNum < startNum) {
         res.statusCode = 400
-        return res.json({ message: "endDate cannot be on or before startDate" })
+        return res.json({
+            message: "Bad Request",
+            errors: {
+                endDate: "endDate cannot come before startDate"
+            }
+        })
     }
 
+    // if no errors
     await Booking.update({ startDate, endDate }, { where: { id } });
-
     const updated = await Booking.findByPk(id)
-
     return res.json(updated);
 });
 
@@ -111,7 +156,7 @@ router.delete('/:bookingId', requireAuth, async (req, res) => {
     }
 
     if (currUserId !== checkBooking.userId) {
-        res.statusCode = 400
+        res.statusCode = 403
         return res.json({ message: 'Forbidden' })
     }
 
