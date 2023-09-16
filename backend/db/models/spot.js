@@ -83,7 +83,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         max: { args: 90, msg: "Latitude is not valid" },
         min: { args: -90, msg: "Latitude is not valid" },
-        validString(value) { if (typeof value != 'number') throw new Error('Invalid type') }
+        validString(value) { if (typeof value != 'number') throw new Error("Latitude is not valid") }
 
       }
     },
@@ -92,7 +92,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         max: { args: 180, msg: "Longitude is not valid" },
         min: { args: -180, msg: "Longitude is not valid" },
-        validString(value) { if (typeof value != 'number') throw new Error('Invalid type') }
+        validString(value) { if (typeof value != 'number') throw new Error("Longitude is not valid") }
 
       }
     },
@@ -101,7 +101,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         notEmpty: { msg: "Name is required" },
-        len: { args: [1, 50], msg: "Name must be less than 50 characters" },
+        len: { args: [1, 50], msg: "Name is required and must be less than 50 characters" },
         notContains: { args: '  ', msg: "Name is required" },
         validString(value) { if (typeof value != 'string') throw new Error('Invalid type') }
       }
@@ -123,7 +123,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notEmpty: { msg: "Price per day is required" },
         notNull: { msg: "Price per day is required" },
-        isFloat: { msg: "Price is type float" },
+        isFloat: { msg: "Price per day is required" },
         validString(value) { if (typeof value != 'number') throw new Error('Invalid type') }
 
       }

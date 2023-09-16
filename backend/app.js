@@ -79,7 +79,7 @@ app.use((err, _req, _res, next) => {
         for (let error of err.errors) {
             errors[error.path] = error.message;
         }
-        // err.title = 'Validation error';
+        if (!err.title) err.title = 'Validation error';
         err.errors = errors;
     }
     next(err);
@@ -88,10 +88,10 @@ app.use((err, _req, _res, next) => {
 // Error formatter
 app.use((err, _req, res, _next) => {
     res.status(err.status || 400);
-    console.error(err);
+    console.log(err);
     res.json({
         // title: err.title || 'Server Error',
-        message: "Bad Request",
+        message: err.title || "Bad Request",
         errors: err.errors,
         // stack: isProduction ? null : err.stack
     });

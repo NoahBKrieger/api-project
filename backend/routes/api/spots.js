@@ -9,7 +9,6 @@ const { ReviewImage } = require('../../db/models');
 const { Booking } = require('../../db/models');
 
 const { requireAuth } = require('../../utils/auth');
-
 const { Op } = require("sequelize")
 
 // const { check } = require('express-validator');
@@ -53,6 +52,8 @@ const { Op } = require("sequelize")
 //     handleValidationErrors
 // ];
 
+
+// get all spots
 
 
 router.get('/', async (req, res) => {
@@ -283,6 +284,12 @@ router.get('/:spotId', async (req, res) => {
         }]
     })
 
+    // spot not found error
+    if (!spot) {
+        res.statusCode = 404
+        return res.json({ message: "Spot couldn't be found" })
+    }
+
 
     let resSpot = {}
 
@@ -376,7 +383,7 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
         const checkPreviewImg = await SpotImage.findAll({ where: { spotId: id, preview: true } })
 
         if (checkPreviewImg.length > 0) {
-            res.statusCode = 404
+            res.statusCode = 403
             return res.json({ message: 'Spot already has preview image' })
         }
     }
@@ -387,6 +394,7 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
     return res.json({ id: newImg.id, url: newImg.url, preview: newImg.preview })
 });
 
+// edit a spot
 router.put('/:spotId', requireAuth, async (req, res) => {
 
     const spotId = req.params.spotId;
@@ -403,7 +411,18 @@ router.put('/:spotId', requireAuth, async (req, res) => {
         return res.json({ message: 'Forbidden' })
     }
 
-    const { address, city, state, country, lat, lng, name, description, price } = req.body;
+    let { address, city, state, country, lat, lng, name, description, price } = req.body;
+
+    // reassigns null keys so an error is thrown on update
+    if (!address) address = ''
+    if (!city) city = ''
+    if (!state) state = ''
+    if (!country) country = ''
+    if (!lat && lat !== 0) lat = ''
+    if (!lng && lng !== 0) lng = ''
+    if (!name) name = ''
+    if (!description) description = ''
+    if (!price) price = ''
 
 
     await Spot.update(
@@ -411,7 +430,7 @@ router.put('/:spotId', requireAuth, async (req, res) => {
         { where: { id: spotId }, }
     );
 
-    newOne = await Spot.findByPk(spotId, { attributes: { exclude: 'createdAt updatedAt' } });
+    newOne = await Spot.findByPk(spotId);
 
     return res.json(newOne);
 });
@@ -472,6 +491,7 @@ router.get('/:spotId/reviews', async (req, res) => {
     return res.json({ Reviews: spotReviews })
 });
 
+// create review for a spot
 router.post('/:spotId/reviews', requireAuth, async (req, res) => {
 
     const id = req.params.spotId;
@@ -493,7 +513,7 @@ router.post('/:spotId/reviews', requireAuth, async (req, res) => {
     })
 
     if (checkReviewsOfSpot) {
-        res.statusCode = 403;
+        res.statusCode = 500;
         return res.json({ message: 'User already has a review for this spot' })
     }
 

@@ -8,8 +8,9 @@ const { User } = require('../../db/models');
 
 const router = express.Router();
 
-const { check } = require('express-validator');
-const { handleValidationErrors } = require('../../utils/validation');
+// const { check } = require('express-validator');
+
+// const { handleValidationErrors } = require('../../utils/validation');
 
 // const validateLogin = [
 //     check('credential')
@@ -24,7 +25,8 @@ const { handleValidationErrors } = require('../../utils/validation');
 
 
 // backend/routes/api/session.js
-// ...
+
+
 
 // Log in
 router.post(
@@ -91,7 +93,7 @@ router.delete('/', (_req, res) => {
 );
 
 // Restore session user
-router.get('/', requireAuth, (req, res) => {
+router.get('/', (req, res) => {
     const { user } = req;
     if (user) {
         const safeUser = {

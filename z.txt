@@ -1,0 +1,60 @@
+Route Fixes:
+
+Route Name: Sign Up a User
+Where issue occurs: On an error response
+When creating a new user with email and username that already exist, message says “Bad Request.”
+Message should say “User already exists” for both email and username.
+Status code should be 500
+
+Route Name: Create a Spot
+Where issue occurs: On an error response
+When creating a new spot, when a price is not entered, the error “Price per day is required” or similar, is not present.
+
+Route Name: Get Details of Spot by Id
+Where issue occurs: On an error response
+When getting details of a nonexistent spot/id, the message reads “Bad Request.” The message should read “Spot couldn’t be found”
+Status code should be 404
+
+Route Name: Edit a Spot
+Where issue occurs: On a successful response / On an error response
+createdAt and updatedAt details are missing.
+When address, city, state, country, description, and price key/value pairs are not included on input, error messages are not present for them.
+Each should say “____ is required” or similar if there are no address, city, state, country, description, and price
+
+Route Name: Create a Review for a Spot
+Where issue occurs: On an error response
+Response when user already has a review for this spot should be 500
+
+Route Name: Get Reviews of Current User
+Where issue occurs: On a successful response
+previewImage with an image url string key/value pair should be included in Spot object
+
+Route Name: Edit a Review
+Where issue occurs: On an error response
+When not including review and/or stars key/value pair on input, the review is returned.
+Instead, there should be error messages “Review text is required” and "Stars must be an integer from 1 to 5"
+
+Route Name: Create a Booking Based on a Spot Id
+Where issue occurs:On a successful response
+Status code should be 403.
+
+Route Name: Get All of the Current User’s Bookings
+Where issue occurs: On a successful response
+Returned Spot object should include previewImage and string of image url key/value pair.
+
+Route Name: Edit a Booking
+Where issue occurs: On an error response
+On a booking conflict, status code should be 403 and message should say "Sorry, this spot is already booked for the specified dates"
+For body validation errors, “message: “Bad Request” key/value pairs are missing.
+
+Route Name: Get Current User
+Where issue occurs: On successful response
+When there is no logged in user, response should be an object of “user: null” and status code should be 200.
+
+Route Name: Delete a Review Image
+Where issue occurs: On validation response
+Status code should be 403.
+
+Route Name: Delete a Booking
+Where issue occurs: On validation response
+Status code should be 403.
