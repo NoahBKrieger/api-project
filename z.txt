@@ -45,7 +45,7 @@ Instead, there should be error messages “Review text is required” and "Stars
 Where issue occurs:On a successful response
 Status code should be 403.
 
-Route Name: Get All of the Current User’s Bookings
+**Route Name: Get All of the Current User’s Bookings
 Where issue occurs: On a successful response
 Returned Spot object should include previewImage and string of image url key/value pair.
 

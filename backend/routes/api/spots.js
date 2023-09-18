@@ -564,9 +564,11 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
 router.post('/:spotId/bookings', requireAuth, async (req, res) => {
 
     const id = req.params.spotId
-    const { startDate, endDate } = req.body
+    let { startDate, endDate } = req.body
     const userId = req.user.id;
 
+    if (!startDate) startDate = "invalid1"
+    if (!endDate) endDate = "invalid2"
 
     const checkSpot = await Spot.findByPk(id)
 
