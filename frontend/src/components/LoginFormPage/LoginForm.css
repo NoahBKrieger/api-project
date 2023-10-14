@@ -1,0 +1,10 @@
+.login-form {
+    background-color: bisque;
+    border: 2px black dotted;
+    padding: 5px;
+}
+
+h1 {
+    color: rgb(172, 20, 20);
+    padding: 5px;
+}
