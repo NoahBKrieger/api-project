@@ -81,8 +81,8 @@ module.exports = (sequelize, DataTypes) => {
     lat: {
       type: DataTypes.FLOAT,
       validate: {
-        max: { args: 90, msg: "Latitude is not valid" },
-        min: { args: -90, msg: "Latitude is not valid" },
+        max: { args: [90], msg: "Latitude is not valid" },
+        min: { args: [-90], msg: "Latitude is not valid" },
         validString(value) { if (typeof value != 'number') throw new Error("Latitude is not valid") }
 
       }
@@ -90,8 +90,8 @@ module.exports = (sequelize, DataTypes) => {
     lng: {
       type: DataTypes.FLOAT,
       validate: {
-        max: { args: 180, msg: "Longitude is not valid" },
-        min: { args: -180, msg: "Longitude is not valid" },
+        max: { args: [180], msg: "Longitude is not valid" },
+        min: { args: [-180], msg: "Longitude is not valid" },
         validString(value) { if (typeof value != 'number') throw new Error("Longitude is not valid") }
 
       }
@@ -124,6 +124,7 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: { msg: "Price per day is required" },
         notNull: { msg: "Price per day is required" },
         isFloat: { msg: "Price per day is required" },
+        min: { args: [0], msg: "Price per day must be greater than or equal to 0" },
         validString(value) { if (typeof value != 'number') throw new Error('Invalid type') }
 
       }

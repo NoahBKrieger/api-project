@@ -35,18 +35,16 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        isDate: { msg: 'Must be a date' },
-        validString(value) { if (typeof value != 'string') throw new Error('Invalid type') }
-
+        isDate: { msg: 'StartDate is required in valid date format: YYYY-MM-DD' },
+        validString(value) { if (typeof value != 'string') throw new Error('StartDate is required in valid date format: YYYY-MM-DD') }
       }
     },
     endDate: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        isDate: { msg: 'Must be a date' },
-        validString(value) { if (typeof value != 'string') throw new Error('Invalid type') }
-
+        isDate: { msg: 'EndDate is required in valid date format: YYYY-MM-DD' },
+        validString(value) { if (typeof value != 'string') throw new Error('EndDate is required in valid date format: YYYY-MM-DD') }
       }
     },
   }, {

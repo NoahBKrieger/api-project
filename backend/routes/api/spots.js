@@ -52,10 +52,9 @@ const { Op } = require("sequelize")
 //     handleValidationErrors
 // ];
 
+let iLoveAppAcademy
 
 // get all spots
-
-
 router.get('/', async (req, res) => {
 
     let err = new Error
@@ -338,6 +337,7 @@ router.get('/:spotId', async (req, res) => {
     return res.json({ ...resSpot })
 })
 
+//create a spot
 router.post('/', requireAuth, async (req, res) => {
 
     const ownerId = req.user.id;
@@ -361,9 +361,10 @@ router.post('/', requireAuth, async (req, res) => {
     return res.json(newSpot)
 })
 
+//create a spot image
 router.post('/:spotId/images', requireAuth, async (req, res) => {
 
-    const { url, preview } = req.body
+    let { url, preview } = req.body
     const id = req.params.spotId
     const userId = req.user.id;
 
@@ -394,7 +395,7 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
     return res.json({ id: newImg.id, url: newImg.url, preview: newImg.preview })
 });
 
-// edit a spot
+//edit a spot
 router.put('/:spotId', requireAuth, async (req, res) => {
 
     const spotId = req.params.spotId;
@@ -413,7 +414,7 @@ router.put('/:spotId', requireAuth, async (req, res) => {
 
     let { address, city, state, country, lat, lng, name, description, price } = req.body;
 
-    // reassigns null keys so an error is thrown on update
+    // reassigns undefined keys so an error is thrown on update
     if (!address) address = ''
     if (!city) city = ''
     if (!state) state = ''
@@ -422,7 +423,7 @@ router.put('/:spotId', requireAuth, async (req, res) => {
     if (!lng && lng !== 0) lng = ''
     if (!name) name = ''
     if (!description) description = ''
-    if (!price) price = ''
+    if (!price && price !== 0) price = ''
 
 
     await Spot.update(
@@ -435,6 +436,7 @@ router.put('/:spotId', requireAuth, async (req, res) => {
     return res.json(newOne);
 });
 
+//delete a spot
 router.delete('/:spotId', requireAuth, async (req, res) => {
 
     const spotId = req.params.spotId;
@@ -491,7 +493,7 @@ router.get('/:spotId/reviews', async (req, res) => {
     return res.json({ Reviews: spotReviews })
 });
 
-// create review for a spot
+//create review for a spot
 router.post('/:spotId/reviews', requireAuth, async (req, res) => {
 
     const id = req.params.spotId;
@@ -523,7 +525,7 @@ router.post('/:spotId/reviews', requireAuth, async (req, res) => {
     return res.json(newReview)
 });
 
-// get bookings of a spot
+//get bookings of a spot
 router.get('/:spotId/bookings', requireAuth, async (req, res) => {
 
     const id = req.params.spotId;
@@ -560,13 +562,15 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
     }
 })
 
-// create a booking
+//create a booking
 router.post('/:spotId/bookings', requireAuth, async (req, res) => {
 
     const id = req.params.spotId
-    const { startDate, endDate } = req.body
+    let { startDate, endDate } = req.body
     const userId = req.user.id;
 
+    if (!startDate) startDate = "invalid1"
+    if (!endDate) endDate = "invalid2"
 
     const checkSpot = await Spot.findByPk(id)
 
