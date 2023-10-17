@@ -1,5 +1,7 @@
+
 import { csrfFetch } from "../../store/csrf";
-import './allSpots.css'
+import './AllSpots.css'
+import SpotItem from "../SpotItem";
 
 
 const getSpots = async () => {
@@ -9,28 +11,24 @@ const getSpots = async () => {
     });
 
     const data = await response.json()
-
-    console.log(data)
-
     return data.Spots;
-
 }
-
 const spots = await getSpots()
 
 
 function AllSpots() {
 
 
-    console.log('spots', spots)
 
 
     return (
         <>
             <h1>ALL SPOTS</h1>
-            <ul>
+            <ul className="spot-list">
                 {spots.map(el => {
-                    return <li className="spot-item">{el.name + '  ' + el.previewImage + '  $' + el.price}</li>
+                    return <li className="spot-item" key={el.id}>
+                        <SpotItem spot={el} />
+                    </li>
                 })}
 
             </ul>

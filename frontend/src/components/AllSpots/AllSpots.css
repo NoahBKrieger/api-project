@@ -1,0 +1,14 @@
+.spot-item {
+    padding: 10px;
+    border: solid black 2px;
+    max-width: fit-content;
+    min-width: 60px;
+    margin: 3px;
+}
+
+.spot-list {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    list-style: none;
+}
