@@ -1,9 +1,12 @@
+// import { redirect } from "react-router-dom";
+
 function SpotItem({ spot }) {
 
+    // onClick={redirect(`api/spots/${spot.id}`)}
     return (
         <div>
             {/* <h2>{spot.name}</h2> */}
-            <img src={spot.previewImage} alt={`${spot.name} preview`}></img>
+            <img className='preview-image' src='' alt={`${spot.name} preview`}></img>
             <p>{`${spot.city}, ${spot.state}`}</p>
             <p>{`$${spot.price} night`}</p>
         </div>
