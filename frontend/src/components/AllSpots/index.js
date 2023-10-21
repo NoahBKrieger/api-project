@@ -1,21 +1,11 @@
-
-
 import './AllSpots.css'
 import SpotItem from "../SpotItem";
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchSpotsThunk } from '../../store/spotReducer';
 
-// const getSpots = async () => {
 
-//     const response = await csrfFetch('/api/spots', {
-//         method: "GET"
-//     });
 
-//     const data = await response.json()
-//     return data.Spots;
-// }
-// const spots = await getSpots()
 
 
 function AllSpots() {
@@ -36,11 +26,10 @@ function AllSpots() {
             <ul className="spot-list">
                 {spots &&
                     spots.map(el => {
-                        return <li className="spot-item" key={el.id}>
+                        return <li className="spot-item" key={el.id} >
                             <SpotItem spot={el} />
                         </li>
                     })}
-
             </ul>
         </>
     )
