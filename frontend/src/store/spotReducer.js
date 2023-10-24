@@ -1,9 +1,12 @@
 import { csrfFetch } from "./csrf";
 
 const LOAD_SPOTS = 'spots/loadSpots'
+const LOAD_SPOT = 'spots/loadSpot'
 const ADD_SPOT = 'spots/addSpot'
 const EDIT_SPOT = 'spots/editSpot'
 const DELETE_SPOT = 'spots/deleteSpot'
+
+//get all
 
 export const fetchSpotsThunk = () => async (dispatch) => {
     const response = await csrfFetch('/api/spots');
@@ -18,6 +21,21 @@ export const loadSpots = (spots) => {
         payload: spots
     };
 };
+
+//get one
+
+export const getSpot = (spot) => ({
+    type: LOAD_SPOT,
+    payload: spot
+});
+
+export const getSpotThunk = (spot) => async (dispatch) => {
+    const response = await csrfFetch(`/api/spots/${spot.id}`);
+    const thisSpot = await response.json();
+    dispatch(getSpot(thisSpot));
+}
+
+//add
 
 export const addSpotThunk = (spot) => async (dispatch) => {
 
@@ -51,8 +69,10 @@ export const addSpot = (spot) => {
     }
 }
 
+//edit
 export const editSpotThunk = (payload) => async (dispatch) => {
-    const response = await fetch(
+
+    const response = await csrfFetch(
         `/api/reports/${payload.id}`, {
         method: "PUT",
         headers: {
@@ -62,17 +82,18 @@ export const editSpotThunk = (payload) => async (dispatch) => {
     }
     )
 
+
     if (response.ok) {
         const editedSpot = await response.json();
         dispatch(editSpot(editedSpot))
         return editedSpot;
     } else {
         const responseBody = await response.json();
-        return responseBody;
-        // console.log('responseBody -- ', responseBody);
-        // console.log('error on response for edit report')
-        // throw new Error('remove report')
-        // return response.errors;
+
+        console.log('responseBody -- ', responseBody);
+        console.log('error on response for edit spot')
+        throw new Error('edit spot error')
+
     }
 }
 
@@ -83,6 +104,8 @@ export const editSpot = (spot) => {
         payload: spot
     }
 }
+
+//delete
 
 export const deleteSpot = (id) => {
 
@@ -100,19 +123,24 @@ export const deleteSpotThunk = (id) => async (dispatch) => {
     if (response.ok) {
         dispatch(deleteSpot(id))
     } else {
-        // console.log('error on response for remove report')
-        // throw new Error('remove report')
+        console.log('error on response for remove report')
+        throw new Error('remove report')
     }
 }
 
 
 
-const initialState = { spots: [] };
+const initialState = { spots: [], currSpot: {} };
 
 const spotReducer = (state = initialState, action) => {
     switch (action.type) {
         case LOAD_SPOTS:
-            return { ...state, spots: [...action.payload] };
+
+
+
+            return { ...state, spots: action.payload };
+        case LOAD_SPOT:
+            return { ...state, currSpot: action.payload }
         case ADD_SPOT:
             return { ...state, spots: [...state.spots, action.payload] };
         case EDIT_SPOT:

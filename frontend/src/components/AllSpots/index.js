@@ -13,18 +13,21 @@ function AllSpots() {
 
     const dispatch = useDispatch();
     const spots = useSelector(state => state.spots.spots);
+    console.log('spots', spots)
 
     useEffect(() => {
         dispatch(fetchSpotsThunk());
     }, [dispatch]);
 
-
+    console.log('spots', spots)
 
     return (
         <>
             <h1>ALL SPOTS</h1>
             <ul className="spot-list">
                 {spots &&
+
+
                     spots.map(el => {
                         return <li className="spot-item" key={el.id} >
                             <SpotItem spot={el} />

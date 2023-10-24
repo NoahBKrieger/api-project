@@ -1,7 +1,8 @@
 .preview-image {
 
 
+    margin: 20px;
     border: solid black 1px;
-    height: 200px;
-    width: 200px;
+    min-height: 200px;
+    min-width: 400px;
 }
