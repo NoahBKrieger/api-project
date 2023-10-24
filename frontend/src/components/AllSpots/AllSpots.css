@@ -1,10 +1,12 @@
 .spot-item {
-    padding: 10px;
+
     border: solid black 2px;
     min-height: 400px;
     min-width: 400px;
     margin: 3px;
     position: relative;
+
+    background-color: bisque;
 
 }
 

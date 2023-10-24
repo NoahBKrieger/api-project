@@ -88,12 +88,12 @@ app.use((err, _req, _res, next) => {
 // Error formatter
 app.use((err, _req, res, _next) => {
     res.status(err.status || 400);
-    // console.log(err);
+    console.log(err);
     res.json({
-        // title: err.title || 'Server Error',
+        title: err.title || 'Server Error',
         message: err.title || "invalid csrf token",
         errors: err.errors,
-        // stack: isProduction ? null : err.stack
+        stack: isProduction ? null : err.stack
     });
 });
 
