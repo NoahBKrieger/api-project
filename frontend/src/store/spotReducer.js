@@ -118,13 +118,13 @@ export const deleteSpot = (id) => {
 export const deleteSpotThunk = (id) => async (dispatch) => {
 
 
-    const response = await csrfFetch(`/api/reports/${id}`, { method: "DELETE", })
+    const response = await csrfFetch(`/api/spots/${id}`, { method: "DELETE", })
 
     if (response.ok) {
         dispatch(deleteSpot(id))
     } else {
-        console.log('error on response for remove report')
-        throw new Error('remove report')
+        console.log('error on response for remove spot')
+        throw new Error('remove a spot')
     }
 }
 

@@ -7,6 +7,7 @@ import AllSpots from "./components/AllSpots";
 import SpotForm from "./components/SpotForm";
 import EditSpotForm from "./components/EditSpotForm";
 import SpotDetails from "./components/SpotDetails";
+import CurrReviews from "./components/CurrReviews";
 
 function App() {
   const dispatch = useDispatch();
@@ -23,7 +24,8 @@ function App() {
         <AllSpots exact path='/' />
         <SpotForm path='/spots/new' />
         <EditSpotForm path='/spots/edit' />
-        <SpotDetails path='spots/:id' />
+        <SpotDetails path='/spots/:id' />
+        <CurrReviews path='/reviews/current' />
 
       </Switch>}
     </>
