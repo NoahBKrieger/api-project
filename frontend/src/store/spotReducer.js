@@ -29,10 +29,10 @@ export const getSpot = (spot) => ({
     payload: spot
 });
 
-export const getSpotThunk = (spot) => async (dispatch) => {
-    const response = await csrfFetch(`/api/spots/${spot.id}`);
+export const getSpotThunk = (spotId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/spots/${spotId}`);
     const thisSpot = await response.json();
-    dispatch(getSpot(thisSpot));
+    await dispatch(getSpot(thisSpot));
 }
 
 //add

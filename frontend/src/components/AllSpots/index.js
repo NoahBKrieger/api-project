@@ -21,6 +21,7 @@ function AllSpots() {
 
     console.log('spots', spots)
 
+
     return (
         <>
             <h1>ALL SPOTS</h1>
@@ -30,7 +31,7 @@ function AllSpots() {
 
                     spots.map(el => {
                         return <li className="spot-item" key={el.id} >
-                            <SpotItem onC spot={el} />
+                            <SpotItem spot={el} />
                         </li>
                     })}
             </ul>
