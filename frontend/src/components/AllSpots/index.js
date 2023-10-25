@@ -30,7 +30,7 @@ function AllSpots() {
 
                     spots.map(el => {
                         return <li className="spot-item" key={el.id} >
-                            <SpotItem spot={el} />
+                            <SpotItem onC spot={el} />
                         </li>
                     })}
             </ul>
