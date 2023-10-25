@@ -13,6 +13,7 @@ function SpotItem({ spot }) {
             <p>{`${spot.city}, ${spot.state}`}</p>
             <p>Average Rating: {spot.avgRating}</p>
             <p>{`$${spot.price} per night`}</p>
+            <span className="tooltip-text">{spot.name}</span>
             <SpotDetailsButton spot={spot} />
 
         </div>

@@ -6,3 +6,21 @@
     min-height: 200px;
     min-width: 400px;
 }
+
+.tooltip-text {
+    visibility: hidden;
+    position: absolute;
+    z-index: 2;
+    width: 100px;
+    color: white;
+    font-size: 20px;
+    background-color: #192733;
+    border-radius: 10px;
+    padding: 10px 15px 10px 15px;
+    top: -20px;
+
+}
+
+.item:hover .tooltip-text {
+    visibility: visible;
+}
