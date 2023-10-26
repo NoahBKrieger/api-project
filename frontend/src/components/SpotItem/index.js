@@ -3,6 +3,7 @@ import SpotDetailsButton from "../SpotDetails";
 import { Link } from "react-router-dom";
 import { getSpotThunk } from "../../store/spotReducer";
 import { useDispatch } from "react-redux";
+import { getSpotReviewsThunk } from '../../store/reviewReducer'
 
 import './SpotItem.css'
 
@@ -24,6 +25,7 @@ function SpotItem({ spot }) {
     const onClick = () => {
 
         dispatch(getSpotThunk(Number(spot.id)))
+        dispatch(getSpotReviewsThunk(Number(spot.id)))
 
     }
 

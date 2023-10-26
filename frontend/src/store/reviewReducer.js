@@ -20,6 +20,22 @@ export const loadReviews = (reviews) => {
     };
 };
 
+// get spot's reviews
+
+export const getSpotReviewsThunk = (spotId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/spots/${spotId}/reviews`);
+    const reviews = await response.json();
+    console.log('reviews', reviews)
+    dispatch(loadReviews(reviews.Reviews));
+};
+
+export const loadSpotReviews = (reviews) => {
+    return {
+        type: LOAD_REVIEWS,
+        payload: reviews
+    };
+};
+
 // create review
 
 export const createReviewThunk = (spotId, review) => async (dispatch) => {

@@ -11,20 +11,42 @@ function SpotPage() {
     // const { spotId } = useParams();
 
     const spot = useSelector(state => (state.spots.currSpot))
+    const reviews = useSelector(state => state.reviews.reviews)
 
-    console.log('current spot ---', spot)
+    const imageArr = spot.SpotImages && spot.SpotImages.filter(el => { return el.preview === false })
+    console.log('imageArr', imageArr)
+
+
     return (
-
-
 
         <>
             <h1>{spot.name}</h1>
-            <img src={pic} alt='preview' style={{ width: 700 + 'px', height: 400 + 'px' }}></img>
+            <span className="images">
+                <img src={pic} alt='preview' style={{ width: 650 + 'px', height: 400 + 'px' }}></img>
+                <ol>
+                    {imageArr.map(el => {
+                        return <li>
+                            <img src={pic} alt={el.url + '-   picture'} style={{ width: 300 + 'px', height: 200 + 'px' }}></img>
+                        </li>
+                    })}
+                </ol>
+            </span>
             <div>{spot.address} , {spot.city} , {spot.state} , {spot.country}</div>
             <div> latitude: {spot.lat} longitude: {spot.lng}</div>
             <div>{spot.description}</div>
             <div>Price: ${spot.price}</div>
-            <div>Average Rating: {spot.avgRating} Stars</div>
+            <div>Average Rating: {spot.avgStarRating} Stars</div>
+
+            <div>
+                <h2>Reviews</h2>
+                <ul className="review-list">
+                    {reviews.map(el => {
+                        return <li> review: {el.review}, stars: {el.stars}</li>
+                    })}
+
+                </ul>
+
+            </div>
         </>
 
     )
