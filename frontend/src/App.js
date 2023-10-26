@@ -8,6 +8,7 @@ import SpotForm from "./components/SpotForm";
 import EditSpotForm from "./components/EditSpotForm";
 import SpotPage from "./components/SpotPage";
 import CurrReviews from "./components/CurrReviews";
+import UserPage from "./components/UserPage";
 
 
 function App() {
@@ -25,8 +26,8 @@ function App() {
         <AllSpots exact path='/' />
         <SpotForm path='/spots/new' />
         <EditSpotForm path='/spots/edit' />
+        <Route path='/spots/user' component={UserPage} />
         <Route exact path='/spots/:spotId' component={SpotPage} />
-
         <CurrReviews path='/reviews/current' />
 
 

@@ -30,7 +30,7 @@ function SpotItem({ spot }) {
     }
 
     return (
-        <Link to={`spots/${spot.id}`}>
+        <Link to={`/spots/${spot.id}`}>
             <div className="item" onClick={onClick}>
 
                 <img className='preview-image' href='https://images.app.goo.gl/hrxAnjFhyGWnpJHX6' alt={`${spot.name} preview`}></img>
