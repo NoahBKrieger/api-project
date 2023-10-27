@@ -30,7 +30,7 @@ function UserPage() {
 
                     spots.map(el => {
                         return <li className="spot-item" key={el.id} >
-                            <SpotItem spot={el} />
+                            <SpotItem spot={el} user={true} />
                         </li>
                     })}
             </ul>

@@ -1,7 +1,7 @@
 import { addSpotThunk } from "../../store/spotReducer";
 import { useState } from "react";
 import { useDispatch } from 'react-redux';
-
+import { useHistory } from "react-router-dom";
 
 
 import './SpotForm.css'
@@ -10,6 +10,7 @@ import './SpotForm.css'
 function SpotForm() {
 
     const dispatch = useDispatch();
+    const history = useHistory();
 
 
     const [spotName, setSpotName] = useState('')
@@ -41,8 +42,9 @@ function SpotForm() {
 
         console.log('newspot----', newSpot)
 
-        dispatch(addSpotThunk(newSpot))
+        await dispatch(addSpotThunk(newSpot))
 
+        history.push('/')
         // console.log('addDis', addDis)
     }
 
