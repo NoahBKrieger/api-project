@@ -1,4 +1,4 @@
-import '../AllSpots'
+import '../AllSpots/AllSpots.css'
 import SpotItem from "../SpotItem";
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';

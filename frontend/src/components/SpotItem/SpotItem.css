@@ -24,3 +24,17 @@
 .item:hover .tooltip-text {
     visibility: visible;
 }
+
+.item:hover {
+    cursor: pointer;
+}
+
+.item {
+
+    max-width: 500px;
+    display: flex;
+
+    flex-wrap: wrap;
+    align-items: center;
+    flex-direction: column;
+}
