@@ -1,10 +1,13 @@
 import { csrfFetch } from "./csrf";
 
 const LOAD_SPOTS = 'spots/loadSpots'
+const LOAD_USER_SPOTS = 'spots/loadUserSpots'
+
 const LOAD_SPOT = 'spots/loadSpot'
 const ADD_SPOT = 'spots/addSpot'
 const EDIT_SPOT = 'spots/editSpot'
 const DELETE_SPOT = 'spots/deleteSpot'
+
 
 //get all
 
@@ -15,9 +18,26 @@ export const fetchSpotsThunk = () => async (dispatch) => {
     dispatch(loadSpots(spots.Spots));
 };
 
+
+
 export const loadSpots = (spots) => {
     return {
         type: LOAD_SPOTS,
+        payload: spots
+    };
+};
+
+// user spots
+export const fetchUserSpotsThunk = () => async (dispatch) => {
+    const response = await csrfFetch('/api/spots/current');
+    const spots = await response.json();
+    console.log('spots', spots)
+    dispatch(loadUserSpots(spots.Spots));
+};
+
+export const loadUserSpots = (spots) => {
+    return {
+        type: LOAD_USER_SPOTS,
         payload: spots
     };
 };
@@ -29,10 +49,10 @@ export const getSpot = (spot) => ({
     payload: spot
 });
 
-export const getSpotThunk = (spot) => async (dispatch) => {
-    const response = await csrfFetch(`/api/spots/${spot.id}`);
+export const getSpotThunk = (spotId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/spots/${spotId}`);
     const thisSpot = await response.json();
-    dispatch(getSpot(thisSpot));
+    await dispatch(getSpot(thisSpot));
 }
 
 //add
@@ -118,13 +138,13 @@ export const deleteSpot = (id) => {
 export const deleteSpotThunk = (id) => async (dispatch) => {
 
 
-    const response = await csrfFetch(`/api/reports/${id}`, { method: "DELETE", })
+    const response = await csrfFetch(`/api/spots/${id}`, { method: "DELETE", })
 
     if (response.ok) {
         dispatch(deleteSpot(id))
     } else {
-        console.log('error on response for remove report')
-        throw new Error('remove report')
+        console.log('error on response for remove spot')
+        throw new Error('remove a spot')
     }
 }
 
@@ -136,9 +156,9 @@ const spotReducer = (state = initialState, action) => {
     switch (action.type) {
         case LOAD_SPOTS:
 
-
-
             return { ...state, spots: action.payload };
+        case LOAD_USER_SPOTS:
+            return { ...state, userSpots: action.payload };
         case LOAD_SPOT:
             return { ...state, currSpot: action.payload }
         case ADD_SPOT:

@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Switch } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import AllSpots from "./components/AllSpots";
 import SpotForm from "./components/SpotForm";
 import EditSpotForm from "./components/EditSpotForm";
-import SpotDetails from "./components/SpotDetails";
+import SpotPage from "./components/SpotPage";
+import CurrReviews from "./components/CurrReviews";
+import UserPage from "./components/UserPage";
+
 
 function App() {
   const dispatch = useDispatch();
@@ -23,7 +26,10 @@ function App() {
         <AllSpots exact path='/' />
         <SpotForm path='/spots/new' />
         <EditSpotForm path='/spots/edit' />
-        <SpotDetails path='spots/:id' />
+        <Route path='/spots/user' component={UserPage} />
+        <Route exact path='/spots/:spotId' component={SpotPage} />
+        <CurrReviews path='/reviews/current' />
+
 
       </Switch>}
     </>
