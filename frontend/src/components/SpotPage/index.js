@@ -43,7 +43,7 @@ function SpotPage() {
                     })}
                 </ol>
             </div>
-            <h2>Hosted by {spot.Owner.firstName}  {spot.Owner.lastName}</h2>
+            <h2>Hosted by {spot && spot.Owner.firstName}  {spot && spot.Owner.lastName}</h2>
             {/* <div> latitude: {spot.lat} longitude: {spot.lng}</div> */}
             <div>Description: {spot.description}</div>
             <div>Price: ${spot.price}</div>

@@ -144,7 +144,7 @@ export const deleteSpotThunk = (id) => async (dispatch) => {
         dispatch(deleteSpot(id))
     } else {
         console.log('error on response for remove spot')
-        throw new Error('remove a spot')
+        // throw new Error('remove a spot')
     }
 }
 
