@@ -27,12 +27,12 @@ function SpotItem({ spot, user }) {
         reviewText = `Average Rating: ${spot.avgRating} stars`
     }
 
-    const itemClick = () => {
+    const itemClick = async () => {
 
-        dispatch(getSpotThunk(Number(spot.id)))
-        dispatch(getSpotReviewsThunk(Number(spot.id)))
+        await dispatch(getSpotThunk(Number(spot.id)))
+        await dispatch(getSpotReviewsThunk(Number(spot.id)))
 
-        history.push(`/spots/${spot.id}`)
+            .then(history.push(`/spots/${spot.id}`))
     }
 
     const updateButton = () => {
