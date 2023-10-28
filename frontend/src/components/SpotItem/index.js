@@ -16,6 +16,8 @@ function SpotItem({ spot, user }) {
     const pineapple = "https://i.pinimg.com/originals/58/b3/40/58b340936b2c1ed07bed66c260b00534.png"
     const dispatch = useDispatch();
 
+
+
     const history = useHistory()
 
     let reviewText
@@ -40,15 +42,16 @@ function SpotItem({ spot, user }) {
         history.push(`/spots/${spot.id}/edit`)
     }
 
-    const deleteButton = () => {
+    const deleteButton = async () => {
 
-        dispatch(deleteSpotThunk(Number(spot.id)))
+        return dispatch(deleteSpotThunk(Number(spot.id)))
+        // history.push('/spots/user')
 
     }
 
-    useEffect(() => {
-        dispatch(fetchUserSpotsThunk());
-    }, [dispatch]);
+    // useEffect(() => {
+    //     dispatch(fetchUserSpotsThunk());
+    // }, [dispatch]);
 
 
 
@@ -71,7 +74,7 @@ function SpotItem({ spot, user }) {
 
             </div>
             <div className="buttons">
-                {user && <button onClick={updateButton} spot={spot}>Update</button>}
+                {user && <button onClick={updateButton}>Update</button>}
                 {user && <button onClick={deleteButton}>Delete Spot</button>}
             </div>
         </div>

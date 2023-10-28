@@ -42,10 +42,10 @@ function SpotForm() {
         console.log('newspot----', newSpot)
         setErrors({})
 
-        return dispatch(addSpotThunk(newSpot))
+        let newSpot2 = dispatch(addSpotThunk(newSpot))
             .then(() => {
 
-                if (!(Object.keys(errors).length)) {
+                if (!newSpot2.errors) {
                     console.log('success')
                     history.push('/spots/user')
                 }

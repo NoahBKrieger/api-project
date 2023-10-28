@@ -1,7 +1,7 @@
 import '../SpotForm/SpotForm.css'
 
 import { editSpotThunk } from "../../store/spotReducer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
@@ -23,6 +23,20 @@ function EditSpotForm() {
     const [desc, setDesc] = useState(oldSpot.description)
     const [price, setPrice] = useState(oldSpot.price)
     const [errors, setErrors] = useState({});
+
+    useEffect(() => {
+        setSpotName(oldSpot.name)
+        setAddress(oldSpot.address)
+        setCity(oldSpot.city)
+        setState(oldSpot.state)
+        setCountry(oldSpot.country)
+        setLng(oldSpot.lng)
+        setLat(oldSpot.lat)
+        setDesc(oldSpot.description)
+        setPrice(oldSpot.price)
+
+
+    }, [])
 
 
 
@@ -48,13 +62,17 @@ function EditSpotForm() {
         setErrors({});
 
 
-        return dispatch(editSpotThunk(newSpot, Number(oldSpot.id)))
+        let newSpot2 = dispatch(editSpotThunk(newSpot, Number(oldSpot.id)))
             .then(() => {
 
-                if (!(Object.keys(errors).length)) {
+
+
+                if (!newSpot2.errors) {
                     console.log('success')
                     history.push('/spots/user')
                 }
+
+
             })
             .catch(async (res) => {
 
@@ -62,7 +80,6 @@ function EditSpotForm() {
                 if (data && data.errors) {
                     setErrors(data.errors);
                     console.log('errors', errors)
-
                 }
 
             })
