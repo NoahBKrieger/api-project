@@ -32,12 +32,12 @@ function ReviewForm() {
         console.log('newreview----', newReview)
         setErrors({})
 
-        let newReview2 = dispatch(addReviewThunk(spot.id, newReview))
+        let newReview2 = dispatch(addReviewThunk(Number(spot.id), newReview))
             .then(() => {
 
                 if (!(newReview2.errors)) {
                     console.log('success')
-                    history.push(`/spots/${spot.id}`)
+                    spot && history.push(`/spots/${Number(spot.id)}`)
                 }
             })
 
