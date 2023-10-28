@@ -9,6 +9,7 @@ import EditSpotForm from "./components/EditSpotForm";
 import SpotPage from "./components/SpotPage";
 import CurrReviews from "./components/CurrReviews";
 import UserPage from "./components/UserPage";
+import ReviewForm from "./components/ReviewForm";
 
 
 function App() {
@@ -25,9 +26,10 @@ function App() {
 
         <AllSpots exact path='/' />
         <SpotForm path='/spots/new' />
-        <EditSpotForm path='/spots/edit' />
         <Route path='/spots/user' component={UserPage} />
+        <EditSpotForm path='/spots/:spotId/edit' />
         <Route exact path='/spots/:spotId' component={SpotPage} />
+        <Route path='/spots/:spotId/review/new' component={ReviewForm} />
         <CurrReviews path='/reviews/current' />
 
 

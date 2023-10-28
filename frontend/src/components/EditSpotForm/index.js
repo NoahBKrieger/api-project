@@ -1,26 +1,29 @@
 import '../SpotForm/SpotForm.css'
 
-import { deleteSpotThunk, editSpotThunk } from "../../store/spotReducer";
+import { editSpotThunk } from "../../store/spotReducer";
 import { useState } from "react";
-import { useDispatch } from 'react-redux';
-import { useParams, useHistory } from 'react-router-dom';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 function EditSpotForm() {
 
     const dispatch = useDispatch();
-    const { id } = useParams()
+
     const history = useHistory()
 
-    const [spotName, setSpotName] = useState('')
-    const [address, setAddress] = useState('')
-    const [city, setCity] = useState('')
-    const [state, setState] = useState('')
-    const [country, setCountry] = useState('')
-    const [lng, setLng] = useState(0)
-    const [lat, setLat] = useState(0)
-    const [desc, setDesc] = useState('')
-    const [price, setPrice] = useState(1)
+    const oldSpot = useSelector(state => state.spots.currSpot);
+
+    const [spotName, setSpotName] = useState(oldSpot.name)
+    const [address, setAddress] = useState(oldSpot.address)
+    const [city, setCity] = useState(oldSpot.city)
+    const [state, setState] = useState(oldSpot.state)
+    const [country, setCountry] = useState(oldSpot.country)
+    const [lng, setLng] = useState(oldSpot.lng)
+    const [lat, setLat] = useState(oldSpot.lat)
+    const [desc, setDesc] = useState(oldSpot.description)
+    const [price, setPrice] = useState(oldSpot.price)
+    const [errors, setErrors] = useState({});
+
 
 
     const handleSubmit = async (e) => {
@@ -41,62 +44,92 @@ function EditSpotForm() {
 
         console.log('updated spot----', newSpot)
 
-        dispatch(editSpotThunk(newSpot))
-    }
 
-    const deleteEvent = (e) => {
-        e.preventDefault()
+        setErrors({});
 
-        dispatch(deleteSpotThunk(id))
 
-        history.push('/')
+        return dispatch(editSpotThunk(newSpot, Number(oldSpot.id)))
+            .then(() => {
+
+                if (!(Object.keys(errors).length)) {
+                    console.log('success')
+                    history.push('/spots/user')
+                }
+            })
+            .catch(async (res) => {
+
+                const data = await res.json();
+                if (data && data.errors) {
+                    setErrors(data.errors);
+                    console.log('errors', errors)
+
+                }
+
+            })
     }
 
     return (
 
         <>
-            <h1>Edit Spot</h1>
-            <form className="form" >
+            <h1>Edit Spot: {oldSpot.name}</h1>
+            <form className="form" onSubmit={handleSubmit}>
 
                 <label> Name Of Spot
-                    <input onChange={(e) => setSpotName(e.target.value)}></input>
+                    <input defaultValue={oldSpot.name} onChange={(e) => setSpotName(e.target.value)}></input>
                 </label>
+                {errors.name && <p>{errors.name}</p>}
 
                 <label> Address
-                    <input onChange={(e) => setAddress(e.target.value)}></input>
+                    <input defaultValue={oldSpot.address} onChange={(e) => setAddress(e.target.value)}></input>
                 </label>
+                {errors.address && <p>{errors.address}</p>}
+
 
                 <label> City
-                    <input onChange={(e) => setCity(e.target.value)}></input>
+                    <input defaultValue={oldSpot.city} onChange={(e) => setCity(e.target.value)}></input>
                 </label>
+                {errors.city && <p>{errors.city}</p>}
+
 
                 <label> State
-                    <input onChange={(e) => setState(e.target.value)}></input>
+                    <input defaultValue={oldSpot.state} onChange={(e) => setState(e.target.value)}></input>
                 </label>
+                {errors.state && <p>{errors.state}</p>}
+
 
                 <label> Country
-                    <input onChange={(e) => setCountry(e.target.value)}></input>
+                    <input defaultValue={oldSpot.country} onChange={(e) => setCountry(e.target.value)}></input>
                 </label>
+                {errors.country && <p>{errors.country}</p>}
+
 
                 <label> Longitude
-                    <input onChange={(e) => setLng(e.target.value)}></input>
+                    <input defaultValue={oldSpot.lng} onChange={(e) => setLng(e.target.value)}></input>
                 </label>
+                {errors.lng && <p>{errors.lng}</p>}
+
 
                 <label> Latitude
-                    <input onChange={(e) => setLat(e.target.value)}></input>
+                    <input defaultValue={oldSpot.lat} onChange={(e) => setLat(e.target.value)}></input>
                 </label>
+                {errors.lat && <p>{errors.lat}</p>}
+
 
                 <label> Description
-                    <textarea onChange={(e) => setDesc(e.target.value)}></textarea>
+                    <textarea defaultValue={oldSpot.description} onChange={(e) => setDesc(e.target.value)}></textarea>
                 </label>
+                {errors.description && <p>{errors.description}</p>}
+
 
                 <label> Price
-                    <input onChange={(e) => setPrice(e.target.value)}></input>
+                    <input defaultValue={oldSpot.price} onChange={(e) => setPrice(e.target.value)}></input>
                 </label>
+                {errors.price && <p>{errors.price}</p>}
 
-                <button className='submit-button' onClick={handleSubmit}>submit</button>
 
-                <button className='submit-button' onClick={deleteEvent}>Delete This Spot</button>
+                <button className='submit-button' >Submit</button>
+
+
 
             </form>
         </>

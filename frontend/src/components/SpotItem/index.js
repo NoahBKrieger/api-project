@@ -10,9 +10,10 @@ import './SpotItem.css'
 
 
 
+
 function SpotItem({ spot, user }) {
 
-
+    const pineapple = "https://i.pinimg.com/originals/58/b3/40/58b340936b2c1ed07bed66c260b00534.png"
     const dispatch = useDispatch();
 
     const history = useHistory()
@@ -29,14 +30,14 @@ function SpotItem({ spot, user }) {
         dispatch(getSpotThunk(Number(spot.id)))
         dispatch(getSpotReviewsThunk(Number(spot.id)))
 
-
-
         history.push(`/spots/${spot.id}`)
+    }
 
+    const updateButton = () => {
 
+        dispatch(getSpotThunk(Number(spot.id)))
 
-
-
+        history.push(`/spots/${spot.id}/edit`)
     }
 
     const deleteButton = () => {
@@ -57,7 +58,12 @@ function SpotItem({ spot, user }) {
         <div className="item-container">
             <div className="item" onClick={itemClick}>
 
-                <img className='preview-image' src='https://images.app.goo.gl/hrxAnjFhyGWnpJHX6' alt={`${spot.name} preview`}></img>
+                <img
+                    className='preview-image'
+                    src={pineapple}
+                    alt={`${spot.name} preview`}
+                    style={{ width: 300 + 'px', height: 200 + 'px' }}>
+                </img>
                 <p>{`${spot.city}, ${spot.state}`}</p>
                 <p>{reviewText}</p>
                 <p>{`$${spot.price} night`}</p>
@@ -65,7 +71,7 @@ function SpotItem({ spot, user }) {
 
             </div>
             <div className="buttons">
-                {user && <button spot={spot}>Update</button>}
+                {user && <button onClick={updateButton} spot={spot}>Update</button>}
                 {user && <button onClick={deleteButton}>Delete Spot</button>}
             </div>
         </div>

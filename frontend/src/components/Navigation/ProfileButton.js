@@ -6,6 +6,7 @@ import OpenModalButton from '../OpenModalButton';
 import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
 import './profileButton.css'
+import { Link } from "react-router-dom";
 
 import { useHistory } from "react-router-dom";
 
@@ -54,12 +55,15 @@ function ProfileButton({ user }) {
             <ul className={ulClassName} ref={ulRef}>
                 {user ? (
                     <>
-                        <li> Hello {user.firstName}</li>
+                        <li> Hello, {user.firstName}</li>
 
                         <li>{user.email}</li>
-                        <li>
-                            <button onClick={logout}>Log Out</button>
-                        </li>
+
+                        <li> <Link to='/spots/user'>Manage Spots</Link></li>
+
+                        <li><button onClick={logout}>Log Out</button> </li>
+
+
                     </>
                 ) : (
                     <>

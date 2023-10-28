@@ -14,14 +14,14 @@ function UserPage() {
 
     useEffect(() => {
         dispatch(fetchUserSpotsThunk());
-    }, [dispatch]);
+    }, []);
 
 
 
 
     return (
         <>
-            <h1>YOUR SPOTS</h1>
+            <h1>Manage Your Spots</h1>
             <Link to='/spots/new'>Create a New Spot</Link>
 
             <ul className="spot-list">
