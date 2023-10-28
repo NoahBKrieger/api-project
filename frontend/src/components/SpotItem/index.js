@@ -44,7 +44,7 @@ function SpotItem({ spot, user }) {
 
     const deleteButton = async () => {
 
-        return dispatch(deleteSpotThunk(Number(spot.id)))
+        await dispatch(deleteSpotThunk(Number(spot.id)))
         // history.push('/spots/user')
 
     }

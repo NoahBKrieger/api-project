@@ -38,7 +38,7 @@ export const loadSpotReviews = (reviews) => {
 
 // create review
 
-export const createReviewThunk = (spotId, review) => async (dispatch) => {
+export const addReviewThunk = (spotId, review) => async (dispatch) => {
 
     const response = await csrfFetch(`/api/spots/${spotId}/reviews`, {
         method: 'POST',
