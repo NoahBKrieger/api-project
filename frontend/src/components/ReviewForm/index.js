@@ -4,10 +4,10 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from "react-router-dom";
 
 
-import './SpotForm.css'
+import '../SpotForm/SpotForm.css'
 
 
-function SpotForm() {
+function ReviewForm() {
 
     const dispatch = useDispatch();
     const history = useHistory();
@@ -42,10 +42,10 @@ function SpotForm() {
         console.log('newspot----', newSpot)
         setErrors({})
 
-        let newSpot2 = dispatch(addSpotThunk(newSpot))
+        return await dispatch(addSpotThunk(newSpot))
             .then(() => {
 
-                if (!newSpot2.errors) {
+                if (!(Object.keys(errors).length)) {
                     console.log('success')
                     history.push('/spots/user')
                 }
@@ -125,4 +125,4 @@ function SpotForm() {
 
 }
 
-export default SpotForm;
+export default ReviewForm;

@@ -90,15 +90,15 @@ export const addSpot = (spot) => {
 }
 
 //edit
-export const editSpotThunk = (payload) => async (dispatch) => {
+export const editSpotThunk = (spot, id) => async (dispatch) => {
 
     const response = await csrfFetch(
-        `/api/reports/${payload.id}`, {
+        `/api/spots/${id}`, {
         method: "PUT",
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(spot)
     }
     )
 
@@ -112,7 +112,7 @@ export const editSpotThunk = (payload) => async (dispatch) => {
 
         console.log('responseBody -- ', responseBody);
         console.log('error on response for edit spot')
-        throw new Error('edit spot error')
+        // throw new Error('edit spot error')
 
     }
 }

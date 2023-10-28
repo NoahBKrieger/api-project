@@ -3,7 +3,6 @@ import SpotItem from "../SpotItem";
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchSpotsThunk } from '../../store/spotReducer';
-import { Link } from 'react-router-dom';
 
 
 function AllSpots() {
@@ -16,14 +15,11 @@ function AllSpots() {
         dispatch(fetchSpotsThunk());
     }, [dispatch]);
 
-
-
-
     return (
         <>
             <h1>ALL SPOTS</h1>
-            <Link to='/spots/new'>Create a New Spot</Link>
-            <Link to='/spots/user'>View your Spots</Link>
+
+
             <ul className="spot-list">
                 {spots &&
 
