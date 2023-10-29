@@ -11,16 +11,19 @@ function Navigation({ isLoaded }) {
 
     return (
         <div className='nav'>
-            <div>
-                <NavLink exact to="/"> <i className="fas fa-home" /></NavLink>
+            <div className='title-link'>
+                <NavLink className='title-link' exact to="/"> <label> <i class="fa-solid fa-spider">
+                </i> Air Krusty & Krab</label></NavLink>
             </div>
-            {sessionUser && <NavLink to='/spots/new'>Create a New Spot</NavLink>}
-            {isLoaded && (
+            <div className='right-box'>
+                {sessionUser && <NavLink to='/spots/new'>Create a New Spot</NavLink>}
+                {isLoaded && (
 
-                <div className='profile-button'>
-                    <ProfileButton user={sessionUser} />
-                </div>
-            )}
+                    <div className='profile-button'>
+                        <ProfileButton user={sessionUser} />
+                    </div>
+                )}
+            </div>
         </div>
     );
 }

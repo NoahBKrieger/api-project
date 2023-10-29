@@ -2,6 +2,7 @@
     background-color: bisque;
     border: 2px black dotted;
     padding: 5px;
+    max-width: 700px;
 }
 
 h1 {
