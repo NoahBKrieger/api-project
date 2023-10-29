@@ -1,8 +1,8 @@
 
 // import SpotDetailsButton from "../SpotDetails";
 import { useHistory } from "react-router-dom";
-import { useEffect, } from "react";
-import { deleteSpotThunk, getSpotThunk, fetchUserSpotsThunk } from "../../store/spotReducer";
+// import { useEffect, } from "react";
+import { deleteSpotThunk, getSpotThunk } from "../../store/spotReducer";
 import { useDispatch } from "react-redux";
 import { getSpotReviewsThunk } from '../../store/reviewReducer'
 
@@ -22,9 +22,9 @@ function SpotItem({ spot, user }) {
 
     let reviewText
     if (spot.avgRating === 'no reviews') {
-        reviewText = 'New'
+        reviewText = false
     } else {
-        reviewText = `Average Rating: ${spot.avgRating} stars`
+        reviewText = true
     }
 
     const itemClick = async () => {
@@ -68,7 +68,8 @@ function SpotItem({ spot, user }) {
                     style={{ width: 300 + 'px', height: 200 + 'px' }}>
                 </img>
                 <p>{`${spot.city}, ${spot.state}`}</p>
-                <p>{reviewText}</p>
+                {reviewText && <div><i class="fa fa-star"></i>{spot.avgRating}</div>}
+                {!reviewText && <p>New</p>}
                 <p>{`$${spot.price} night`}</p>
                 <span className="tooltip-text">{spot.name}</span>
 

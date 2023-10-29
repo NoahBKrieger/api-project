@@ -7,6 +7,7 @@ import { addReviewThunk } from "../../store/reviewReducer";
 
 
 import '../SpotForm/SpotForm.css'
+import { getSpotThunk } from "../../store/spotReducer";
 
 
 function ReviewForm() {
@@ -37,6 +38,7 @@ function ReviewForm() {
 
                 if (!(newReview2.errors)) {
                     console.log('success')
+                    dispatch(getSpotThunk(spot.id))
                     spot && history.push(`/spots/${Number(spot.id)}`)
                 }
             })

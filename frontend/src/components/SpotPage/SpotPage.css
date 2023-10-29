@@ -1,0 +1,44 @@
+.reserveBox {
+
+    border: solid lavender 3px;
+    border-radius: 5px;
+    display: grid;
+    /* grid-template-columns: 2fr 1fr 1fr 1fr; */
+    width: 350px;
+    height: 150px;
+    position: absolute;
+    right: 60px;
+    top: 700px;
+    padding: 2px;
+    color: red;
+}
+
+.location {
+    margin-left: 5px;
+}
+
+.reserve-info {
+    display: flex;
+    justify-content: space-around;
+}
+
+.images {
+
+    display: flex;
+}
+
+.regular-images {
+    position: relative;
+    top: -16px;
+    columns: 2;
+}
+
+.post-button {
+
+    width: 200px;
+}
+
+.description {
+
+    max-width: 800px;
+}
