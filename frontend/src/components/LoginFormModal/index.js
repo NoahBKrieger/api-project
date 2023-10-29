@@ -11,8 +11,8 @@ function LoginFormModal() {
     const [password, setPassword] = useState("");
     const [submitReady, setSubmitReady] = useState(false)
     const [errors, setErrors] = useState({});
+    const [inv, setInv] = useState(false)
     const { closeModal } = useModal();
-
     useEffect(() => {
 
         if (credential.length >= 4 && password.length >= 6) {
@@ -21,22 +21,27 @@ function LoginFormModal() {
 
     }, [password, credential])
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setErrors({});
+        setInv(true)
         return dispatch(sessionActions.login({ credential, password }))
             .then(closeModal)
             .catch(async (res) => {
                 const data = await res.json();
                 if (data && data.errors) {
                     setErrors(data.errors);
+
                 }
             });
+
+
     };
 
     return (
         <>
             <h1>Log In</h1>
+            {inv && <p>Invalid credential or password</p>}
             <form onSubmit={handleSubmit}>
                 <label>
                     Username or Email
