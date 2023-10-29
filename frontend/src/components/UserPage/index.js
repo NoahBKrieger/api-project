@@ -1,6 +1,6 @@
 import '../AllSpots/AllSpots.css'
 import SpotItem from "../SpotItem";
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserSpotsThunk } from '../../store/spotReducer';
 import { Link } from 'react-router-dom';
@@ -8,25 +8,34 @@ import { Link } from 'react-router-dom';
 
 
 function UserPage() {
-    const [spotArr, setSpotArr] = useState([])
+
     const dispatch = useDispatch();
 
-    const spots = useSelector(state => state.spots.userSpots);
     // dispatch(fetchUserSpotsThunk())
+    // useEffect(() => {
+    //     dispatch(fetchUserSpotsThunk());
 
-    console.log('spots', spots)
+    // }, [dispatch]);
+
+    let spots = useSelector(state => state.spots.userSpots);
+
+    // const [spotArr, setSpotArr] = useState(spots)
+
 
 
     useEffect(() => {
         dispatch(fetchUserSpotsThunk());
 
-    }, [dispatch]);
 
-    // useEffect(() => {
 
-    //     setSpotArr(spots)
-    // }, [spots]);
+    }, []);
 
+    const onClick = () => {
+
+        dispatch(fetchUserSpotsThunk());
+
+
+    }
 
 
 
@@ -37,10 +46,8 @@ function UserPage() {
 
             <ul className="spot-list">
                 {spots &&
-
-
                     spots.map(el => {
-                        return <li className="spot-item" key={el.id} >
+                        return <li onClick={onClick} className="spot-item" key={el.id} >
                             <SpotItem spot={el} user={true} />
                         </li>
                     })}
