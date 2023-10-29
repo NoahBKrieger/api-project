@@ -14,7 +14,7 @@ function Navigation({ isLoaded }) {
             <div>
                 <NavLink exact to="/"> <i className="fas fa-home" /></NavLink>
             </div>
-            <NavLink to='/spots/new'>Create a New Spot</NavLink>
+            {sessionUser && <NavLink to='/spots/new'>Create a New Spot</NavLink>}
             {isLoaded && (
 
                 <div className='profile-button'>

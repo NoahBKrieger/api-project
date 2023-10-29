@@ -4,10 +4,14 @@
 }
 
 .nav {
-    display: flex;
+    position: sticky;
+    display: grid;
+    grid-template-columns: 5fr 1fr 1fr;
     border: solid black 1px;
-    padding: 5px;
-    justify-content: space-between;
+    padding: 30px;
+
+    margin-bottom: 5px;
+    width: inherit;
 }
 
 
@@ -18,4 +22,5 @@
 
 .profile-button {
     justify-self: end;
+    /* margin-left: 100%; */
 }
