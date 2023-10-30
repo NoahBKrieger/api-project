@@ -39,6 +39,6 @@
     flex-direction: column;
 }
 
-#butt {
+.butt {
     background-color: red;
 }

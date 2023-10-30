@@ -87,7 +87,7 @@ function SpotItem({ spot, user }) {
                 </OpenModalButton>}
             </div>
         </div>
-        // </Link>
+
     )
 }
 
