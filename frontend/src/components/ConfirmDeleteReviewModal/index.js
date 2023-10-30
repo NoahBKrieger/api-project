@@ -2,6 +2,7 @@ import { useModal } from "../../context/Modal";
 import { useDispatch } from "react-redux";
 import { deleteReviewThunk } from "../../store/reviewReducer";
 import { getSpotReviewsThunk } from "../../store/reviewReducer";
+import { getSpotThunk } from "../../store/spotReducer";
 
 function ConfirmDeleteReviewModal({ review, spot }) {
 
@@ -16,6 +17,8 @@ function ConfirmDeleteReviewModal({ review, spot }) {
 
         await dispatch(deleteReviewThunk(Number(review.id)))
             .then(dispatch(getSpotReviewsThunk(spot.id)))
+            .then(dispatch(getSpotThunk(spot.id)))
+
             .then(closeModal())
 
     })
