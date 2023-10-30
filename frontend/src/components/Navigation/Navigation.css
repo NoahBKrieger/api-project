@@ -38,3 +38,8 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
 }
+
+.new-spot-link {
+
+    text-decoration: none;
+}

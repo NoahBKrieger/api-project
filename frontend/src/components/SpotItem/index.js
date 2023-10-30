@@ -2,11 +2,13 @@
 // import SpotDetailsButton from "../SpotDetails";
 import { useHistory } from "react-router-dom";
 // import { useEffect, } from "react";
-import { deleteSpotThunk, getSpotThunk } from "../../store/spotReducer";
+import { getSpotThunk } from "../../store/spotReducer";
 import { useDispatch } from "react-redux";
 import { getSpotReviewsThunk } from '../../store/reviewReducer'
+import OpenModalButton from "../OpenModalButton";
 
 import './SpotItem.css'
+import ConfirmDeleteSpotModal from "../ConfirmDeleteModal";
 
 
 
@@ -42,12 +44,14 @@ function SpotItem({ spot, user }) {
         history.push(`/spots/${spot.id}/edit`)
     }
 
-    const deleteButton = async () => {
+    // const deleteButton = async () => {
 
-        await dispatch(deleteSpotThunk(Number(spot.id)))
-        // history.push('/spots/user')
 
-    }
+
+    //     await dispatch(deleteSpotThunk(Number(spot.id)))
+    //     // history.push('/spots/user')
+
+    // }
 
     // useEffect(() => {
     //     dispatch(fetchUserSpotsThunk());
@@ -68,15 +72,19 @@ function SpotItem({ spot, user }) {
                     style={{ width: 300 + 'px', height: 200 + 'px' }}>
                 </img>
                 <p>{`${spot.city}, ${spot.state}`}</p>
-                {reviewText && <div><i class="fa fa-star"></i>{spot.avgRating}</div>}
+                {reviewText && spot.avgRating && <div><i class="fa fa-star"></i>{spot.avgRating.toFixed(1)}</div>}
                 {!reviewText && <p>New</p>}
                 <p>{`$${spot.price} night`}</p>
                 <span className="tooltip-text">{spot.name}</span>
 
             </div>
             <div className="buttons">
-                {user && <button onClick={updateButton}>Update</button>}
-                {user && <button onClick={deleteButton}>Delete Spot</button>}
+                {user && <button onClick={updateButton}>Update Spot</button>}
+                {user && <OpenModalButton
+
+                    buttonText='Delete Spot'
+                    modalComponent={<ConfirmDeleteSpotModal spot={spot} />}>
+                </OpenModalButton>}
             </div>
         </div>
         // </Link>

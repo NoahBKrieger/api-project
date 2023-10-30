@@ -16,7 +16,7 @@ function Navigation({ isLoaded }) {
                 </i> Air Krusty & Krab</label></NavLink>
             </div>
             <div className='right-box'>
-                {sessionUser && <NavLink to='/spots/new'>Create a New Spot</NavLink>}
+                {sessionUser && <NavLink className='new-spot-link' to='/spots/new'>Create a New Spot</NavLink>}
                 {isLoaded && (
 
                     <div className='profile-button'>
