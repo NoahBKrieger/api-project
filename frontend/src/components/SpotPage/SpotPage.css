@@ -42,3 +42,21 @@
 
     max-width: 800px;
 }
+
+/* .delete-button {
+
+    max-width: 200px;
+    margin-left: 15px;
+} */
+
+.review-list li {
+
+    margin-bottom: 20px;
+}
+
+.review-item>button {
+
+    width: 200px;
+    margin-left: 20px;
+    background-color: red;
+}

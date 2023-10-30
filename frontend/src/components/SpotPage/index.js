@@ -1,8 +1,10 @@
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { deleteReviewThunk, getSpotReviewsThunk } from "../../store/reviewReducer";
+// import { deleteReviewThunk, getSpotReviewsThunk } from "../../store/reviewReducer";
 
 import './SpotPage.css'
+import OpenModalButton from "../OpenModalButton";
+import ConfirmDeleteReviewModal from "../ConfirmDeleteReviewModal";
 
 const kK = 'https://upload.wikimedia.org/wikipedia/commons/2/25/The_Krusty_Krab.png'
 const pineapple = "https://i.pinimg.com/originals/58/b3/40/58b340936b2c1ed07bed66c260b00534.png"
@@ -11,7 +13,7 @@ const pineapple = "https://i.pinimg.com/originals/58/b3/40/58b340936b2c1ed07bed6
 function SpotPage() {
 
     const history = useHistory()
-    const dispatch = useDispatch()
+    // const dispatch = useDispatch()
 
 
     const spot = useSelector(state => (state.spots.currSpot))
@@ -24,18 +26,13 @@ function SpotPage() {
     if (user) { filteredReviews = reviews.filter((el) => { return el.userId === user.id }) }
     if (filteredReviews && filteredReviews.length > 0) { hasReview = true }
 
+    let noReviews = spot.numReviews === 'no reviews'
+
     const imageArr = spot.SpotImages && spot.SpotImages.filter(el => { return el.preview === false })
     imageArr.splice(4)
     const postReviewClick = () => {
         history.push(`/spots/${spot.id}/review/new`)
     }
-
-    const deleteReview = (async (id) => {
-
-        await dispatch(deleteReviewThunk(Number(id)))
-            .then(dispatch(getSpotReviewsThunk(spot.id)))
-
-    })
 
     const reserve = () => {
 
@@ -65,27 +62,30 @@ function SpotPage() {
             <div className="reserveBox">
                 <div className="reserve-info">
                     <h3> ${spot.price} per night</h3>
-                    {hasReview && <h3><i class="fa fa-star"></i> {spot.avgStarRating}   --   {spot.numReviews} Reviews</h3>}
-                    {!hasReview && <h3><i class="fa fa-star"></i> New</h3>}
+                    {!noReviews && <h3><i class="fa fa-star"></i> {spot.avgStarRating.toFixed(1)}   --   {spot.numReviews} Reviews</h3>}
+                    {noReviews && <h3><i class="fa fa-star"></i> New</h3>}
                 </div>
                 <button onClick={reserve}>Reserve</button>
 
             </div>
 
             <div>
-                <h2><div className="">
+                <h2><div >
 
-                    {hasReview && <div><i class="fa fa-star"></i> {spot.avgStarRating}   --   {spot.numReviews} Reviews</div>}
-                    {!hasReview && <div><i class="fa fa-star"></i> New</div>}
+                    {!noReviews && <div><i class="fa fa-star"></i> {spot.avgStarRating.toFixed(1)}   --   {spot.numReviews} Reviews</div>}
+                    {noReviews && <div><i class="fa fa-star"></i> New</div>}
                 </div></h2>
 
                 <ol className="review-list">
                     {reviews.map(el => {
 
                         if (user && (el.userId === user.id)) {
-                            return <li key={el.id}> review: {el.review}, stars: {el.stars} <button
-                                onClick={() => deleteReview(el.id)}>Delete
-                            </button></li>
+                            return <li className='review-item' key={el.id}> review: {el.review}, stars: {el.stars}
+                                <OpenModalButton
+                                    buttonText='Delete Review'
+                                    modalComponent={<ConfirmDeleteReviewModal review={el} spot={spot} />}>
+                                </OpenModalButton>
+                            </li>
                         }
                         return <li key={el.id}> review: {el.review}, stars: {el.stars} </li>
                     })}
