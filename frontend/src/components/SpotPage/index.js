@@ -1,10 +1,11 @@
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 // import { deleteReviewThunk, getSpotReviewsThunk } from "../../store/reviewReducer";
 
 import './SpotPage.css'
 import OpenModalButton from "../OpenModalButton";
 import ConfirmDeleteReviewModal from "../ConfirmDeleteReviewModal";
+import ReviewForm from "../ReviewForm";
 
 const kK = 'https://upload.wikimedia.org/wikipedia/commons/2/25/The_Krusty_Krab.png'
 const pineapple = "https://i.pinimg.com/originals/58/b3/40/58b340936b2c1ed07bed66c260b00534.png"
@@ -12,7 +13,7 @@ const pineapple = "https://i.pinimg.com/originals/58/b3/40/58b340936b2c1ed07bed6
 
 function SpotPage() {
 
-    const history = useHistory()
+    // const history = useHistory()
     // const dispatch = useDispatch()
 
 
@@ -30,9 +31,11 @@ function SpotPage() {
 
     const imageArr = spot.SpotImages && spot.SpotImages.filter(el => { return el.preview === false })
     imageArr.splice(4)
-    const postReviewClick = () => {
-        history.push(`/spots/${spot.id}/review/new`)
-    }
+
+
+    // const postReviewClick = () => {
+    //     history.push(`/spots/${spot.id}/review/new`)
+    // }
 
     const reserve = () => {
 
@@ -82,6 +85,7 @@ function SpotPage() {
                         if (user && (el.userId === user.id)) {
                             return <li className='review-item' key={el.id}> review: {el.review}, stars: {el.stars}
                                 <OpenModalButton
+                                    className="delete-button"
                                     buttonText='Delete Review'
                                     modalComponent={<ConfirmDeleteReviewModal review={el} spot={spot} />}>
                                 </OpenModalButton>
@@ -94,7 +98,7 @@ function SpotPage() {
                 {user &&
                     user.id !== spot.Owner.id &&
                     !hasReview &&
-                    <button className="post-button" onClick={postReviewClick} >Post Your Review</button>}
+                    <OpenModalButton buttonText='Post your Review' modalComponent={<ReviewForm />} ></OpenModalButton>}
 
             </div>
         </>
