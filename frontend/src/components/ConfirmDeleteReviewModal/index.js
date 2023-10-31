@@ -9,22 +9,13 @@ function ConfirmDeleteReviewModal({ review, spot }) {
     const dispatch = useDispatch()
     const { closeModal } = useModal()
 
-
-
-
-
     const deleteReview = (async () => {
 
         await dispatch(deleteReviewThunk(Number(review.id)))
             .then(dispatch(getSpotReviewsThunk(spot.id)))
             .then(dispatch(getSpotThunk(spot.id)))
-
             .then(closeModal())
-
     })
-
-
-
 
     return (
         <>

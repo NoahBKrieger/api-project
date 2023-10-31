@@ -1,8 +1,9 @@
 
 import { useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 import { addReviewThunk } from "../../store/reviewReducer";
+import { useModal } from "../../context/Modal";
 
 
 
@@ -12,14 +13,17 @@ import { getSpotThunk } from "../../store/spotReducer";
 
 function ReviewForm() {
 
-    const dispatch = useDispatch();
-    const history = useHistory();
 
+
+    const dispatch = useDispatch();
+    // const history = useHistory();
     const spot = useSelector(state => state.spots.currSpot);
+
+    const { closeModal } = useModal()
 
 
     const [reviewText, setReviewText] = useState('')
-    const [stars, setStars] = useState(1)
+    const [stars, setStars] = useState(5)
     const [errors, setErrors] = useState({});
 
     const handleSubmit = async (e) => {
@@ -39,7 +43,7 @@ function ReviewForm() {
                 if (!(newReview2.errors)) {
                     console.log('success')
                     dispatch(getSpotThunk(spot.id))
-                    spot && history.push(`/spots/${Number(spot.id)}`)
+                    closeModal()
                 }
             })
 
@@ -51,14 +55,9 @@ function ReviewForm() {
                     console.log('errs---', data.errors)
                 }
             })
-
-
     }
 
-
-
     return (
-
         <>
             <h1>Add a Review to {spot.name}</h1>
             <form className="form" onSubmit={handleSubmit}>
@@ -74,6 +73,7 @@ function ReviewForm() {
                 {errors.stars && <p>{errors.stars}</p>}
 
                 <button className='submit-button'>Submit</button>
+                <button onClick={closeModal}>Cancel</button>
 
             </form>
         </>
