@@ -37,21 +37,14 @@ function SpotItem({ spot, user }) {
             .then(history.push(`/spots/${spot.id}`))
     }
 
-    const updateButton = () => {
+    const updateButton = async () => {
 
-        dispatch(getSpotThunk(Number(spot.id)))
+        await dispatch(getSpotThunk(Number(spot.id)))
 
         history.push(`/spots/${spot.id}/edit`)
     }
 
-    // const deleteButton = async () => {
 
-
-
-    //     await dispatch(deleteSpotThunk(Number(spot.id)))
-    //     // history.push('/spots/user')
-
-    // }
 
     // useEffect(() => {
     //     dispatch(fetchUserSpotsThunk());
@@ -86,7 +79,7 @@ function SpotItem({ spot, user }) {
 
             </div>
             <div className="buttons">
-                {user && <button onClick={updateButton}>Update Spot</button>}
+                {user && <button className='update-butt' onClick={updateButton}>Update Spot</button>}
                 {user && <OpenModalButton
 
                     buttonText='Delete Spot'
