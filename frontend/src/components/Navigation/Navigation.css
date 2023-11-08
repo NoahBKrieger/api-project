@@ -10,11 +10,17 @@
     border: solid black 1px;
     padding: 30px;
 
-    margin-bottom: 5px;
+    align-items: center;
+
+    margin-bottom: 2px;
     width: inherit;
 }
 
+.title-icon {
 
+    height: 50px;
+
+}
 
 .hidden {
     display: none
@@ -27,19 +33,25 @@
 
 .title-link {
     text-decoration: none;
+    cursor: pointer;
+
 }
 
-.title-link:hover {
-    text-decoration: default;
+/* .title-link:hover {
+     text-decoration: default;
     cursor: pointer;
-}
+} */
 
 .right-box {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    /* grid-template-columns: 1fr 1fr; */
+    justify-content: flex-end;
+    align-items: center;
+
 }
 
 .new-spot-link {
 
     text-decoration: none;
+    margin-right: 20px;
 }

@@ -71,10 +71,17 @@ function SpotItem({ spot, user }) {
                     alt={`${spot.name} preview`}
                     style={{ width: 300 + 'px', height: 200 + 'px' }}>
                 </img>
-                <p>{`${spot.city}, ${spot.state}`}</p>
-                {reviewText && spot.avgRating && <div><i class="fa fa-star"></i>{spot.avgRating.toFixed(1)}</div>}
-                {!reviewText && <p>New</p>}
-                <p>{`$${spot.price} night`}</p>
+
+                <span className="first-row">
+
+                    <p>{`${spot.city}, ${spot.state}`}</p>
+                    {reviewText && spot.avgRating && <div><i class="fa fa-star"></i>{spot.avgRating.toFixed(1)}</div>}
+                    {!reviewText && <p>New</p>}
+
+                </span>
+
+                <p className="price">{`$${spot.price} night`}</p>
+
                 <span className="tooltip-text">{spot.name}</span>
 
             </div>
@@ -83,6 +90,7 @@ function SpotItem({ spot, user }) {
                 {user && <OpenModalButton
 
                     buttonText='Delete Spot'
+                    cssClass='delete-butt'
                     modalComponent={<ConfirmDeleteSpotModal spot={spot} />}>
                 </OpenModalButton>}
             </div>
