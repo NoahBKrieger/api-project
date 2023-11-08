@@ -84,8 +84,9 @@ function SpotPage() {
 
                         if (user && (el.userId === user.id)) {
                             return <li className='review-item' key={el.id}> review: {el.review}, stars: {el.stars}
+
                                 <OpenModalButton
-                                    className="delete-button"
+                                    cssClass="delete-button"
                                     buttonText='Delete Review'
                                     modalComponent={<ConfirmDeleteReviewModal review={el} spot={spot} />}>
                                 </OpenModalButton>
@@ -98,7 +99,7 @@ function SpotPage() {
                 {user &&
                     user.id !== spot.Owner.id &&
                     !hasReview &&
-                    <OpenModalButton buttonText='Post your Review' modalComponent={<ReviewForm />} ></OpenModalButton>}
+                    <OpenModalButton buttonText='Post your Review' cssClass='review-button' modalComponent={<ReviewForm />} ></OpenModalButton>}
 
             </div>
         </>

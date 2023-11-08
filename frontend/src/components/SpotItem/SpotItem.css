@@ -1,10 +1,13 @@
 .preview-image {
 
 
-    margin: 20px;
+
+
     border: solid black 1px;
-    min-height: 200px;
-    min-width: 400px;
+    min-height: 300px;
+    min-width: 500px;
+    max-width: 500px;
+    max-height: 300px;
 }
 
 .tooltip-text {
@@ -31,14 +34,28 @@
 
 .item {
 
-    max-width: 500px;
+    height: 450px;
+    width: 500px;
     display: flex;
 
     flex-wrap: wrap;
-    align-items: center;
+    /* align-items: center; */
     flex-direction: column;
 }
 
-.butt {
+.delete-butt {
     background-color: red;
+}
+
+.first-row {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 95%;
+}
+
+.price {
+
+    font-weight: bold;
 }

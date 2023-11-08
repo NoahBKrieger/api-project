@@ -43,11 +43,11 @@
     max-width: 800px;
 }
 
-/* .delete-button {
+.delete-button {
 
     max-width: 200px;
     margin-left: 15px;
-} */
+}
 
 .review-list li {
 
@@ -59,4 +59,9 @@
     width: 200px;
     margin-left: 20px;
     background-color: red;
+}
+
+.review-button {
+
+    max-width: fit-content;
 }

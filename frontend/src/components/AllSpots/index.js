@@ -9,7 +9,7 @@ function AllSpots() {
 
     const dispatch = useDispatch();
     const spots = useSelector(state => state.spots.spots);
-    console.log('spots', spots)
+    // console.log('spots', spots)
 
     useEffect(() => {
         dispatch(fetchSpotsThunk());
@@ -17,7 +17,7 @@ function AllSpots() {
 
     return (
         <>
-            <h1>ALL SPOTS</h1>
+            {/* <h1>ALL SPOTS</h1> */}
 
 
             <ul className="spot-list">
