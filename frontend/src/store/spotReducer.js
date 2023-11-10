@@ -160,17 +160,17 @@ const spotReducer = (state = initialState, action) => {
         case LOAD_USER_SPOTS:
             return { ...state, userSpots: action.payload };
         case LOAD_SPOT:
-            return { ...state, currSpot: action.payload }
+            return { ...state, currSpot: action.payload };
         case ADD_SPOT:
             return { ...state, spots: [...state.spots, action.payload] };
         case EDIT_SPOT:
             const newSpots = state.spots
             newSpots[action.payload.id] = action.payload
-            return { ...state, spots: newSpots }
+            return { ...state, spots: newSpots };
         case DELETE_SPOT:
             const newSpots2 = state.spots
             delete newSpots2[action.payload]
-            return { ...state, spots: newSpots2 }
+            return { ...state, spots: newSpots2 };
         default:
             return state;
     }

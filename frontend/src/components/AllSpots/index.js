@@ -23,7 +23,6 @@ function AllSpots() {
             <ul className="spot-list">
                 {spots &&
 
-
                     spots.map(el => {
                         return <li className="spot-item" key={el.id} >
                             <SpotItem spot={el} />
