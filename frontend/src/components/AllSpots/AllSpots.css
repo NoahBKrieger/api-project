@@ -2,8 +2,8 @@
 
     /* border: solid black 2px; */
     border-radius: 6px;
-    height: 500px;
-    width: 340px;
+    height: 350px;
+    width: 250px;
     margin: 5px;
     position: relative;
 
@@ -25,13 +25,22 @@
 
 
 
+
+
 }
 
-@media screen and (min-width: 1300px) {
+@media screen and (min-width: 1000px) {
     .spot-list {
 
         display: grid;
         grid-template-columns: 1fr 1fr 1fr 1fr;
+        justify-content: center;
+
+    }
+
+    .spot-item {
+        margin: 0px;
+
     }
 }
 
