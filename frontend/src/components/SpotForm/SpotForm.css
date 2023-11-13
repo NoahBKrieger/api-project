@@ -1,20 +1,23 @@
+.form-page {
+    display: flex;
+    justify-content: center;
+}
+
 .form {
     display: flex;
-
     flex-direction: column;
     padding: 10px;
-    align-items: center;
-
+    margin-left: 4%;
 }
 
 
 .location-div {
-    max-width: 500px;
+    /* max-width: 500px; */
     display: flex;
     flex-direction: column;
     align-items: flex-start;
 
-    margin-left: -9rem;
+
 
 }
 
@@ -24,7 +27,7 @@ label>input {
     flex-direction: column;
 
     margin-bottom: 10px;
-    width: 40rem;
+    /* max-width: 100rem; */
 }
 
 label>textarea {
@@ -42,7 +45,7 @@ label>textarea {
     flex-direction: row;
     width: 500px;
     justify-content: space-around;
-    margin-left: 4.7rem;
+    margin-left: 4.8rem;
 }
 
 .city-state>label>input {
@@ -56,7 +59,7 @@ label>textarea {
     flex-direction: row;
     width: 500px;
     justify-content: space-around;
-    margin-left: 4.7rem;
+    margin-left: 4.8rem;
 
 }
 
@@ -70,6 +73,8 @@ label>textarea {
 .submit-button {
     width: 250px;
     height: 100px;
+    margin-left: 13rem;
+    font-size: large;
 }
 
 .form p {
@@ -79,9 +84,10 @@ label>textarea {
 
 .price-div {
 
-    display: flex;
+    /* display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: start; */
+
 }
 
 .price-div>label {
@@ -89,4 +95,34 @@ label>textarea {
     display: flex;
 }
 
+.city-state-errors {
+    max-width: 20rem;
+    display: flex;
+
+    justify-content: space-between;
+
+
+
+    text-wrap: nowrap;
+}
+
+.state-errors {
+
+    margin-left: 5rem;
+
+}
+
 .add-images {}
+
+.form h3 {
+
+    font-weight: normal;
+    font-style: italic;
+    font-size: 17px;
+    max-width: 47rem;
+}
+
+.form input {
+
+    width: 40rem;
+}
