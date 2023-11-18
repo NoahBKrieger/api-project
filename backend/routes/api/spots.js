@@ -11,48 +11,51 @@ const { Booking } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
 const { Op } = require("sequelize")
 
-// const { check } = require('express-validator');
-// const { handleValidationErrors } = require('../../utils/validation');
+const { check } = require('express-validator');
+const { handleValidationErrors } = require('../../utils/validation');
 
 
-// const validateSpot = [
-//     check('address')
-//         .exists({ checkFalsy: true })
-//         .isLength({ min: 2, max: 30 })
-//         .withMessage("Street address is required"),
-//     check('city')
-//         .exists({ checkFalsy: true })
-//         .isLength({ min: 2 })
-//         .withMessage("City is required"),
-//     check('state')
-//         .exists({ checkFalsy: true })
-//         .isLength({ min: 2 })
-//         .withMessage("State is required"),
-//     check('country')
-//         .exists({ checkFalsy: true })
-//         .isLength({ min: 2 })
-//         .withMessage("Country is required"),
-//     check('lat')
-//         .exists({ checkFalsy: true })
-//         .withMessage("Latitude is not valid"),
-//     check('lng')
-//         .exists({ checkFalsy: true })
-//         .withMessage("Longitude is not valid"),
-//     check('name')
-//         .exists({ checkFalsy: true })
-//         .isLength({ min: 1, max: 50 })
-//         .withMessage("Name must be less than 50 characters"),
-//     check('description')
-//         .exists({ checkFalsy: true })
-//         .isLength({ min: 6 })
-//         .withMessage("Description is required"),
-//     check('price')
-//         .exists({ checkFalsy: true })
-//         .withMessage('Price per day is required'),
-//     handleValidationErrors
-// ];
+const validateSpot = [
+    check('address')
+        .exists({ checkFalsy: true })
+        .isLength({ min: 2, max: 30 })
+        .withMessage("Street address is required"),
+    check('city')
+        .exists({ checkFalsy: true })
+        .isLength({ min: 2 })
+        .withMessage("City is required"),
+    check('state')
+        .exists({ checkFalsy: true })
+        .isLength({ min: 2 })
+        .withMessage("State is required"),
+    check('country')
+        .exists({ checkFalsy: true })
+        .isLength({ min: 2 })
+        .withMessage("Country is required"),
+    // check('lat')
+    //     .exists({ checkFalsy: true })
+    //     .withMessage("Latitude is not valid"),
+    // check('lng')
+    //     .exists({ checkFalsy: true })
+    //     .withMessage("Longitude is not valid"),
+    check('name')
+        .exists({ checkFalsy: true })
+        .isLength({ min: 2, max: 50 })
+        .withMessage("Name must be less than 50 characters"),
+    check('description')
+        .exists({ checkFalsy: true })
+        .isLength({ min: 30 })
+        .withMessage("Description is required, minimum length is 30"),
+    check('price')
+        .exists({ checkFalsy: true })
+        .withMessage('Price per day is required'),
+    check('img')
+        .exists({ checkFalsy: true })
+        .withMessage('Preview Image is Required'),
+    handleValidationErrors
+];
 
-let iLoveAppAcademy
+let heartAA
 
 // get all spots
 router.get('/', async (req, res) => {
@@ -338,7 +341,7 @@ router.get('/:spotId', async (req, res) => {
 })
 
 //create a spot
-router.post('/', requireAuth, async (req, res) => {
+router.post('/', requireAuth, validateSpot, async (req, res) => {
 
     const ownerId = req.user.id;
 
