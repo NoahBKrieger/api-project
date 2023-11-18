@@ -18,6 +18,10 @@ function SpotItem({ spot, user }) {
     const pineapple = "https://i.pinimg.com/originals/58/b3/40/58b340936b2c1ed07bed66c260b00534.png"
     const dispatch = useDispatch();
 
+    let previewImg
+    if (spot.previewImage === 'no preview image') {
+        previewImg = pineapple
+    } else previewImg = spot.previewImage
 
 
     const history = useHistory()
@@ -54,13 +58,12 @@ function SpotItem({ spot, user }) {
 
     return (
 
-
         <div className="item-container">
             <div className="item" onClick={itemClick}>
 
                 <img
                     className='preview-image'
-                    src={pineapple}
+                    src={previewImg}
                     alt={`${spot.name} preview`}
                     style={{ width: 300 + 'px', height: 200 + 'px' }}>
                 </img>

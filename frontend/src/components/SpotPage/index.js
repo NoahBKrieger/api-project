@@ -7,7 +7,7 @@ import OpenModalButton from "../OpenModalButton";
 import ConfirmDeleteReviewModal from "../ConfirmDeleteReviewModal";
 import ReviewForm from "../ReviewForm";
 
-const kK = 'https://upload.wikimedia.org/wikipedia/commons/2/25/The_Krusty_Krab.png'
+const KK = 'https://upload.wikimedia.org/wikipedia/commons/2/25/The_Krusty_Krab.png'
 const pineapple = "https://i.pinimg.com/originals/58/b3/40/58b340936b2c1ed07bed66c260b00534.png"
 
 
@@ -33,9 +33,8 @@ function SpotPage() {
     imageArr.splice(4)
 
 
-    // const postReviewClick = () => {
-    //     history.push(`/spots/${spot.id}/review/new`)
-    // }
+    const previewImg = spot.SpotImages && spot.SpotImages.find(el => { return el.preview === true })
+
 
     const reserve = () => {
 
@@ -48,11 +47,11 @@ function SpotPage() {
             <h1>{spot.name}</h1>
             <h2 className="location">{spot.city} , {spot.state} , {spot.country}</h2>
             <div className="images">
-                <img src={pineapple} alt='preview' style={{ width: 650 + 'px', height: 405 + 'px' }}></img>
+                <img src={(previewImg && previewImg.url) || pineapple} alt='preview' style={{ width: 650 + 'px', height: 405 + 'px' }}></img>
                 <ol className="regular-images">
                     {imageArr && imageArr.map(el => {
                         return <li>
-                            <img src={kK} alt={el.url + '-   picture'} style={{ width: 300 + 'px', height: 200 + 'px' }}></img>
+                            <img src={el.url || KK} alt={el.url + '- picture'} style={{ width: 300 + 'px', height: 200 + 'px' }}></img>
                         </li>
                     })}
                 </ol>

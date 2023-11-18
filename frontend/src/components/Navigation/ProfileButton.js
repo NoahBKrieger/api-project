@@ -54,19 +54,19 @@ function ProfileButton({ user }) {
             </button>
             <ul className={ulClassName} ref={ulRef}>
                 {user ? (
-                    <>
+                    <div className="profile-list">
                         <li> Hello, {user.firstName}</li>
 
                         <li>{user.email}</li>
 
-                        <li> <Link to='/spots/user'>Manage Spots</Link></li>
+                        <li > <Link className="link-manage-spots" to='/spots/user'>Manage Spots</Link></li>
 
                         <li><button onClick={logout}>Log Out</button> </li>
 
 
-                    </>
+                    </div>
                 ) : (
-                    <>
+                    <div className="profile-list">
                         <li>
                             <OpenModalButton
                                 buttonText="Log In"
@@ -81,7 +81,7 @@ function ProfileButton({ user }) {
                                 modalComponent={<SignupFormModal />}
                             />
                         </li>
-                    </>
+                    </div>
                 )}
             </ul>
         </>

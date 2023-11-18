@@ -2,11 +2,37 @@
 
     border: solid black 1px;
     border-radius: 10px;
-    min-height: 250px;
-    min-width: 350px;
-    max-width: 350px;
-    max-height: 250px;
+    min-height: 150px;
+    min-width: 220px;
+    max-width: 220px;
+    max-height: 150px;
     justify-self: center;
+}
+
+@media screen and (min-width: 1600px) {
+    .preview-image {
+
+        min-height: 250px;
+        min-width: 350px;
+        max-width: 350px;
+        max-height: 250px;
+    }
+
+    .item {
+
+        width: fit-content;
+    }
+
+    .first-row {
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        min-width: 280px;
+    }
+
+
+
 }
 
 .tooltip-text {
@@ -20,6 +46,7 @@
     border-radius: 10px;
     padding: 10px 15px 10px 15px;
     top: -20px;
+    left: -40px;
 
 }
 
@@ -33,25 +60,30 @@
 
 .item {
 
-    height: 400px;
-    width: 500px;
+    height: 300px;
+    width: 250px;
+    margin: 5px;
     display: flex;
-
     flex-wrap: nowrap;
     align-items: center;
     flex-direction: column;
+
 }
 
 .delete-butt {
     background-color: red;
     width: fit-content;
     text-wrap: nowrap;
+    font-size: 12px;
 }
 
 .update-butt {
 
     width: fit-content;
     text-wrap: nowrap;
+    font-size: 12px;
+
+
 }
 
 .first-row {
@@ -59,16 +91,24 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 300px;
+    width: 220px;
 }
 
 .price {
     font-weight: bold;
     align-self: baseline;
-    margin-left: 100px;
+    /* margin-left: 100px; */
 }
 
 .buttons {
 
-    margin-top: -40px;
+    justify-self: flex-end;
+    font-size: 9px;
+    /* margin-top: -30px; */
+}
+
+@media screen and (max-width: 1600px) {
+    .buttons {
+        margin-top: -30px;
+    }
 }

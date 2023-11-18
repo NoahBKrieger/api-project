@@ -25,16 +25,10 @@ function UserPage() {
 
     useEffect(() => {
         dispatch(fetchUserSpotsThunk());
-
-
-
-    }, []);
+    }, [dispatch]);
 
     const onClick = () => {
-
         dispatch(fetchUserSpotsThunk());
-
-
     }
 
 
@@ -42,7 +36,7 @@ function UserPage() {
     return (
         <>
             <h1>Manage Your Spots</h1>
-            <Link to='/spots/new'>Create a New Spot</Link>
+            <Link className='create-spot-link' to='/spots/new'>Create a New Spot</Link>
 
             <ul className="spot-list">
                 {spots &&
