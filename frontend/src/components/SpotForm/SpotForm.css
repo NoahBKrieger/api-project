@@ -75,6 +75,7 @@ label>textarea {
     height: 100px;
     margin-left: 13rem;
     font-size: large;
+    margin-top: 5px;
 }
 
 .form p {

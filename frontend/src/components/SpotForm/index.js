@@ -1,5 +1,5 @@
 import { addSpotThunk } from "../../store/spotReducer";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useDispatch } from 'react-redux';
 import { useHistory } from "react-router-dom";
 import { getSpotThunk } from "../../store/spotReducer";
@@ -24,7 +24,7 @@ function SpotForm() {
     const [lng, setLng] = useState(0)
     const [lat, setLat] = useState(0)
     const [desc, setDesc] = useState('')
-    const [price, setPrice] = useState(1)
+    const [price, setPrice] = useState(0)
     const [errors, setErrors] = useState({});
 
     const [previewImgUrl, setPreviewImgUrl] = useState('')
@@ -48,6 +48,7 @@ function SpotForm() {
         newSpot.lat = Number(lat)
         newSpot.description = desc
         newSpot.price = Number(price)
+        newSpot.img = previewImgUrl
 
         const newPrevImg = {}
 
@@ -80,6 +81,7 @@ function SpotForm() {
 
 
         setErrors({})
+        setPrevErrors({})
 
         let newSpot2 = dispatch(addSpotThunk(newSpot))
             .then(async (res) => {
@@ -91,6 +93,45 @@ function SpotForm() {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(newPrevImg)
+                    })
+                        .catch(async prevRes => {
+
+                            const prevData = await prevRes.json()
+
+                            if (prevData && prevData.errors) {
+
+                                setPrevErrors(prevData.errors)
+                            }
+
+
+                        })
+
+                    img1.url && await csrfFetch(`/api/spots/${res.id}/images`, {
+
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(img1)
+                    })
+
+                    img2.url && await csrfFetch(`/api/spots/${res.id}/images`, {
+
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(img2)
+                    })
+
+                    img3.url && await csrfFetch(`/api/spots/${res.id}/images`, {
+
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(img3)
+                    })
+
+                    img4.url && await csrfFetch(`/api/spots/${res.id}/images`, {
+
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(img4)
                     })
 
 
@@ -116,13 +157,13 @@ function SpotForm() {
         // console.log('addDis', addDis)
     }
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        if (!previewImgUrl.endsWith('.png')) {
-            setPrevErrors({ errors: 'Must be a valid image url' })
-        } else { setPrevErrors({}) }
+    //     if (previewImgUrl.endsWith('.png') || previewImgUrl.endsWith('.img') || previewImgUrl.endsWith('.jpg')) {
+    //         setPrevErrors({})
+    //     } else { setPrevErrors({ errors: 'Must be a valid image url' }) }
 
-    }, [previewImgUrl])
+    // }, [previewImgUrl])
 
     return (
 
@@ -134,12 +175,12 @@ function SpotForm() {
                 <h3>Guests will only get your exact address once they booked a reservation.</h3>
                 <div className="location-div">
                     <label> Country
-                        <input onChange={(e) => setCountry(e.target.value)}></input>
+                        <input placeholder="Country" onChange={(e) => setCountry(e.target.value)}></input>
                     </label>
                     {errors.country && <p>{errors.country}</p>}
 
                     <label> Street Address
-                        <input onChange={(e) => setAddress(e.target.value)}></input>
+                        <input placeholder='Street Address' onChange={(e) => setAddress(e.target.value)}></input>
                     </label>
                     {errors.address && <p>{errors.address}</p>}
 
@@ -147,12 +188,12 @@ function SpotForm() {
 
                     <div className="city-state">
                         <label> City,
-                            <input onChange={(e) => setCity(e.target.value)}></input>
+                            <input placeholder="City" onChange={(e) => setCity(e.target.value)}></input>
                         </label>
 
 
                         <label> State
-                            <input onChange={(e) => setState(e.target.value)}></input>
+                            <input placeholder="State" onChange={(e) => setState(e.target.value)}></input>
                         </label>
 
                     </div>
@@ -163,12 +204,12 @@ function SpotForm() {
 
                     <div className="lat-lng">
                         <label> Latitude
-                            <input onChange={(e) => setLat(e.target.value)}></input>
+                            <input placeholder="Latitude" onChange={(e) => setLat(e.target.value)}></input>
                         </label>
                         {errors.lat && <p>{errors.lat}</p>}
 
                         <label> Longitude
-                            <input onChange={(e) => setLng(e.target.value)}></input>
+                            <input placeholder='Longitude' onChange={(e) => setLng(e.target.value)}></input>
                         </label>
                         {errors.lng && <p>{errors.lng}</p>}
 
@@ -179,14 +220,14 @@ function SpotForm() {
                 <h2>Describe your place to guests</h2>
                 <h3>Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood.</h3>
                 <label> Description
-                    <textarea onChange={(e) => setDesc(e.target.value)}></textarea>
+                    <textarea placeholder="Please write at least 30 characters" onChange={(e) => setDesc(e.target.value)}></textarea>
                 </label>
                 {errors.description && <p>{errors.description}</p>}
 
                 <h2>Create a title for your spot</h2>
                 <h3>Catch guests' attention with a spot title that highlights what makes your place special.</h3>
                 <label> Name Of Spot
-                    <input onChange={(e) => setSpotName(e.target.value)}></input>
+                    <input placeholder="Name of your spot" onChange={(e) => setSpotName(e.target.value)}></input>
                 </label>
                 {errors.name && <p>{errors.name}</p>}
 
@@ -207,24 +248,25 @@ function SpotForm() {
                 <div className="add-images">
 
                     <label>Preview Image URL
-                        <input onChange={(e) => setPreviewImgUrl(e.target.value)}></input>
+                        <input placeholder="Preview Image URL" onChange={(e) => setPreviewImgUrl(e.target.value)}></input>
                     </label>
-                    {prevErrors.errors && <p>{prevErrors.errors}</p>}
+                    {errors.img && <p>{errors.img}</p>}
+                    {prevErrors.url && <p>{prevErrors.url}</p>}
 
                     <label>Image URL 1
-                        <input onChange={(e) => setImgUrl1(e.target.value)}></input>
+                        <input placeholder="Image URL" onChange={(e) => setImgUrl1(e.target.value)}></input>
                     </label>
 
                     <label>Image URL 2
-                        <input onChange={(e) => setImgUrl2(e.target.value)}></input>
+                        <input placeholder="Image URL" onChange={(e) => setImgUrl2(e.target.value)}></input>
                     </label>
 
                     <label>Image URL 3
-                        <input onChange={(e) => setImgUrl3(e.target.value)}></input>
+                        <input placeholder="Image URL" onChange={(e) => setImgUrl3(e.target.value)}></input>
                     </label>
 
                     <label>Image URL 4
-                        <input onChange={(e) => setImgUrl4(e.target.value)}></input>
+                        <input placeholder="Image URL" onChange={(e) => setImgUrl4(e.target.value)}></input>
                     </label>
 
 

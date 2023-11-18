@@ -1,9 +1,10 @@
 import '../SpotForm/SpotForm.css'
 
-import { editSpotThunk } from "../../store/spotReducer";
-import { useEffect, useState } from "react";
+import { editSpotThunk, getSpotThunk } from "../../store/spotReducer";
+import { useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { getSpotReviewsThunk } from '../../store/reviewReducer';
 
 function EditSpotForm() {
 
@@ -24,19 +25,7 @@ function EditSpotForm() {
     const [price, setPrice] = useState(oldSpot.price)
     const [errors, setErrors] = useState({});
 
-    useEffect(() => {
-        setSpotName(oldSpot.name)
-        setAddress(oldSpot.address)
-        setCity(oldSpot.city)
-        setState(oldSpot.state)
-        setCountry(oldSpot.country)
-        setLng(oldSpot.lng)
-        setLat(oldSpot.lat)
-        setDesc(oldSpot.description)
-        setPrice(oldSpot.price)
 
-
-    }, [])
 
 
 
@@ -63,13 +52,15 @@ function EditSpotForm() {
 
 
         let newSpot2 = dispatch(editSpotThunk(newSpot, Number(oldSpot.id)))
-            .then(() => {
+            .then(async (res) => {
 
 
 
                 if (!newSpot2.errors) {
-                    console.log('success')
-                    history.push('/spots/user')
+                    await dispatch(getSpotThunk(res.id))
+                    await dispatch(getSpotReviewsThunk(res.id))
+
+                        .then(history.push(`/spots/${res.id}`))
                 }
 
 
@@ -87,61 +78,81 @@ function EditSpotForm() {
 
     return (
 
-        <>
-            <h1>Edit Spot: {oldSpot.name}</h1>
+        <div className="form-page">
             <form className="form" onSubmit={handleSubmit}>
-
-                <label> Name Of Spot
-                    <input defaultValue={oldSpot.name} onChange={(e) => setSpotName(e.target.value)}></input>
-                </label>
-                {errors.name && <p>{errors.name}</p>}
-
-                <label> Address
-                    <input defaultValue={oldSpot.address} onChange={(e) => setAddress(e.target.value)}></input>
-                </label>
-                {errors.address && <p>{errors.address}</p>}
+                <h1 className="form-title">Edit Spot: {oldSpot.name}</h1>
 
 
-                <label> City
-                    <input defaultValue={oldSpot.city} onChange={(e) => setCity(e.target.value)}></input>
-                </label>
-                {errors.city && <p>{errors.city}</p>}
+                <h2>Where's your place located?</h2>
+                <h3>Guests will only get your exact address once they booked a reservation.</h3>
+                <div className="location-div">
+                    <label> Country
+                        <input placeholder="Country" defaultValue={oldSpot.country} onChange={(e) => setCountry(e.target.value)}></input>
+                    </label>
+                    {errors.country && <p>{errors.country}</p>}
+
+                    <label> Street Address
+                        <input placeholder='Street Address' defaultValue={oldSpot.address} onChange={(e) => setAddress(e.target.value)}></input>
+                    </label>
+                    {errors.address && <p>{errors.address}</p>}
 
 
-                <label> State
-                    <input defaultValue={oldSpot.state} onChange={(e) => setState(e.target.value)}></input>
-                </label>
-                {errors.state && <p>{errors.state}</p>}
+
+                    <div className="city-state">
+                        <label> City,
+                            <input placeholder="City" defaultValue={oldSpot.city} onChange={(e) => setCity(e.target.value)}></input>
+                        </label>
 
 
-                <label> Country
-                    <input defaultValue={oldSpot.country} onChange={(e) => setCountry(e.target.value)}></input>
-                </label>
-                {errors.country && <p>{errors.country}</p>}
+                        <label> State
+                            <input placeholder="State" defaultValue={oldSpot.state} onChange={(e) => setState(e.target.value)}></input>
+                        </label>
 
+                    </div>
+                    <div className="city-state-errors">
+                        {errors.city && <p>{errors.city}</p>}
+                        {errors.state && <p className="state-errors">{errors.state}</p>}
+                    </div>
 
-                <label> Longitude
-                    <input defaultValue={oldSpot.lng} onChange={(e) => setLng(e.target.value)}></input>
-                </label>
-                {errors.lng && <p>{errors.lng}</p>}
+                    <div className="lat-lng">
+                        <label> Latitude
+                            <input placeholder="Latitude" defaultValue={oldSpot.lat} onChange={(e) => setLat(e.target.value)}></input>
+                        </label>
+                        {errors.lat && <p>{errors.lat}</p>}
 
+                        <label> Longitude
+                            <input placeholder='Longitude' defaultValue={oldSpot.lng} onChange={(e) => setLng(e.target.value)}></input>
+                        </label>
+                        {errors.lng && <p>{errors.lng}</p>}
 
-                <label> Latitude
-                    <input defaultValue={oldSpot.lat} onChange={(e) => setLat(e.target.value)}></input>
-                </label>
-                {errors.lat && <p>{errors.lat}</p>}
+                    </div>
 
+                </div>
 
+                <h2>Describe your place to guests</h2>
+                <h3>Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood.</h3>
                 <label> Description
-                    <textarea defaultValue={oldSpot.description} onChange={(e) => setDesc(e.target.value)}></textarea>
+                    <textarea placeholder="Please write at least 30 characters" defaultValue={oldSpot.description} onChange={(e) => setDesc(e.target.value)}></textarea>
                 </label>
                 {errors.description && <p>{errors.description}</p>}
 
-
-                <label> Price
-                    <input defaultValue={oldSpot.price} onChange={(e) => setPrice(e.target.value)}></input>
+                <h2>Create a title for your spot</h2>
+                <h3>Catch guests' attention with a spot title that highlights what makes your place special.</h3>
+                <label> Name Of Spot
+                    <input placeholder="Name of your spot" defaultValue={oldSpot.name} onChange={(e) => setSpotName(e.target.value)}></input>
                 </label>
-                {errors.price && <p>{errors.price}</p>}
+                {errors.name && <p>{errors.name}</p>}
+
+                <div className="price-div">
+
+                    <h2>Set a base price for your spot</h2>
+                    <h3>Competitive pricing can help your listing stand out and rank higher in search results.</h3>
+                    <label> $
+                        <input placeholder="Price per night (USD)" defaultValue={oldSpot.price} onChange={(e) => setPrice(e.target.value)}></input>
+                    </label>
+                    {errors.price && <p>{errors.price}</p>}
+
+                </div>
 
 
                 <button className='submit-button' >Submit</button>
@@ -149,7 +160,7 @@ function EditSpotForm() {
 
 
             </form>
-        </>
+        </div>
     )
 }
 

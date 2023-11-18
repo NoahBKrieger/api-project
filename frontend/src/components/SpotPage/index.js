@@ -51,7 +51,7 @@ function SpotPage() {
                 <ol className="regular-images">
                     {imageArr && imageArr.map(el => {
                         return <li>
-                            <img src={KK} alt={el.url + '-   picture'} style={{ width: 300 + 'px', height: 200 + 'px' }}></img>
+                            <img src={el.url || KK} alt={el.url + '- picture'} style={{ width: 300 + 'px', height: 200 + 'px' }}></img>
                         </li>
                     })}
                 </ol>

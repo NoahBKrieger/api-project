@@ -37,10 +37,10 @@
 
 }
 
-/* .title-link:hover {
-     text-decoration: default;
+.title-link:hover {
+    text-decoration: default;
     cursor: pointer;
-} */
+}
 
 .right-box {
     display: flex;
