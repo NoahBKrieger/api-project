@@ -29,6 +29,8 @@ function SpotPage() {
 
     let noReviews = spot.numReviews === 'no reviews'
 
+    let reviewDisplay = 'Reviews'
+    if (reviews.length === 1) reviewDisplay = 'Review'
     const imageArr = spot.SpotImages && spot.SpotImages.filter(el => { return el.preview === false })
     imageArr.splice(4)
 
@@ -64,7 +66,7 @@ function SpotPage() {
             <div className="reserveBox">
                 <div className="reserve-info">
                     <h3> ${spot.price} per night</h3>
-                    {!noReviews && <h3><i class="fa fa-star"></i> {spot.avgStarRating.toFixed(1)}   --   {spot.numReviews} Reviews</h3>}
+                    {!noReviews && <h3 className="review-info"><i class="fa fa-star"></i> {spot.avgStarRating.toFixed(1)}   <li> {spot.numReviews} {reviewDisplay}</li></h3>}
                     {noReviews && <h3><i class="fa fa-star"></i> New</h3>}
                 </div>
                 <button onClick={reserve}>Reserve</button>
@@ -74,7 +76,7 @@ function SpotPage() {
             <div>
                 <h2><div >
 
-                    {!noReviews && <div><i class="fa fa-star"></i> {spot.avgStarRating.toFixed(1)}   --   {spot.numReviews} Reviews</div>}
+                    {!noReviews && <div className="review-info"><i class="fa fa-star"></i> {spot.avgStarRating.toFixed(1)}   <li>{spot.numReviews} {reviewDisplay}</li></div>}
                     {noReviews && <div><i class="fa fa-star"></i> New</div>}
                 </div></h2>
 

@@ -38,6 +38,28 @@ function LoginFormModal() {
 
     };
 
+    const demoUser = (e) => {
+
+
+        e.preventDefault();
+        setErrors({});
+        setInv(true)
+        return dispatch(sessionActions.login({ "credential": 'demo', "password": 'password' }))
+            .then(closeModal)
+            .catch(async (res) => {
+                const data = await res.json();
+                if (data && data.errors) {
+                    setErrors(data.errors);
+
+                }
+            });
+
+
+
+
+
+    }
+
     return (
         <>
             <h1>Log In</h1>
@@ -65,6 +87,7 @@ function LoginFormModal() {
                     <p>{errors.credential}</p>
                 )}
                 <button type="submit" disabled={!submitReady}>Log In</button>
+                <button onClick={demoUser}>Demo User</button>
             </form>
         </>
     );
