@@ -83,13 +83,13 @@ label>textarea {
     color: red;
 }
 
-.price-div {
+/* .price-div {
 
-    /* display: flex;
+     display: flex;
     flex-direction: column;
-    align-items: start; */
+    align-items: start;
 
-}
+} */
 
 .price-div>label {
 

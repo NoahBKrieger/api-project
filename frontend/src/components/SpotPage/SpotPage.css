@@ -1,5 +1,4 @@
 .reserveBox {
-
     border: solid lavender 3px;
     border-radius: 5px;
     display: grid;
@@ -23,7 +22,6 @@
 }
 
 .images {
-
     display: flex;
 }
 
@@ -34,23 +32,19 @@
 }
 
 .post-button {
-
     width: 200px;
 }
 
 .description {
-
     max-width: 60%;
 }
 
 .delete-button {
-
     max-width: 200px;
     margin-left: 15px;
 }
 
 .review-list li {
-
     margin-bottom: 20px;
     max-width: 50%;
     display: flex;
@@ -58,13 +52,19 @@
 }
 
 .review-item>button {
-
     width: 200px;
     margin-left: 20px;
     background-color: red;
 }
 
 .review-button {
-
     max-width: fit-content;
+}
+
+.review-info {
+    display: flex;
+}
+
+.review-info>li {
+    margin-left: 1.5rem;
 }
