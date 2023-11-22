@@ -1,11 +1,15 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 // import { useHistory } from "react-router-dom";
-// import { deleteReviewThunk, getSpotReviewsThunk } from "../../store/reviewReducer";
+import { getSpotReviewsThunk } from "../../store/reviewReducer";
+import { useParams } from "react-router-dom";
+
+import { useEffect } from "react";
 
 import './SpotPage.css'
 import OpenModalButton from "../OpenModalButton";
 import ConfirmDeleteReviewModal from "../ConfirmDeleteReviewModal";
 import ReviewForm from "../ReviewForm";
+import { getSpotThunk } from "../../store/spotReducer";
 
 const KK = 'https://upload.wikimedia.org/wikipedia/commons/2/25/The_Krusty_Krab.png'
 const pineapple = "https://i.pinimg.com/originals/58/b3/40/58b340936b2c1ed07bed66c260b00534.png"
@@ -14,7 +18,8 @@ const pineapple = "https://i.pinimg.com/originals/58/b3/40/58b340936b2c1ed07bed6
 function SpotPage() {
 
     // const history = useHistory()
-    // const dispatch = useDispatch()
+    const dispatch = useDispatch()
+    const spotId = useParams()
 
 
     const spot = useSelector(state => (state.spots.currSpot))
@@ -32,16 +37,26 @@ function SpotPage() {
     let reviewDisplay = 'Reviews'
     if (reviews.length === 1) reviewDisplay = 'Review'
     const imageArr = spot.SpotImages && spot.SpotImages.filter(el => { return el.preview === false })
-    imageArr.splice(4)
+    imageArr && imageArr.splice(4)
 
 
     const previewImg = spot.SpotImages && spot.SpotImages.find(el => { return el.preview === true })
 
 
     const reserve = () => {
-
         return alert("Feature coming soon!")
     }
+
+    useEffect(() => {
+        // console.log('spotId---', spotId.spotId)
+
+        async function spotDispatches() {
+            await dispatch(getSpotThunk(spotId.spotId));
+            await dispatch(getSpotReviewsThunk(spotId.spotId))
+        }
+
+        spotDispatches()
+    }, [dispatch, spotId]);
 
     return (
 
@@ -66,7 +81,7 @@ function SpotPage() {
             <div className="reserveBox">
                 <div className="reserve-info">
                     <h3> ${spot.price} per night</h3>
-                    {!noReviews && <h3 className="review-info"><i class="fa fa-star"></i> {spot.avgStarRating.toFixed(1)}   <li> {spot.numReviews} {reviewDisplay}</li></h3>}
+                    {!noReviews && <h3 className="review-info"><i class="fa fa-star"></i> {spot.avgStarRating && spot.avgStarRating.toFixed(1)}   <li> {spot.numReviews} {reviewDisplay}</li></h3>}
                     {noReviews && <h3><i class="fa fa-star"></i> New</h3>}
                 </div>
                 <button onClick={reserve}>Reserve</button>
@@ -76,28 +91,30 @@ function SpotPage() {
             <div>
                 <h2><div >
 
-                    {!noReviews && <div className="review-info"><i class="fa fa-star"></i> {spot.avgStarRating.toFixed(1)}   <li>{spot.numReviews} {reviewDisplay}</li></div>}
+                    {!noReviews && <div className="review-info"><i class="fa fa-star"></i> {spot.avgStarRating && spot.avgStarRating.toFixed(1)}   <li>{spot.numReviews} {reviewDisplay}</li></div>}
                     {noReviews && <div><i class="fa fa-star"></i> New</div>}
                 </div></h2>
 
                 <ol className="review-list">
-                    {reviews.map(el => {
+                    {user && reviews &&
+                        reviews.map(el => {
 
-                        if (user && (el.userId === user.id)) {
-                            return <li className='review-item' key={el.id}> review: {el.review}, stars: {el.stars}
 
-                                <OpenModalButton
-                                    cssClass="delete-button"
-                                    buttonText='Delete Review'
-                                    modalComponent={<ConfirmDeleteReviewModal review={el} spot={spot} />}>
-                                </OpenModalButton>
-                            </li>
-                        }
-                        return <li key={el.id}> review: {el.review}, stars: {el.stars} </li>
-                    })}
+                            if (user && el.userId === user.id) {
+                                return <li className='review-item' key={el.id}> review: {el.review}, stars: {el.stars}
+
+                                    <OpenModalButton
+                                        cssClass="delete-button"
+                                        buttonText='Delete Review'
+                                        modalComponent={<ConfirmDeleteReviewModal review={el} spot={spot} />}>
+                                    </OpenModalButton>
+                                </li>
+                            } else { return <li key={el.id}> review: {el.review}, stars: {el.stars} </li> }
+
+                        })}
                 </ol>
 
-                {user &&
+                {user && spot.Owner &&
                     user.id !== spot.Owner.id &&
                     !hasReview &&
                     <OpenModalButton buttonText='Post your Review' cssClass='review-button' modalComponent={<ReviewForm />} ></OpenModalButton>}
