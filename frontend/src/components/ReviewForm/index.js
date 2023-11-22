@@ -29,32 +29,36 @@ function ReviewForm() {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        const newReview = {}
+        if (stars.length > 0 && reviewText.length > 0) {
 
-        newReview.review = reviewText
-        newReview.stars = Number(stars)
+            const newReview = {}
 
-        console.log('newreview----', newReview)
-        setErrors({})
+            newReview.review = reviewText
+            newReview.stars = Number(stars)
 
-        let newReview2 = dispatch(addReviewThunk(Number(spot.id), newReview))
-            .then(() => {
+            console.log('newreview----', newReview)
+            setErrors({})
 
-                if (!(newReview2.errors)) {
-                    console.log('success')
-                    dispatch(getSpotThunk(spot.id))
-                    closeModal()
-                }
-            })
+            let newReview2 = dispatch(addReviewThunk(Number(spot.id), newReview))
+                .then(() => {
 
-            .catch(async (res) => {
+                    if (!(newReview2.errors)) {
+                        console.log('success')
+                        dispatch(getSpotThunk(spot.id))
+                        closeModal()
+                    }
+                })
 
-                const data = await res.json();
-                if (data && data.errors) {
-                    setErrors(data.errors);
-                    console.log('errs---', data.errors)
-                }
-            })
+                .catch(async (res) => {
+
+                    const data = await res.json();
+                    if (data && data.errors) {
+                        setErrors(data.errors);
+                        console.log('errs---', data.errors)
+                    }
+                })
+
+        }
     }
 
     return (
