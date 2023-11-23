@@ -2,8 +2,8 @@
     border: solid lavender 3px;
     border-radius: 5px;
     display: grid;
-    /* grid-template-columns: 2fr 1fr 1fr 1fr; */
-    width: 350px;
+
+    width: 400px;
     height: 150px;
     position: absolute;
     right: 60px;
@@ -63,8 +63,24 @@
 
 .review-info {
     display: flex;
+
 }
 
-.review-info>li {
-    margin-left: 1.5rem;
+.review-info ul {
+
+
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.number-reviews {
+    margin-left: 25px;
+    text-wrap: nowrap;
+
+}
+
+.price-in-box {
+
+    align-self: center;
+    text-wrap: nowrap;
 }

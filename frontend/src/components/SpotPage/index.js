@@ -80,8 +80,8 @@ function SpotPage() {
 
             <div className="reserveBox">
                 <div className="reserve-info">
-                    <h3> ${spot.price} per night</h3>
-                    {!noReviews && <h3 className="review-info"><i class="fa fa-star"></i> {spot.avgStarRating && spot.avgStarRating.toFixed(1)}   <li> {spot.numReviews} {reviewDisplay}</li></h3>}
+                    <h3 className="price-in-box"> ${spot.price} per night</h3>
+                    {!noReviews && <h3 className="review-info"><ul><i class="fa fa-star"></i> {spot.avgStarRating && spot.avgStarRating.toFixed(1)}   <li className="number-reviews"> {spot.numReviews} {reviewDisplay}</li></ul></h3>}
                     {noReviews && <h3><i class="fa fa-star"></i> New</h3>}
                 </div>
                 <button onClick={reserve}>Reserve</button>
@@ -91,7 +91,7 @@ function SpotPage() {
             <div>
                 <h2><div >
 
-                    {!noReviews && <div className="review-info"><i class="fa fa-star"></i> {spot.avgStarRating && spot.avgStarRating.toFixed(1)}   <li>{spot.numReviews} {reviewDisplay}</li></div>}
+                    {!noReviews && <div className="review-info"><i class="fa fa-star"></i> {spot.avgStarRating && spot.avgStarRating.toFixed(1)}   <li className="number-reviews">{spot.numReviews} {reviewDisplay}</li></div>}
                     {noReviews && <div><i class="fa fa-star"></i> New</div>}
                 </div></h2>
 

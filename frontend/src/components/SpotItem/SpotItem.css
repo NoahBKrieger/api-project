@@ -1,11 +1,11 @@
 .preview-image {
 
-    border: solid black 1px;
+    /* border: solid black 1px; */
     border-radius: 10px;
-    min-height: 150px;
-    min-width: 220px;
+    min-height: 170px;
+    min-width: 250px;
     max-width: 220px;
-    max-height: 150px;
+    max-height: 170px;
     justify-self: center;
 }
 
@@ -20,7 +20,8 @@
 
     .item {
 
-        width: fit-content;
+        min-width: 350px;
+        min-height: 400px;
     }
 
     .first-row {
@@ -61,12 +62,14 @@
 .item {
 
     height: 300px;
-    width: 250px;
-    margin: 5px;
+    min-width: 250px;
+    margin: 20px;
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
     flex-direction: column;
+    box-shadow: 5px 5px 6px 2px lightgrey;
+    border-radius: 10px;
 
 }
 
@@ -102,9 +105,9 @@
 
 .buttons {
 
-    justify-self: flex-end;
+    /* justify-self: flex-end; */
     font-size: 9px;
-    /* margin-top: -30px; */
+    margin-top: 30px;
 }
 
 @media screen and (max-width: 1600px) {
