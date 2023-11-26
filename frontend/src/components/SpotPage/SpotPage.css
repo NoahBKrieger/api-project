@@ -29,6 +29,14 @@
     position: relative;
     top: -16px;
     columns: 2;
+
+}
+
+.regular-images>li {
+
+    margin-left: 5px;
+    list-style: none;
+
 }
 
 .post-button {

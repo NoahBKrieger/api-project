@@ -1,19 +1,12 @@
 .spot-item {
 
-    /* border: solid black 2px; */
-
     height: 340px;
-
     min-width: 230px;
     margin: 3px;
     position: relative;
     margin-bottom: 40px;
-
     display: flex;
     justify-content: center;
-
-
-
 }
 
 .spot-list {

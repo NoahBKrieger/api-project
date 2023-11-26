@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getSpotReviewsThunk } from "../../store/reviewReducer";
 import { useParams } from "react-router-dom";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import './SpotPage.css'
 import OpenModalButton from "../OpenModalButton";
@@ -26,6 +26,8 @@ function SpotPage() {
     const reviews = useSelector(state => state.reviews.reviews)
     const user = useSelector(state => state.session.user)
 
+
+
     // check for user reviews
     let hasReview = false
     let filteredReviews
@@ -41,6 +43,10 @@ function SpotPage() {
 
 
     const previewImg = spot.SpotImages && spot.SpotImages.find(el => { return el.preview === true })
+
+    const [pImage, setPImage] = useState((previewImg && previewImg.url) || pineapple);
+
+    console.log('pimage', pImage)
 
 
     const reserve = () => {
@@ -64,7 +70,15 @@ function SpotPage() {
             <h1>{spot.name}</h1>
             <h2 className="location">{spot.city} , {spot.state} , {spot.country}</h2>
             <div className="images">
-                <img src={(previewImg && previewImg.url) || pineapple} alt='preview' style={{ width: 650 + 'px', height: 405 + 'px' }}></img>
+                <img src={pImage}
+                    alt='preview'
+                    onError={() => setPImage(pineapple)}
+                    style={{ width: 650 + 'px', height: 405 + 'px' }}
+                >
+                </img>
+
+
+
                 <ol className="regular-images">
                     {imageArr && imageArr.map(el => {
                         return <li>
