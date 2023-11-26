@@ -3,8 +3,8 @@
     /* border: solid black 1px; */
     border-radius: 10px;
     min-height: 170px;
-    min-width: 250px;
-    max-width: 220px;
+    min-width: 230px;
+    max-width: 230px;
     max-height: 170px;
     justify-self: center;
 }
@@ -29,11 +29,8 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        min-width: 280px;
+        min-width: 340px;
     }
-
-
-
 }
 
 .tooltip-text {
@@ -53,23 +50,28 @@
 
 .item:hover .tooltip-text {
     visibility: visible;
+
 }
 
 .item:hover {
     cursor: pointer;
+    border: solid red 1px;
 }
 
 .item {
 
     height: 300px;
-    min-width: 250px;
-    margin: 20px;
+    width: 230px;
+    margin-bottom: 27px;
+    margin-top: 20px;
+
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
     flex-direction: column;
     box-shadow: 5px 5px 6px 2px lightgrey;
     border-radius: 10px;
+    transition: .2s;
 
 }
 
@@ -77,14 +79,14 @@
     background-color: red;
     width: fit-content;
     text-wrap: nowrap;
-    font-size: 12px;
+    font-size: 13px;
 }
 
 .update-butt {
 
     width: fit-content;
     text-wrap: nowrap;
-    font-size: 12px;
+    font-size: 13px;
 
 
 }
@@ -100,18 +102,20 @@
 .price {
     font-weight: bold;
     align-self: baseline;
-    /* margin-left: 100px; */
+    margin-left: 6px;
 }
 
 .buttons {
 
-    /* justify-self: flex-end; */
-    font-size: 9px;
+
+    /* font-size: 14px; */
     margin-top: 30px;
+    margin-bottom: 30px;
 }
 
 @media screen and (max-width: 1600px) {
     .buttons {
         margin-top: -30px;
+        margin-left: -17px;
     }
 }

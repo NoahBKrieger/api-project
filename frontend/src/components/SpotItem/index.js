@@ -1,6 +1,7 @@
 
 // import SpotDetailsButton from "../SpotDetails";
 import { useHistory } from "react-router-dom";
+import { useState } from "react";
 // import { useEffect, } from "react";
 import { getSpotThunk } from "../../store/spotReducer";
 import { useDispatch } from "react-redux";
@@ -16,12 +17,17 @@ import ConfirmDeleteSpotModal from "../ConfirmDeleteModal";
 function SpotItem({ spot, user }) {
 
     const pineapple = "https://i.pinimg.com/originals/58/b3/40/58b340936b2c1ed07bed66c260b00534.png"
+
+    const [image, setImage] = useState(spot.previewImage);
+
+
+
     const dispatch = useDispatch();
 
-    let previewImg
-    if (spot.previewImage === 'no preview image') {
-        previewImg = pineapple
-    } else previewImg = spot.previewImage
+
+    if (image === 'no preview image') {
+        setImage(pineapple)
+    }
 
 
     const history = useHistory()
@@ -63,9 +69,10 @@ function SpotItem({ spot, user }) {
 
                 <img
                     className='preview-image'
-                    src={previewImg}
+                    src={image}
                     alt={`${spot.name} preview`}
-                    style={{ width: 300 + 'px', height: 200 + 'px' }}>
+                    style={{ width: 300 + 'px', height: 200 + 'px' }}
+                    onError={() => setImage(pineapple)}>
                 </img>
 
                 <span className="first-row">
