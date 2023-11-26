@@ -44,27 +44,22 @@
     border-radius: 10px;
     padding: 10px 15px 10px 15px;
     top: -20px;
-    left: -40px;
-
 }
 
 .item:hover .tooltip-text {
     visibility: visible;
-
 }
 
 .item:hover {
     cursor: pointer;
-    border: solid red 1px;
+    box-shadow: 0px 0px 0px 6px lightcoral;
 }
 
 .item {
-
     height: 300px;
     width: 230px;
     margin-bottom: 27px;
     margin-top: 20px;
-
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
@@ -72,7 +67,6 @@
     box-shadow: 5px 5px 6px 2px lightgrey;
     border-radius: 10px;
     transition: .2s;
-
 }
 
 .delete-butt {
@@ -87,8 +81,6 @@
     width: fit-content;
     text-wrap: nowrap;
     font-size: 13px;
-
-
 }
 
 .first-row {
@@ -106,9 +98,6 @@
 }
 
 .buttons {
-
-
-    /* font-size: 14px; */
     margin-top: 30px;
     margin-bottom: 30px;
 }
