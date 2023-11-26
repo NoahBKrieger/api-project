@@ -1,15 +1,18 @@
 .spot-item {
 
     /* border: solid black 2px; */
-    border-radius: 6px;
-    height: 350px;
-    width: 220px;
-    margin: 5px;
-    position: relative;
 
-    /* background-color: bisque; */
+    height: 340px;
+
+    min-width: 230px;
+    margin: 3px;
+    position: relative;
+    margin-bottom: 40px;
+
     display: flex;
     justify-content: center;
+
+
 
 }
 
@@ -17,25 +20,25 @@
     display: flex;
     flex-wrap: wrap;
     list-style: none;
-    justify-content: center;
+    justify-content: space-around;
+    margin-left: -20px;
+    max-width: fit-content;
 
 }
 
-@media screen and (min-width: 1000px) {
+@media screen and (min-width: 1100px) {
     .spot-list {
 
         display: grid;
         grid-template-columns: 1fr 1fr 1fr 1fr;
-        margin-left: 30px;
-
+        /* margin-left: 20px; */
+        max-width: none;
     }
 
     .spot-item {
         margin: 6px;
         margin-top: 20px;
         margin-bottom: 80px;
-
-
 
     }
 
@@ -49,7 +52,7 @@
 
         display: grid;
         grid-template-columns: 1fr 1fr 1fr 1fr;
-        margin-left: 60px;
+        /* margin-left: 60px; */
 
     }
 }
@@ -57,12 +60,15 @@
 .buttons {
 
     display: flex;
-    /* flex-direction: column; */
+
     justify-content: space-around;
     padding: 10px;
+
 }
 
 .create-spot-link {
 
     text-decoration: none;
+    margin-left: 15px;
+
 }
