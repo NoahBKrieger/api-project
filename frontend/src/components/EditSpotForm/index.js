@@ -109,7 +109,7 @@ function EditSpotForm() {
 
         <div className="form-page">
             <form className="form" onSubmit={handleSubmit}>
-                <h1 className="form-title">Edit Spot: {oldSpot.name}</h1>
+                <h1 className="form-title">Update Your Spot</h1>
 
 
                 <h2>Where's your place located?</h2>
@@ -184,7 +184,7 @@ function EditSpotForm() {
                 </div>
 
 
-                <button className='submit-button' >Submit</button>
+                <button className='submit-button' >Update Your Spot</button>
 
 
 
