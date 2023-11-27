@@ -2,3 +2,12 @@
     padding: 15px;
     border-radius: 10px;
 }
+
+.delete-spot-confirm {
+
+    background-color: red;
+}
+
+.delete-spot-cancel {
+    background-color: darkgray;
+}

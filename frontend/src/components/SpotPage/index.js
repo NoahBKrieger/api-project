@@ -13,6 +13,7 @@ import { getSpotThunk } from "../../store/spotReducer";
 
 const KK = 'https://upload.wikimedia.org/wikipedia/commons/2/25/The_Krusty_Krab.png'
 const pineapple = "https://i.pinimg.com/originals/58/b3/40/58b340936b2c1ed07bed66c260b00534.png"
+const MONTHS = ['happy new year', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
 
 function SpotPage() {
@@ -130,7 +131,7 @@ function SpotPage() {
                                     <ul className='review-item' >
                                         <li className="firstName">{user.firstName}</li>
                                         {/* {!el.User && <li className="firstName">{user.firstName}</li>} */}
-                                        <li className="review-date">{el.createdAt.slice(5, 7)}, {el.createdAt.slice(0, 4)} </li>
+                                        <li className="review-date">{MONTHS[Number(el.createdAt.slice(5, 7))]}, {el.createdAt.slice(0, 4)} </li>
                                         <li>{el.review}</li>
                                     </ul>
 
@@ -144,7 +145,7 @@ function SpotPage() {
                                 return <li key={el.id}>
                                     <ul className='review-item' >
                                         {el.User && <li className="firstName">{el.User.firstName}</li>}
-                                        <li className="review-date">{el.createdAt.slice(5, 7)}, {el.createdAt.slice(0, 4)} </li>
+                                        <li className="review-date">{MONTHS[Number(el.createdAt.slice(5, 7))]}, {el.createdAt.slice(0, 4)} </li>
                                         <li>{el.review}</li>
                                     </ul>
                                 </li>

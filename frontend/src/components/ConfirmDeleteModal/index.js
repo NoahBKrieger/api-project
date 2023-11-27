@@ -20,10 +20,11 @@ function ConfirmDeleteSpotModal({ spot }) {
 
     return (
         <div className="delete-spot-modal">
-            <h2>Confirm Delete?</h2>
+            <h2>Confirm Delete</h2>
+            <h3>Are you sure you want to remove this spot?</h3>
             <div>
-                <button onClick={deleteButton}>Confirm</button>
-                <button onClick={closeModal}>Cancel</button>
+                <button className="delete-spot-confirm" onClick={deleteButton}>Yes (Delete Spot)</button>
+                <button className='delete-spot-cancel' onClick={closeModal}>No (Keep Spot)</button>
             </div>
         </div>
     )

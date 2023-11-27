@@ -28,7 +28,7 @@ function ReviewForm() {
 
     const [disableButton, setDisableButton] = useState(true)
     useEffect(() => {
-        if (stars.length > 0 && reviewText.length > 1) {
+        if (stars.length > 0 && reviewText.length > 9) {
             setDisableButton(false)
         } else setDisableButton(true)
 
@@ -58,33 +58,30 @@ function ReviewForm() {
             })
 
             .catch(async (res) => {
-
                 const data = await res.json();
                 if (data && data.errors) {
                     setErrors(data.errors);
                     console.log('errs---', data.errors)
                 }
             })
-
-
     }
 
     return (
         <div className="review-form-div">
             <form className="form" onSubmit={handleSubmit}>
-                <h1>Add a Review to {spot.name}</h1>
+                <h1>How was your stay?</h1>
 
                 <label> Review Text
-                    <input onChange={(e) => setReviewText(e.target.value)}></input>
+                    <input placeholder="Leave your review here..." onChange={(e) => setReviewText(e.target.value)}></input>
                 </label>
                 {errors.review && <p>{errors.review}</p>}
 
                 <label> Stars
-                    <input onChange={(e) => setStars(e.target.value)}></input>
+                    <input placeholder='1 - 5' onChange={(e) => setStars(e.target.value)}></input>
                 </label>
                 {errors.stars && <p>{errors.stars}</p>}
 
-                <button className='submit-button' disabled={disableButton}>Submit</button>
+                <button className='submit-button' disabled={disableButton}>Submit Your Review</button>
                 <button className='cancel-button' onClick={closeModal}>Cancel</button>
 
             </form>

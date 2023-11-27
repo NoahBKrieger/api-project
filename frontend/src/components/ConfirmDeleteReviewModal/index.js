@@ -21,10 +21,11 @@ function ConfirmDeleteReviewModal({ review, spot }) {
 
     return (
         <div className="delete-spot-modal">
-            <h2>Confirm Delete?</h2>
+            <h2>Confirm Delete</h2>
+            <h3>Are you sure you want to delete this review?</h3>
             <div>
-                <button onClick={deleteReview}>Confirm</button>
-                <button onClick={closeModal}>Cancel</button>
+                <button className='delete-spot-confirm' onClick={deleteReview}>Yes (Delete Review)</button>
+                <button className='delete-spot-cancel' onClick={closeModal}>No (Keep Review)</button>
             </div>
         </div>
     )
