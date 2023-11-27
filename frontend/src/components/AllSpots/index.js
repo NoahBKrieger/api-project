@@ -9,21 +9,17 @@ function AllSpots() {
 
     const dispatch = useDispatch();
     const spots = useSelector(state => state.spots.spots);
-    // console.log('spots', spots)
-
+    const newSpots = spots.toReversed()
     useEffect(() => {
         dispatch(fetchSpotsThunk());
     }, [dispatch]);
 
     return (
         <>
-            {/* <h1>ALL SPOTS</h1> */}
-
-
             <ul className="spot-list">
-                {spots &&
+                {newSpots &&
 
-                    spots.map(el => {
+                    newSpots.map(el => {
                         return <li className="spot-item" key={el.id} >
                             <SpotItem spot={el} />
                         </li>

@@ -4,6 +4,8 @@ import { deleteReviewThunk } from "../../store/reviewReducer";
 import { getSpotReviewsThunk } from "../../store/reviewReducer";
 import { getSpotThunk } from "../../store/spotReducer";
 
+import '../ConfirmDeleteModal/ConfirmDeleteModal.css'
+
 function ConfirmDeleteReviewModal({ review, spot }) {
 
     const dispatch = useDispatch()
@@ -18,13 +20,13 @@ function ConfirmDeleteReviewModal({ review, spot }) {
     })
 
     return (
-        <>
+        <div className="delete-spot-modal">
             <h2>Confirm Delete?</h2>
             <div>
                 <button onClick={deleteReview}>Confirm</button>
                 <button onClick={closeModal}>Cancel</button>
             </div>
-        </>
+        </div>
     )
 
 }

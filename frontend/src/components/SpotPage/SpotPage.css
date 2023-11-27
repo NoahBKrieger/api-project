@@ -49,15 +49,52 @@
 
 .delete-button {
     max-width: 200px;
-    margin-left: 15px;
+    margin-left: 0px;
+    margin-top: 5px;
 }
 
-.review-list li {
-    margin-bottom: 20px;
-    max-width: 50%;
-    display: flex;
-    flex-direction: column;
+.review-title {
+
+    margin-left: 30px;
 }
+
+.review-list-all {
+
+    margin-top: 80px;
+}
+
+.review-list>li {
+    margin-bottom: 25px;
+    max-width: 90%;
+    display: flex;
+
+    flex-direction: column;
+    list-style: none;
+}
+
+.review-item>li {
+    list-style: none;
+    margin-bottom: 6px;
+    margin-left: -43px;
+
+}
+
+.review-list {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.firstName {
+
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.review-date {
+
+    color: gray;
+}
+
 
 .review-item>button {
     width: 200px;
@@ -67,6 +104,7 @@
 
 .review-button {
     max-width: fit-content;
+    margin-left: 40px;
 }
 
 .review-info {

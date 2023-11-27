@@ -14,7 +14,7 @@ function Navigation({ isLoaded }) {
     return (
         <div className='nav'>
             <div className='title-link' onClick={() => history.push('/')}>
-                <i class="fa-solid fa-2xl fa-spider" >
+                <i class="fa-solid fa-2xl fa-spider">
                 </i>
                 Air Krusty & Krab
 

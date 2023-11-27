@@ -2,10 +2,10 @@ import { useSelector, useDispatch } from "react-redux";
 // import { useHistory } from "react-router-dom";
 import { getSpotReviewsThunk } from "../../store/reviewReducer";
 import { useParams } from "react-router-dom";
-
 import { useEffect, useState } from "react";
 
 import './SpotPage.css'
+
 import OpenModalButton from "../OpenModalButton";
 import ConfirmDeleteReviewModal from "../ConfirmDeleteReviewModal";
 import ReviewForm from "../ReviewForm";
@@ -37,7 +37,11 @@ function SpotPage() {
     let noReviews = spot.numReviews === 'no reviews'
 
     let reviewDisplay = 'Reviews'
-    if (reviews.length === 1) reviewDisplay = 'Review'
+    if (reviews.length === 1) {
+        reviewDisplay = 'Review'
+    }
+
+
     const imageArr = spot.SpotImages && spot.SpotImages.filter(el => { return el.preview === false })
     imageArr && imageArr.splice(4)
 
@@ -45,8 +49,13 @@ function SpotPage() {
     const previewImg = spot.SpotImages && spot.SpotImages.find(el => { return el.preview === true })
 
     const [pImage, setPImage] = useState((previewImg && previewImg.url) || pineapple);
+    // const [imgState1, setImgState1] = useState('')
+    // const [imgState2, setImgState2] = useState('')
+    // const [imgState3, setImgState3] = useState('')
+    // const [imgState5, setImgState4] = useState('')
 
-    console.log('pimage', pImage)
+    const handleOnError = (e) => { e.target.src = KK }
+
 
 
     const reserve = () => {
@@ -54,7 +63,6 @@ function SpotPage() {
     }
 
     useEffect(() => {
-        // console.log('spotId---', spotId.spotId)
 
         async function spotDispatches() {
             await dispatch(getSpotThunk(spotId.spotId));
@@ -82,7 +90,13 @@ function SpotPage() {
                 <ol className="regular-images">
                     {imageArr && imageArr.map(el => {
                         return <li>
-                            <img src={el.url || KK} alt={el.url + '- picture'} style={{ width: 300 + 'px', height: 200 + 'px' }}></img>
+                            <img
+                                src={el.url || KK}
+                                alt={'rental non preview'}
+                                style={{ width: 300 + 'px', height: 200 + 'px' }}
+                                onError={handleOnError}>
+
+                            </img>
                         </li>
                     })}
                 </ol>
@@ -102,8 +116,8 @@ function SpotPage() {
 
             </div>
 
-            <div>
-                <h2><div >
+            <div className="review-list-all">
+                <h2 className="review-title"><div >
 
                     {!noReviews && <div className="review-info"><i class="fa fa-star"></i> {spot.avgStarRating && spot.avgStarRating.toFixed(1)}   <li className="number-reviews">{spot.numReviews} {reviewDisplay}</li></div>}
                     {noReviews && <div><i class="fa fa-star"></i> New</div>}
@@ -115,15 +129,29 @@ function SpotPage() {
 
 
                             if (user && el.userId === user.id) {
-                                return <li className='review-item' key={el.id}> review: {el.review}, stars: {el.stars}
+                                return <li key={el.id}>
+                                    <ul className='review-item' >
+                                        <li className="firstName">{user.firstName}</li>
+                                        {/* {!el.User && <li className="firstName">{user.firstName}</li>} */}
+                                        <li className="review-date">{el.createdAt.slice(5, 7)}, {el.createdAt.slice(0, 4)} </li>
+                                        <li>{el.review}</li>
+                                    </ul>
 
                                     <OpenModalButton
                                         cssClass="delete-button"
-                                        buttonText='Delete Review'
+                                        buttonText='Delete'
                                         modalComponent={<ConfirmDeleteReviewModal review={el} spot={spot} />}>
                                     </OpenModalButton>
                                 </li>
-                            } else { return <li key={el.id}> review: {el.review}, stars: {el.stars} </li> }
+                            } else {
+                                return <li key={el.id}>
+                                    <ul className='review-item' >
+                                        {el.User && <li className="firstName">{el.User.firstName}</li>}
+                                        <li className="review-date">{el.createdAt.slice(5, 7)}, {el.createdAt.slice(0, 4)} </li>
+                                        <li>{el.review}</li>
+                                    </ul>
+                                </li>
+                            }
 
                         })}
                 </ol>
@@ -131,7 +159,9 @@ function SpotPage() {
                 {user && spot.Owner &&
                     user.id !== spot.Owner.id &&
                     !hasReview &&
-                    <OpenModalButton buttonText='Post your Review' cssClass='review-button' modalComponent={<ReviewForm />} ></OpenModalButton>}
+                    <OpenModalButton buttonText='Post Your Review' cssClass='review-button' modalComponent={<ReviewForm />} ></OpenModalButton>}
+
+                {noReviews && user && (user.id !== spot.Owner.id) && <p>Be the first to post a review!</p>}
 
             </div>
         </>

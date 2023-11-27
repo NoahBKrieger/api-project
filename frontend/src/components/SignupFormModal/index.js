@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import * as sessionActions from "../../store/session";
@@ -6,19 +6,25 @@ import "./SignupForm.css";
 
 function SignupFormModal() {
     const dispatch = useDispatch();
+
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+
+    const [disableButton, setDisableButton] = useState(true)
+
     const [errors, setErrors] = useState({});
+
     const { closeModal } = useModal();
 
     const handleSubmit = (e) => {
         e.preventDefault();
         if (password === confirmPassword) {
             setErrors({});
+
             return dispatch(
                 sessionActions.signup({
                     email,
@@ -40,6 +46,13 @@ function SignupFormModal() {
             confirmPassword: "Confirm Password field must be the same as the Password field"
         });
     };
+
+    useEffect(() => {
+
+        if (email.length > 4 && username.length > 2 && firstName.length > 0 && lastName.length > 0 && password.length > 5 && confirmPassword.length > 5) {
+            setDisableButton(false)
+        } else { setDisableButton(true) }
+    }, [email, username, firstName, lastName, password, confirmPassword])
 
     return (
         <div className="signup-box">
@@ -107,7 +120,7 @@ function SignupFormModal() {
                 {errors.confirmPassword && (
                     <p>{errors.confirmPassword}</p>
                 )}
-                <button type="submit">Sign Up</button>
+                <button type="submit" disabled={disableButton}>Sign Up</button>
             </form>
         </div>
     );

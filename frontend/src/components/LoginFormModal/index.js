@@ -61,7 +61,7 @@ function LoginFormModal() {
     }
 
     return (
-        <>
+        <div className="signup-box">
             <h1>Log In</h1>
             {inv && <p>Invalid credential or password</p>}
             <form onSubmit={handleSubmit}>
@@ -89,7 +89,7 @@ function LoginFormModal() {
                 <button type="submit" disabled={!submitReady}>Log In</button>
                 <button onClick={demoUser}>Demo User</button>
             </form>
-        </>
+        </div>
     );
 }
 
