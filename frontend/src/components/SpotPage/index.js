@@ -49,10 +49,7 @@ function SpotPage() {
     const previewImg = spot.SpotImages && spot.SpotImages.find(el => { return el.preview === true })
 
     const [pImage, setPImage] = useState((previewImg && previewImg.url) || pineapple);
-    // const [imgState1, setImgState1] = useState('')
-    // const [imgState2, setImgState2] = useState('')
-    // const [imgState3, setImgState3] = useState('')
-    // const [imgState5, setImgState4] = useState('')
+
 
     const handleOnError = (e) => { e.target.src = KK }
 
@@ -110,7 +107,7 @@ function SpotPage() {
                 <div className="reserve-info">
                     <h3 className="price-in-box"> ${spot.price} per night</h3>
                     {!noReviews && <h3 className="review-info"><ul><i class="fa fa-star"></i> {spot.avgStarRating && spot.avgStarRating.toFixed(1)}   <li className="number-reviews"> {spot.numReviews} {reviewDisplay}</li></ul></h3>}
-                    {noReviews && <h3><i class="fa fa-star"></i> New</h3>}
+                    {noReviews && <h3 className="review-info-new"><i class="fa fa-star"></i> New</h3>}
                 </div>
                 <button onClick={reserve}>Reserve</button>
 
