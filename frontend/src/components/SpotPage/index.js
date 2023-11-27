@@ -49,6 +49,14 @@ function SpotPage() {
     const previewImg = spot.SpotImages && spot.SpotImages.find(el => { return el.preview === true })
 
     const [pImage, setPImage] = useState((previewImg && previewImg.url) || pineapple);
+    // const [imgState1, setImgState1] = useState('')
+    // const [imgState2, setImgState2] = useState('')
+    // const [imgState3, setImgState3] = useState('')
+    // const [imgState5, setImgState4] = useState('')
+
+    const handleOnError = (e) => { e.target.src = KK }
+
+
 
     const reserve = () => {
         return alert("Feature coming soon!")
@@ -84,8 +92,9 @@ function SpotPage() {
                         return <li>
                             <img
                                 src={el.url || KK}
-                                alt={el.url + '- picture'}
-                                style={{ width: 300 + 'px', height: 200 + 'px' }}>
+                                alt={'rental non preview'}
+                                style={{ width: 300 + 'px', height: 200 + 'px' }}
+                                onError={handleOnError}>
 
                             </img>
                         </li>
