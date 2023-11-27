@@ -8,7 +8,7 @@
     position: absolute;
     right: 60px;
     top: 700px;
-    padding: 2px;
+    padding: 6px;
     color: red;
 }
 
@@ -109,14 +109,27 @@
 
 .review-info {
     display: flex;
+    align-self: flex-end;
+    justify-self: flex-end;
+    flex-wrap: nowrap;
 
+}
+
+.review-info-new {
+
+    margin-top: 30px;
+    font-size: 15px;
 }
 
 .review-info ul {
 
-
+    position: static;
     display: flex;
     flex-wrap: nowrap;
+    justify-self: flex-end;
+    align-self: flex-end;
+    font-size: 15px;
+
 }
 
 .number-reviews {
@@ -129,4 +142,5 @@
 
     align-self: center;
     text-wrap: nowrap;
+    font-size: 20px;
 }
