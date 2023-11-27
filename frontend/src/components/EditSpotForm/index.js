@@ -1,16 +1,18 @@
 import '../SpotForm/SpotForm.css'
 
 import { editSpotThunk, getSpotThunk } from "../../store/spotReducer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { getSpotReviewsThunk } from '../../store/reviewReducer';
 
 function EditSpotForm() {
 
     const dispatch = useDispatch();
-
     const history = useHistory()
+    const id = useParams()
+
+
 
     const oldSpot = useSelector(state => state.spots.currSpot);
 
@@ -23,8 +25,35 @@ function EditSpotForm() {
     const [lat, setLat] = useState(oldSpot.lat)
     const [desc, setDesc] = useState(oldSpot.description)
     const [price, setPrice] = useState(oldSpot.price)
+
     const [errors, setErrors] = useState({});
 
+    useEffect(() => {
+        async function spotDispatches() { await dispatch(getSpotThunk(id.spotId)); }
+        spotDispatches()
+    }, [dispatch, id]);
+
+
+    useEffect(() => {
+        setSpotName(oldSpot.name)
+        setAddress(oldSpot.address)
+        setCity(oldSpot.city)
+        setState(oldSpot.state)
+        setCountry(oldSpot.country)
+        setLng(oldSpot.lng)
+        setLat(oldSpot.lat)
+        setDesc(oldSpot.description)
+        setPrice(oldSpot.price)
+    }, [oldSpot, dispatch])
+
+    // const [disableButton, setDisableButton] = useState(false)
+
+    // useEffect(() => {
+
+    //     if (spotName.length > 1 && address.length > 3 && city.length > 1 && state.length > 1 && country.length > 1 && desc.length >= 30 && price.length > 0) {
+    //         setDisableButton(false)
+    //     } else { setDisableButton(true) }
+    // }, [spotName, address, city, state, country, desc, price])
 
 
 
@@ -87,7 +116,7 @@ function EditSpotForm() {
                 <h3>Guests will only get your exact address once they booked a reservation.</h3>
                 <div className="location-div">
                     <label> Country
-                        <input placeholder="Country" defaultValue={oldSpot.country} onChange={(e) => setCountry(e.target.value)}></input>
+                        <input placeholder="Country" defaultValue={country} onChange={(e) => setCountry(e.target.value)}></input>
                     </label>
                     {errors.country && <p>{errors.country}</p>}
 

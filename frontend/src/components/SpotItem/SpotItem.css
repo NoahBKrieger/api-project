@@ -43,7 +43,7 @@
     background-color: #192733;
     border-radius: 10px;
     padding: 10px 15px 10px 15px;
-    top: -20px;
+    top: -5px;
 }
 
 .item:hover .tooltip-text {

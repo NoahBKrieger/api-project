@@ -27,7 +27,7 @@ function App() {
         <AllSpots exact path='/' />
         <SpotForm path='/spots/new' />
         <Route path='/spots/user' component={UserPage} />
-        <EditSpotForm path='/spots/:spotId/edit' />
+        <Route exact path='/spots/edit/:spotId' component={EditSpotForm} />
         <Route exact path='/spots/:spotId' component={SpotPage} />
         <Route path='/spots/:spotId/review/new' component={ReviewForm} />
         <CurrReviews path='/reviews/current' />

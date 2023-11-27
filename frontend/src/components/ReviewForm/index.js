@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 // import { useHistory } from "react-router-dom";
 import { addReviewThunk } from "../../store/reviewReducer";
@@ -26,39 +26,47 @@ function ReviewForm() {
     const [stars, setStars] = useState(0)
     const [errors, setErrors] = useState({});
 
+    const [disableButton, setDisableButton] = useState(true)
+    useEffect(() => {
+        if (stars.length > 0 && reviewText.length > 1) {
+            setDisableButton(false)
+        } else setDisableButton(true)
+
+    }, [stars, reviewText])
+
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        if (stars.length > 0 && reviewText.length > 0) {
 
-            const newReview = {}
 
-            newReview.review = reviewText
-            newReview.stars = Number(stars)
+        const newReview = {}
 
-            console.log('newreview----', newReview)
-            setErrors({})
+        newReview.review = reviewText
+        newReview.stars = Number(stars)
 
-            let newReview2 = dispatch(addReviewThunk(Number(spot.id), newReview))
-                .then(() => {
+        console.log('newreview----', newReview)
+        setErrors({})
 
-                    if (!(newReview2.errors)) {
-                        console.log('success')
-                        dispatch(getSpotThunk(spot.id))
-                        closeModal()
-                    }
-                })
+        let newReview2 = dispatch(addReviewThunk(Number(spot.id), newReview))
+            .then(() => {
 
-                .catch(async (res) => {
+                if (!(newReview2.errors)) {
+                    console.log('success')
+                    dispatch(getSpotThunk(spot.id))
+                    closeModal()
+                }
+            })
 
-                    const data = await res.json();
-                    if (data && data.errors) {
-                        setErrors(data.errors);
-                        console.log('errs---', data.errors)
-                    }
-                })
+            .catch(async (res) => {
 
-        }
+                const data = await res.json();
+                if (data && data.errors) {
+                    setErrors(data.errors);
+                    console.log('errs---', data.errors)
+                }
+            })
+
+
     }
 
     return (
@@ -76,7 +84,7 @@ function ReviewForm() {
                 </label>
                 {errors.stars && <p>{errors.stars}</p>}
 
-                <button className='submit-button'>Submit</button>
+                <button className='submit-button' disabled={disableButton}>Submit</button>
                 <button className='cancel-button' onClick={closeModal}>Cancel</button>
 
             </form>

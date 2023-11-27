@@ -7,7 +7,7 @@
     position: sticky;
     display: grid;
     grid-template-columns: 4fr 2fr;
-    border: solid black 1px;
+    border-bottom: solid gray 2px;
     padding: 30px;
 
     align-items: center;

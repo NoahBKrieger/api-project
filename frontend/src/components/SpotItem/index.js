@@ -51,7 +51,7 @@ function SpotItem({ spot, user }) {
 
         await dispatch(getSpotThunk(Number(spot.id)))
 
-        history.push(`/spots/${spot.id}/edit`)
+        history.push(`/spots/edit/${spot.id}`)
     }
 
 

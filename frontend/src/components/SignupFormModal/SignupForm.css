@@ -1,3 +1,17 @@
 .signup-box {
-    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.signup-box input {
+    width: 15rem;
+
+}
+
+.signup-box p {
+    color: red;
 }

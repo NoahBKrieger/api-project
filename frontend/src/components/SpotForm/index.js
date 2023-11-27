@@ -1,5 +1,5 @@
 import { addSpotThunk } from "../../store/spotReducer";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch } from 'react-redux';
 import { useHistory } from "react-router-dom";
 import { getSpotThunk } from "../../store/spotReducer";
@@ -33,6 +33,15 @@ function SpotForm() {
     const [imgUrl3, setImgUrl3] = useState('')
     const [imgUrl4, setImgUrl4] = useState('')
     const [prevErrors, setPrevErrors] = useState({});
+
+    const [disableButton, setDisableButton] = useState(true)
+
+    useEffect(() => {
+
+        if (spotName.length > 1 && address.length > 3 && city.length > 1 && state.length > 1 && country.length > 1 && desc.length >= 30 && price.length > 0) {
+            setDisableButton(false)
+        } else { setDisableButton(true) }
+    }, [spotName, address, city, state, country, desc, price])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -157,13 +166,6 @@ function SpotForm() {
         // console.log('addDis', addDis)
     }
 
-    // useEffect(() => {
-
-    //     if (previewImgUrl.endsWith('.png') || previewImgUrl.endsWith('.img') || previewImgUrl.endsWith('.jpg')) {
-    //         setPrevErrors({})
-    //     } else { setPrevErrors({ errors: 'Must be a valid image url' }) }
-
-    // }, [previewImgUrl])
 
     return (
 
@@ -273,7 +275,7 @@ function SpotForm() {
 
                 </div>
 
-                <button className='submit-button'>Create Spot</button>
+                <button className='submit-button' disabled={disableButton}>Create Spot</button>
 
             </form>
         </div>
