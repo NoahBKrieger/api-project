@@ -111,8 +111,8 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         notEmpty: { msg: "Description is required" },
-        notContains: { args: '  ', msg: "Description is required" },
-        len: { args: [30, 2000], msg: "Length must be between 30 and 2000 characters" },
+        // notContains: { args: '  ', msg: "Description is required" },
+        len: { args: [30, 20000], msg: "Length must be between 30 and 2000 characters" },
         validString(value) { if (typeof value != 'string') throw new Error('Invalid type') }
 
       }
