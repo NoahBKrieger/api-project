@@ -7,6 +7,7 @@
     margin-bottom: 40px;
     display: flex;
     justify-content: center;
+
 }
 
 .spot-list {
@@ -16,15 +17,12 @@
     justify-content: space-around;
     margin-left: -20px;
     max-width: fit-content;
-
 }
 
 @media screen and (min-width: 1100px) {
     .spot-list {
-
         display: grid;
         grid-template-columns: 1fr 1fr 1fr 1fr;
-        /* margin-left: 20px; */
         max-width: none;
     }
 
@@ -42,11 +40,8 @@
 
 @media screen and (min-width: 1600px) {
     .spot-list {
-
         display: grid;
         grid-template-columns: 1fr 1fr 1fr 1fr;
-        /* margin-left: 60px; */
-
     }
 
     .spot-item {
@@ -55,17 +50,12 @@
 }
 
 .buttons {
-
     display: flex;
-
     justify-content: space-around;
     padding: 10px;
-
 }
 
 .create-spot-link {
-
     text-decoration: none;
     margin-left: 15px;
-
 }
