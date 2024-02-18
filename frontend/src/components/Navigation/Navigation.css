@@ -50,6 +50,7 @@
 .title-link:hover {
     text-decoration: default;
     cursor: pointer;
+    background-color: gray;
 }
 
 .right-box {
