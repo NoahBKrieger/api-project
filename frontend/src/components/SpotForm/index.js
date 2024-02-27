@@ -5,7 +5,6 @@ import { useHistory } from "react-router-dom";
 import { getSpotThunk } from "../../store/spotReducer";
 import { getSpotReviewsThunk } from "../../store/reviewReducer";
 
-
 import './SpotForm.css'
 import { csrfFetch } from "../../store/csrf";
 
